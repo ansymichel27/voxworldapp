@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VoxWorldApp - Sign Up</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #0f172a, #1e293b);
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .signup-container {
+      width: 100%;
+      max-width: 520px;
+      background: rgba(255,255,255,0.08);
+      backdrop-filter: blur(10px);
+      border-radius: 18px;
+      padding: 30px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 10px;
+      color: #38bdf8;
+    }
+
+    p {
+      text-align: center;
+      color: #cbd5e1;
+      margin-bottom: 25px;
+    }
+
+    label {
+      display: block;
+      margin: 14px 0 6px;
+      font-weight: bold;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 10px;
+      outline: none;
+      font-size: 15px;
+      box-sizing: border-box;
+    }
+
+    input[type="file"] {
+      background: white;
+      color: black;
+    }
+
+    button {
+      width: 100%;
+      margin-top: 22px;
+      padding: 14px;
+      border: none;
+      border-radius: 10px;
+      background: #22c55e;
+      color: white;
+      font-size: 17px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #16a34a;
+    }
+
+    .back-link {
+      display: block;
+      text-align: center;
+      margin-top: 18px;
+      color: #38bdf8;
+      text-decoration: none;
+    }
+
+    .success-message {
+      margin-top: 18px;
+      text-align: center;
+      color: #86efac;
+      display: none;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="signup-container">
+    <h1>Join VoxWorldApp</h1>
+    <p>Create your artist profile and upload your voice sample.</p>
+
+    <form id="signupForm">
+      <label for="fullname">Full Name</label>
+      <input type="text" id="fullname" name="fullname" required>
+
+      <label for="artistname">Artist Name / Stage Name</label>
+      <input type="text" id="artistname" name="artistname" required>
+
+      <label for="email">Email</label>
+      <input type="email" id="email" name="email" required>
+
+      <label for="country">Country</label>
+      <input type="text" id="country" name="country" required>
+
+      <label for="genre">Music Genre</label>
+      <select id="genre" name="genre" required>
+        <option value="">Select your genre</option>
+        <option>Kompa</option>
+        <option>Afrobeat</option>
+        <option>Hip-Hop</option>
+        <option>R&B</option>
+        <option>Pop</option>
+        <option>Gospel</option>
+        <option>Latin</option>
+        <option>Other</option>
+      </select>
+
+      <label for="bio">Short Bio</label>
+      <textarea id="bio" name="bio" rows="4" placeholder="Tell us about your voice and style..."></textarea>
+
+      <label for="photo">Profile Picture</label>
+      <input type="file" id="photo" name="photo" accept="image/*">
+
+      <label for="voiceSample">Upload Voice Sample</label>
+      <input type="file" id="voiceSample" name="voiceSample" accept="audio/*">
+
+      <button type="submit">Create My Account</button>
+    </form>
+
+    <div class="success-message" id="successMessage">
+      Your sign-up information has been saved successfully.
+    </div>
+
+    <a class="back-link" href="index.html">← Back to Home</a>
+  </div>
+
+  <script>
+    const signupForm = document.getElementById("signupForm");
+    const successMessage = document.getElementById("successMessage");
+
+    signupForm.addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      const formData = {
+        fullname: document.getElementById("fullname").value,
+        artistname: document.getElementById("artistname").value,
+        email: document.getElementById("email").value,
+        country: document.getElementById("country").value,
+        genre: document.getElementById("genre").value,
+        bio: document.getElementById("bio").value,
+        photoName: document.getElementById("photo").files[0] ? document.getElementById("photo").files[0].name : "",
+        voiceSampleName: document.getElementById("voiceSample").files[0] ? document.getElementById("voiceSample").files[0].name : ""
+      };
+
+      localStorage.setItem("voxworld_signup_data", JSON.stringify(formData));
+
+      successMessage.style.display = "block";
+      signupForm.reset();
+    });
+  </script>
+</body>
+</html>
