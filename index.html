@@ -552,7 +552,289 @@ Turn your voice into real opportunity.
       </div>
     </div>
   </section> 
- signup.html  
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sign Up | VoxWorldApp</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #041224, #0b2f66, #103b8f);
+      color: white;
+      min-height: 100vh;
+    }
+
+    header {
+      padding: 20px 40px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      background: rgba(0,0,0,0.15);
+    }
+
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 20px;
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    .logo {
+      font-size: 2rem;
+      font-weight: bold;
+      color: white;
+    }
+
+    .logo span {
+      color: #4da3ff;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .nav-links a {
+      color: white;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .nav-links a:hover {
+      color: #7fbeff;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 14px 28px;
+      border-radius: 14px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: 0.3s ease;
+    }
+
+    .btn-primary {
+      background: linear-gradient(90deg, #7fffd4, #53a8ff);
+      color: #041224;
+    }
+
+    .btn-primary:hover {
+      opacity: 0.9;
+      transform: translateY(-2px);
+    }
+
+    .signup-section {
+      padding: 70px 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .signup-box {
+      width: 100%;
+      max-width: 760px;
+      background: rgba(255,255,255,0.06);
+      border-radius: 24px;
+      padding: 40px 30px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+      backdrop-filter: blur(8px);
+    }
+
+    .signup-box h1 {
+      font-size: 2.4rem;
+      margin-bottom: 15px;
+      text-align: center;
+    }
+
+    .signup-box p {
+      text-align: center;
+      color: #dce8ff;
+      line-height: 1.6;
+      margin-bottom: 30px;
+      font-size: 1.05rem;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    label {
+      color: #dce8ff;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: 12px;
+      font-size: 16px;
+      outline: none;
+    }
+
+    textarea {
+      min-height: 110px;
+      resize: vertical;
+    }
+
+    input[type="file"] {
+      background: white;
+      color: #041224;
+      padding: 10px;
+    }
+
+    .submit-btn {
+      margin-top: 10px;
+      width: 100%;
+      padding: 15px;
+      border: none;
+      border-radius: 14px;
+      font-size: 18px;
+      font-weight: bold;
+      cursor: pointer;
+      background: linear-gradient(90deg, #7fffd4, #53a8ff);
+      color: #041224;
+      transition: 0.3s ease;
+    }
+
+    .submit-btn:hover {
+      opacity: 0.92;
+      transform: translateY(-2px);
+    }
+
+    .impact-box {
+      margin-top: 30px;
+      padding: 20px;
+      border-radius: 16px;
+      background: rgba(255,255,255,0.05);
+    }
+
+    .impact-box h3 {
+      margin-bottom: 10px;
+      color: #7fffd4;
+    }
+
+    .impact-box p {
+      margin: 0;
+      text-align: left;
+      font-size: 0.98rem;
+    }
+
+    footer {
+      text-align: center;
+      padding: 30px 20px 40px;
+      color: #dce8ff;
+    }
+
+    footer p {
+      margin: 6px 0;
+    }
+
+    @media (max-width: 768px) {
+      .signup-box h1 {
+        font-size: 2rem;
+      }
+
+      nav {
+        justify-content: center;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <nav>
+      <div class="logo">Vox<span>WorldApp</span></div>
+
+      <div class="nav-links">
+        <a href="index.html#features">Features</a>
+        <a href="index.html#how-it-works">How It Works</a>
+        <a href="index.html#pricing">Pricing</a>
+        <a href="index.html#contact">Contact</a>
+      </div>
+
+      <a href="signup.html" class="btn btn-primary">Sign Up</a>
+    </nav>
+  </header>
+
+  <section class="signup-section">
+    <div class="signup-box">
+      <h1>Join VoxWorldApp</h1>
+      <p>
+        Create your account and start building your voice identity,
+        connecting with creators worldwide, and turning your voice into real opportunity.
+      </p>
+
+      <form action="#" method="post" enctype="multipart/form-data">
+        <label for="fullname">Full Name</label>
+        <input type="text" id="fullname" name="fullname" placeholder="Full Name" required>
+
+        <label for="artistname">Artist Name / Stage Name</label>
+        <input type="text" id="artistname" name="artistname" placeholder="Artist Name / Stage Name" required>
+
+        <label for="profilepicture">Upload Profile Picture</label>
+        <input type="file" id="profilepicture" name="profilepicture" accept="image/*">
+
+        <label for="voicesample">Upload Voice Sample</label>
+        <input type="file" id="voicesample" name="voicesample" accept="audio/*">
+
+        <label for="email">Email Address</label>
+        <input type="email" id="email" name="email" placeholder="Email Address" required>
+
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" placeholder="Password" required>
+
+        <label for="role">Select Your Role</label>
+        <select id="role" name="role" required>
+          <option value="">Select Your Role</option>
+          <option value="artist">Artist</option>
+          <option value="producer">Producer</option>
+          <option value="voice-actor">Voice Actor</option>
+          <option value="creator">Creator</option>
+          <option value="client">Client</option>
+        </select>
+
+        <label for="bio">Short Bio / Voice Description</label>
+        <textarea id="bio" name="bio" placeholder="Describe your voice, style, and creative identity..."></textarea>
+
+        <button type="submit" class="submit-btn">Create My Profile</button>
+      </form>
+
+      <div class="impact-box">
+        <h3>Transparent Contribution Model</h3>
+        <p>
+          VoxWorldApp applies a transparent distribution model on completed sales:
+          <strong>91% to artists</strong>, <strong>7% to platform development</strong>,
+          and <strong>2% to global health initiatives</strong>.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <footer id="contact">
+    <p><strong>VoxWorldApp</strong> — The Global Voice Marketplace</p>
+    <p>Email: contact@voxworldapp.com | Website: www.voxworldapp.com</p>
+    <p>© 2026 VoxWorldApp. All rights reserved.</p>
+  </footer>
+
+</body>
+</html> 
 
   <section id="pricing">
     <div class="container">
