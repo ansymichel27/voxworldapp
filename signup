@@ -99,7 +99,8 @@
     <h1>Join VoxWorldApp</h1>
     <p>Create your artist profile and upload your voice sample.</p>
 
-    <form id="signupForm">
+    <form name="signup" method="POST" data-netlify="true" id="signupForm">
+<input type="hidden" name="form-name" value="signup">
       <label for="fullname">Full Name</label>
       <input type="text" id="fullname" name="fullname" required>
 
