@@ -1,0 +1,938 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VoxWorld | Vocal DNA</title>
+  <style>
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+    }
+
+    :root{
+      --bg:#030712;
+      --panel:rgba(15,23,42,0.78);
+      --line:rgba(255,255,255,0.08);
+      --text:#ffffff;
+      --muted:#cbd5e1;
+      --blue:#38bdf8;
+      --purple:#8b5cf6;
+      --pink:#ec4899;
+      --green:#22c55e;
+      --gold:#facc15;
+      --red:#ef4444;
+    }
+
+    body{
+      font-family:Arial, sans-serif;
+      color:var(--text);
+      min-height:100vh;
+      background:
+        radial-gradient(circle at top left, rgba(56,189,248,0.15), transparent 25%),
+        radial-gradient(circle at top right, rgba(236,72,153,0.16), transparent 25%),
+        linear-gradient(180deg, #020617 0%, #081120 45%, #020617 100%);
+      padding:30px 20px 50px;
+    }
+
+    .container{
+      max-width:1350px;
+      margin:0 auto;
+    }
+
+    .hero{
+      text-align:center;
+      margin-bottom:28px;
+    }
+
+    .hero h1{
+      font-size:56px;
+      line-height:1.02;
+      margin-bottom:14px;
+      letter-spacing:-1px;
+    }
+
+    .hero h1 span{
+      background:linear-gradient(90deg, var(--blue), var(--purple), var(--pink));
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+      background-clip:text;
+      color:transparent;
+    }
+
+    .hero p{
+      max-width:920px;
+      margin:0 auto;
+      color:var(--muted);
+      font-size:18px;
+      line-height:1.7;
+    }
+
+    .layout{
+      display:grid;
+      grid-template-columns:380px 1fr;
+      gap:24px;
+      align-items:start;
+    }
+
+    .panel{
+      background:var(--panel);
+      border:1px solid var(--line);
+      border-radius:28px;
+      padding:22px;
+      backdrop-filter:blur(14px);
+      box-shadow:0 18px 40px rgba(0,0,0,0.25);
+    }
+
+    .panel h2{
+      font-size:28px;
+      margin-bottom:8px;
+    }
+
+    .panel p{
+      color:var(--muted);
+      line-height:1.6;
+      font-size:14px;
+      margin-bottom:18px;
+    }
+
+    .form-group{
+      margin-bottom:14px;
+    }
+
+    .form-group label{
+      display:block;
+      font-size:13px;
+      font-weight:bold;
+      margin-bottom:7px;
+      color:#e5e7eb;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea{
+      width:100%;
+      padding:13px 14px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,0.08);
+      background:rgba(255,255,255,0.06);
+      color:white;
+      outline:none;
+      font-size:14px;
+    }
+
+    .form-group textarea{
+      min-height:95px;
+      resize:vertical;
+    }
+
+    .btn{
+      width:100%;
+      border:none;
+      border-radius:16px;
+      padding:14px 18px;
+      font-size:15px;
+      font-weight:bold;
+      cursor:pointer;
+      color:white;
+      transition:.25s ease;
+      background:linear-gradient(90deg, var(--blue), var(--purple));
+      box-shadow:0 12px 30px rgba(56,189,248,0.18);
+    }
+
+    .btn:hover{
+      transform:translateY(-2px);
+      opacity:.96;
+    }
+
+    .mini-note{
+      margin-top:12px;
+      color:#93c5fd;
+      font-size:13px;
+      line-height:1.6;
+    }
+
+    .viewer{
+      display:grid;
+      grid-template-rows:auto auto 1fr auto;
+      gap:18px;
+    }
+
+    .top-cards{
+      display:grid;
+      grid-template-columns:repeat(4, 1fr);
+      gap:14px;
+    }
+
+    .stat-card{
+      background:rgba(255,255,255,0.05);
+      border:1px solid var(--line);
+      border-radius:18px;
+      padding:16px;
+      min-height:92px;
+    }
+
+    .stat-card span{
+      display:block;
+      color:var(--muted);
+      font-size:12px;
+      margin-bottom:8px;
+      text-transform:uppercase;
+      letter-spacing:.06em;
+    }
+
+    .stat-card strong{
+      font-size:22px;
+    }
+
+    .dna-stage{
+      position:relative;
+      min-height:620px;
+      overflow:hidden;
+      border-radius:30px;
+      background:
+        radial-gradient(circle at center, rgba(56,189,248,0.10), transparent 25%),
+        linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.015));
+      border:1px solid var(--line);
+    }
+
+    #dnaCanvas{
+      width:100%;
+      height:620px;
+      display:block;
+    }
+
+    .stage-overlay{
+      position:absolute;
+      top:20px;
+      left:20px;
+      right:20px;
+      display:flex;
+      justify-content:space-between;
+      gap:16px;
+      pointer-events:none;
+      flex-wrap:wrap;
+    }
+
+    .glass-badge{
+      background:rgba(2,6,23,0.58);
+      border:1px solid rgba(255,255,255,0.08);
+      border-radius:18px;
+      padding:12px 14px;
+      backdrop-filter:blur(12px);
+      min-width:200px;
+    }
+
+    .glass-badge .label{
+      display:block;
+      font-size:11px;
+      color:#cbd5e1;
+      margin-bottom:6px;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+    }
+
+    .glass-badge .value{
+      display:block;
+      font-size:18px;
+      font-weight:bold;
+    }
+
+    .profile-strip{
+      display:grid;
+      grid-template-columns:120px 1fr;
+      gap:18px;
+      align-items:center;
+      background:rgba(255,255,255,0.04);
+      border:1px solid var(--line);
+      border-radius:24px;
+      padding:18px;
+    }
+
+    .avatar-wrap{
+      width:120px;
+      height:120px;
+      border-radius:24px;
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,0.08);
+      background:#0f172a;
+    }
+
+    .avatar-wrap img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      display:block;
+    }
+
+    .profile-meta h3{
+      font-size:30px;
+      margin-bottom:6px;
+    }
+
+    .profile-meta p{
+      color:var(--muted);
+      margin-bottom:10px;
+      line-height:1.6;
+    }
+
+    .tags{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+    }
+
+    .tag{
+      padding:8px 12px;
+      border-radius:999px;
+      background:rgba(255,255,255,0.07);
+      border:1px solid rgba(255,255,255,0.06);
+      font-size:12px;
+      color:#dbeafe;
+    }
+
+    .metrics{
+      display:grid;
+      grid-template-columns:repeat(5, 1fr);
+      gap:14px;
+    }
+
+    .metric{
+      background:rgba(255,255,255,0.04);
+      border:1px solid var(--line);
+      border-radius:18px;
+      padding:16px 14px;
+      text-align:center;
+    }
+
+    .metric strong{
+      display:block;
+      font-size:22px;
+      margin-bottom:7px;
+    }
+
+    .metric span{
+      color:var(--muted);
+      font-size:12px;
+    }
+
+    audio{
+      width:100%;
+      margin-top:12px;
+      border-radius:12px;
+    }
+
+    .footer-line{
+      text-align:center;
+      margin-top:18px;
+      color:#94a3b8;
+      font-size:13px;
+    }
+
+    @media (max-width:1100px){
+      .layout{
+        grid-template-columns:1fr;
+      }
+
+      .top-cards{
+        grid-template-columns:repeat(2, 1fr);
+      }
+
+      .metrics{
+        grid-template-columns:repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width:700px){
+      .hero h1{
+        font-size:40px;
+      }
+
+      .top-cards,
+      .metrics{
+        grid-template-columns:1fr;
+      }
+
+      .profile-strip{
+        grid-template-columns:1fr;
+      }
+
+      .avatar-wrap{
+        margin:0 auto;
+      }
+
+      .profile-meta{
+        text-align:center;
+      }
+
+      .tags{
+        justify-content:center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <section class="hero">
+      <h1><span>Vocal DNA</span> for VoxWorld</h1>
+      <p>
+        This prototype turns an artist’s voice into a living identity: a visual aura,
+        an emotional profile, an energy signature, and a unique public Vocal DNA code.
+        It is designed to feel more futuristic than a normal social profile.
+      </p>
+    </section>
+
+    <div class="layout">
+      <aside class="panel">
+        <h2>Create a Vocal DNA</h2>
+        <p>
+          Upload an artist photo and voice sample, then generate a living visual identity
+          that can become part of the VoxWorld experience.
+        </p>
+
+        <div class="form-group">
+          <label for="artistName">Artist Name</label>
+          <input id="artistName" type="text" placeholder="Ex: Ansy Michel" value="Ansy Michel" />
+        </div>
+
+        <div class="form-group">
+          <label for="artistCountry">Country</label>
+          <input id="artistCountry" type="text" placeholder="Ex: Haiti / USA" value="Haiti / USA" />
+        </div>
+
+        <div class="form-group">
+          <label for="artistStyle">Voice Style</label>
+          <select id="artistStyle">
+            <option value="Kompa">Kompa</option>
+            <option value="Afrobeat">Afrobeat</option>
+            <option value="Soul">Soul</option>
+            <option value="Rap">Rap</option>
+            <option value="Pop">Pop</option>
+            <option value="Gospel">Gospel</option>
+            <option value="Fusion">Fusion</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="artistStory">Voice Identity Description</label>
+          <textarea id="artistStory" placeholder="Describe the artist’s vocal energy...">Future Kompa energy, Haitian cultural power, modern emotion, and global voice innovation.</textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="artistPhoto">Artist Photo</label>
+          <input id="artistPhoto" type="file" accept="image/*" />
+        </div>
+
+        <div class="form-group">
+          <label for="artistAudio">Voice Sample</label>
+          <input id="artistAudio" type="file" accept="audio/*" />
+          <audio id="audioPlayer" controls></audio>
+        </div>
+
+        <button class="btn" id="generateBtn">Generate Vocal DNA</button>
+
+        <div class="mini-note">
+          This demo works entirely in the browser. The visual analysis is artistic and illustrative.
+          Later, VoxWorld could connect this to deeper AI voice analysis.
+        </div>
+      </aside>
+
+      <section class="viewer">
+        <div class="top-cards">
+          <div class="stat-card">
+            <span>Vocal DNA ID</span>
+            <strong id="dnaId">VX-0000-0000</strong>
+          </div>
+          <div class="stat-card">
+            <span>Primary Aura</span>
+            <strong id="primaryAura">Celestial Blue</strong>
+          </div>
+          <div class="stat-card">
+            <span>Voice Energy</span>
+            <strong id="voiceEnergy">Balanced</strong>
+          </div>
+          <div class="stat-card">
+            <span>Global Match</span>
+            <strong id="globalMatch">Creative Pulse</strong>
+          </div>
+        </div>
+
+        <div class="profile-strip panel" style="padding:18px;">
+          <div class="avatar-wrap">
+            <img id="previewPhoto" src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=1200&auto=format&fit=crop" alt="Artist preview" />
+          </div>
+          <div class="profile-meta">
+            <h3 id="profileName">Ansy Michel</h3>
+            <p id="profileDesc">
+              Future Kompa energy, Haitian cultural power, modern emotion, and global voice innovation.
+            </p>
+            <div class="tags">
+              <span class="tag" id="profileCountry">Haiti / USA</span>
+              <span class="tag" id="profileStyle">Kompa</span>
+              <span class="tag" id="profileRank">Living Voice Identity</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="dna-stage panel" style="padding:0;">
+          <canvas id="dnaCanvas" width="1000" height="620"></canvas>
+
+          <div class="stage-overlay">
+            <div class="glass-badge">
+              <span class="label">Aura Signature</span>
+              <span class="value" id="auraSignature">Ocean Pulse</span>
+            </div>
+
+            <div class="glass-badge">
+              <span class="label">Emotional Core</span>
+              <span class="value" id="emotionalCore">Warm / Expansive</span>
+            </div>
+
+            <div class="glass-badge">
+              <span class="label">Voice Pattern</span>
+              <span class="value" id="voicePattern">Radiant Spiral</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="metrics">
+          <div class="metric">
+            <strong id="metricPower">72</strong>
+            <span>Power</span>
+          </div>
+          <div class="metric">
+            <strong id="metricWarmth">81</strong>
+            <span>Warmth</span>
+          </div>
+          <div class="metric">
+            <strong id="metricClarity">76</strong>
+            <span>Clarity</span>
+          </div>
+          <div class="metric">
+            <strong id="metricRhythm">85</strong>
+            <span>Rhythm</span>
+          </div>
+          <div class="metric">
+            <strong id="metricEmotion">88</strong>
+            <span>Emotion</span>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <div class="footer-line">
+      VoxWorld • Not just a profile. A living voice identity.
+    </div>
+  </div>
+
+  <script>
+    const canvas = document.getElementById("dnaCanvas");
+    const ctx = canvas.getContext("2d");
+
+    const generateBtn = document.getElementById("generateBtn");
+    const artistAudio = document.getElementById("artistAudio");
+    const artistPhoto = document.getElementById("artistPhoto");
+    const audioPlayer = document.getElementById("audioPlayer");
+
+    const artistNameInput = document.getElementById("artistName");
+    const artistCountryInput = document.getElementById("artistCountry");
+    const artistStyleInput = document.getElementById("artistStyle");
+    const artistStoryInput = document.getElementById("artistStory");
+
+    const previewPhoto = document.getElementById("previewPhoto");
+    const profileName = document.getElementById("profileName");
+    const profileDesc = document.getElementById("profileDesc");
+    const profileCountry = document.getElementById("profileCountry");
+    const profileStyle = document.getElementById("profileStyle");
+
+    let audioContext;
+    let analyser;
+    let sourceNode;
+    let animationFrameId;
+    let frequencyData;
+    let timeData;
+
+    const state = {
+      hueA: 200,
+      hueB: 280,
+      hueC: 330,
+      power: 72,
+      warmth: 81,
+      clarity: 76,
+      rhythm: 85,
+      emotion: 88,
+      dnaId: "VX-0000-0000",
+      primaryAura: "Celestial Blue",
+      voiceEnergy: "Balanced",
+      globalMatch: "Creative Pulse",
+      auraSignature: "Ocean Pulse",
+      emotionalCore: "Warm / Expansive",
+      voicePattern: "Radiant Spiral"
+    };
+
+    function seededHash(str) {
+      let hash = 0;
+      for (let i = 0; i < str.length; i++) {
+        hash = ((hash << 5) - hash) + str.charCodeAt(i);
+        hash |= 0;
+      }
+      return Math.abs(hash);
+    }
+
+    function randomFromSeed(seed, min, max) {
+      const x = Math.sin(seed) * 10000;
+      const frac = x - Math.floor(x);
+      return min + frac * (max - min);
+    }
+
+    function generateDNAValues() {
+      const artistSeedText =
+        artistNameInput.value +
+        artistCountryInput.value +
+        artistStyleInput.value +
+        artistStoryInput.value;
+
+      const seed = seededHash(artistSeedText || "voxworld");
+
+      state.power = Math.floor(randomFromSeed(seed + 11, 52, 97));
+      state.warmth = Math.floor(randomFromSeed(seed + 22, 45, 98));
+      state.clarity = Math.floor(randomFromSeed(seed + 33, 50, 97));
+      state.rhythm = Math.floor(randomFromSeed(seed + 44, 48, 99));
+      state.emotion = Math.floor(randomFromSeed(seed + 55, 54, 99));
+
+      state.hueA = Math.floor(randomFromSeed(seed + 66, 180, 340));
+      state.hueB = Math.floor(randomFromSeed(seed + 77, 190, 320));
+      state.hueC = Math.floor(randomFromSeed(seed + 88, 20, 80));
+
+      const auraNames = [
+        "Celestial Blue", "Solar Gold", "Neon Rose", "Royal Violet",
+        "Ocean Pulse", "Crimson Echo", "Aurora Flame", "Midnight Wave"
+      ];
+
+      const energyNames = [
+        "Magnetic", "Elevated", "Balanced", "Expansive",
+        "Radiant", "Dynamic", "Intense", "Velvet Pulse"
+      ];
+
+      const matchNames = [
+        "Creative Pulse", "Global Harmony", "Cinematic Aura",
+        "World Fusion", "Voice Prestige", "Future Rhythm"
+      ];
+
+      const emotionNames = [
+        "Warm / Expansive", "Bold / Electric", "Velvet / Soulful",
+        "Sacred / Rising", "Fresh / Magnetic", "Deep / Emotional"
+      ];
+
+      const patternNames = [
+        "Radiant Spiral", "Orbital Bloom", "Quantum Halo",
+        "Echo Ring Matrix", "Solar Constellation", "Pulse Flower"
+      ];
+
+      state.primaryAura = auraNames[seed % auraNames.length];
+      state.voiceEnergy = energyNames[(seed + 1) % energyNames.length];
+      state.globalMatch = matchNames[(seed + 2) % matchNames.length];
+      state.auraSignature = auraNames[(seed + 3) % auraNames.length];
+      state.emotionalCore = emotionNames[(seed + 4) % emotionNames.length];
+      state.voicePattern = patternNames[(seed + 5) % patternNames.length];
+
+      const part1 = String((seed % 9000) + 1000);
+      const part2 = String(((seed * 7) % 9000) + 1000);
+      state.dnaId = `VX-${part1}-${part2}`;
+
+      updateLabels();
+    }
+
+    function updateLabels() {
+      document.getElementById("dnaId").textContent = state.dnaId;
+      document.getElementById("primaryAura").textContent = state.primaryAura;
+      document.getElementById("voiceEnergy").textContent = state.voiceEnergy;
+      document.getElementById("globalMatch").textContent = state.globalMatch;
+
+      document.getElementById("auraSignature").textContent = state.auraSignature;
+      document.getElementById("emotionalCore").textContent = state.emotionalCore;
+      document.getElementById("voicePattern").textContent = state.voicePattern;
+
+      document.getElementById("metricPower").textContent = state.power;
+      document.getElementById("metricWarmth").textContent = state.warmth;
+      document.getElementById("metricClarity").textContent = state.clarity;
+      document.getElementById("metricRhythm").textContent = state.rhythm;
+      document.getElementById("metricEmotion").textContent = state.emotion;
+
+      profileName.textContent = artistNameInput.value || "Unnamed Artist";
+      profileDesc.textContent = artistStoryInput.value || "Unique voice identity.";
+      profileCountry.textContent = artistCountryInput.value || "Unknown Country";
+      profileStyle.textContent = artistStyleInput.value || "Unknown Style";
+    }
+
+    function drawBackground(w, h, t) {
+      const grad = ctx.createRadialGradient(w / 2, h / 2, 30, w / 2, h / 2, h / 1.2);
+      grad.addColorStop(0, `hsla(${state.hueA}, 80%, 58%, 0.16)`);
+      grad.addColorStop(0.5, `hsla(${state.hueB}, 80%, 50%, 0.08)`);
+      grad.addColorStop(1, `rgba(2,6,23,0.96)`);
+
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, w, h);
+
+      for (let i = 0; i < 90; i++) {
+        const x = (i * 137.5 + t * 0.008 * (i % 5 + 1)) % w;
+        const y = (i * 89.1 + t * 0.006 * (i % 7 + 1)) % h;
+        const r = (i % 3) + 0.7;
+
+        ctx.beginPath();
+        ctx.fillStyle = `hsla(${state.hueC}, 90%, 80%, ${0.08 + (i % 4) * 0.03})`;
+        ctx.arc(x, y, r, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+
+    function drawAuraRings(w, h, t, energyFactor) {
+      const cx = w / 2;
+      const cy = h / 2;
+
+      for (let layer = 0; layer < 5; layer++) {
+        ctx.beginPath();
+        const baseRadius = 85 + layer * 34;
+        const points = 220;
+
+        for (let i = 0; i <= points; i++) {
+          const angle = (Math.PI * 2 * i) / points;
+          const waveA = Math.sin(angle * (3 + layer) + t * 0.0017 * (layer + 1));
+          const waveB = Math.cos(angle * (5 + layer) - t * 0.0014 * (layer + 2));
+          const audioPulse = 12 * energyFactor * Math.sin(angle * 8 + t * 0.0024);
+          const radius = baseRadius + waveA * 14 + waveB * 10 + audioPulse;
+
+          const x = cx + Math.cos(angle) * radius;
+          const y = cy + Math.sin(angle) * radius;
+
+          if (i === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+        }
+
+        const hue = [state.hueA, state.hueB, state.hueC, state.hueA + 30, state.hueB + 20][layer] % 360;
+        ctx.strokeStyle = `hsla(${hue}, 90%, ${58 + layer * 4}%, ${0.18 + layer * 0.08})`;
+        ctx.lineWidth = 2 + layer * 0.65;
+        ctx.shadowBlur = 18 + layer * 5;
+        ctx.shadowColor = `hsla(${hue}, 90%, 60%, 0.34)`;
+        ctx.stroke();
+      }
+
+      ctx.shadowBlur = 0;
+    }
+
+    function drawDNAHelix(w, h, t, energyFactor) {
+      const cx = w / 2;
+      const cy = h / 2;
+      const helixHeight = 340;
+      const amplitude = 120 + energyFactor * 40;
+      const top = cy - helixHeight / 2;
+      const bottom = cy + helixHeight / 2;
+
+      ctx.lineWidth = 2;
+
+      for (let strand = 0; strand < 2; strand++) {
+        ctx.beginPath();
+
+        for (let i = 0; i <= 140; i++) {
+          const p = i / 140;
+          const y = top + p * (bottom - top);
+          const phase = p * Math.PI * 8 + t * 0.002 + strand * Math.PI;
+          const x = cx + Math.sin(phase) * amplitude * 0.55;
+
+          if (i === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+        }
+
+        const hue = strand === 0 ? state.hueA : state.hueB;
+        ctx.strokeStyle = `hsla(${hue}, 90%, 64%, 0.8)`;
+        ctx.shadowBlur = 16;
+        ctx.shadowColor = `hsla(${hue}, 90%, 60%, 0.45)`;
+        ctx.stroke();
+      }
+
+      for (let i = 0; i <= 24; i++) {
+        const p = i / 24;
+        const y = top + p * (bottom - top);
+        const phase = p * Math.PI * 8 + t * 0.002;
+        const x1 = cx + Math.sin(phase) * amplitude * 0.55;
+        const x2 = cx + Math.sin(phase + Math.PI) * amplitude * 0.55;
+
+        ctx.beginPath();
+        ctx.moveTo(x1, y);
+        ctx.lineTo(x2, y);
+        ctx.strokeStyle = `hsla(${state.hueC}, 95%, 70%, ${0.35 + 0.3 * Math.sin(t * 0.002 + i)})`;
+        ctx.lineWidth = 1.6;
+        ctx.stroke();
+      }
+
+      ctx.shadowBlur = 0;
+    }
+
+    function drawCoreOrb(w, h, t, energyFactor) {
+      const cx = w / 2;
+      const cy = h / 2;
+      const pulse = 1 + Math.sin(t * 0.004) * 0.05 + energyFactor * 0.12;
+      const r = 54 * pulse;
+
+      const grad = ctx.createRadialGradient(cx, cy, 8, cx, cy, r * 2.1);
+      grad.addColorStop(0, `hsla(${state.hueC}, 100%, 88%, 0.95)`);
+      grad.addColorStop(0.35, `hsla(${state.hueA}, 100%, 68%, 0.75)`);
+      grad.addColorStop(0.7, `hsla(${state.hueB}, 100%, 58%, 0.28)`);
+      grad.addColorStop(1, `hsla(${state.hueB}, 100%, 45%, 0)`);
+
+      ctx.beginPath();
+      ctx.fillStyle = grad;
+      ctx.arc(cx, cy, r * 2.1, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.beginPath();
+      ctx.fillStyle = `hsla(${state.hueA}, 95%, 78%, 0.95)`;
+      ctx.arc(cx, cy, r, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    function drawVoiceBars(w, h, avgEnergy) {
+      const bars = 64;
+      const barWidth = w / bars;
+      const bottom = h - 44;
+
+      for (let i = 0; i < bars; i++) {
+        const dataValue = frequencyData ? frequencyData[i] / 255 : avgEnergy;
+        const barHeight = 10 + dataValue * 120;
+        const hue = (state.hueA + i * 2.4) % 360;
+
+        ctx.fillStyle = `hsla(${hue}, 90%, 62%, 0.75)`;
+        ctx.fillRect(i * barWidth + 2, bottom - barHeight, barWidth - 4, barHeight);
+      }
+    }
+
+    function drawPulseDots(w, h, t, energyFactor) {
+      const cx = w / 2;
+      const cy = h / 2;
+
+      for (let i = 0; i < 24; i++) {
+        const angle = (Math.PI * 2 * i) / 24 + t * 0.00055;
+        const dist = 180 + Math.sin(t * 0.002 + i) * 16 + energyFactor * 35;
+        const x = cx + Math.cos(angle) * dist;
+        const y = cy + Math.sin(angle) * dist;
+        const r = 3 + ((i % 4) * 1.1);
+
+        ctx.beginPath();
+        ctx.fillStyle = `hsla(${(state.hueB + i * 7) % 360}, 95%, 72%, 0.88)`;
+        ctx.shadowBlur = 14;
+        ctx.shadowColor = `hsla(${(state.hueB + i * 7) % 360}, 95%, 65%, 0.45)`;
+        ctx.arc(x, y, r, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      ctx.shadowBlur = 0;
+    }
+
+    function draw(t = 0) {
+      const w = canvas.width;
+      const h = canvas.height;
+
+      let avgEnergy = 0.45;
+
+      if (analyser) {
+        analyser.getByteFrequencyData(frequencyData);
+        analyser.getByteTimeDomainData(timeData);
+
+        let sum = 0;
+        for (let i = 0; i < frequencyData.length; i++) {
+          sum += frequencyData[i];
+        }
+        avgEnergy = (sum / frequencyData.length) / 255;
+      }
+
+      ctx.clearRect(0, 0, w, h);
+
+      drawBackground(w, h, t);
+      drawAuraRings(w, h, t, avgEnergy);
+      drawDNAHelix(w, h, t, avgEnergy);
+      drawCoreOrb(w, h, t, avgEnergy);
+      drawPulseDots(w, h, t, avgEnergy);
+      drawVoiceBars(w, h, avgEnergy);
+
+      animationFrameId = requestAnimationFrame(draw);
+    }
+
+    async function setupAudioAnalysis() {
+      if (!artistAudio.files[0]) return;
+
+      if (!audioContext) {
+        audioContext = new (window.AudioContext || window.webkitAudioContext)();
+      }
+
+      if (sourceNode) {
+        sourceNode.disconnect();
+      }
+
+      analyser = audioContext.createAnalyser();
+      analyser.fftSize = 256;
+      frequencyData = new Uint8Array(analyser.frequencyBinCount);
+      timeData = new Uint8Array(analyser.frequencyBinCount);
+
+      sourceNode = audioContext.createMediaElementSource(audioPlayer);
+      sourceNode.connect(analyser);
+      analyser.connect(audioContext.destination);
+    }
+
+    artistAudio.addEventListener("change", async function () {
+      const file = this.files[0];
+      if (!file) return;
+
+      const url = URL.createObjectURL(file);
+      audioPlayer.src = url;
+      audioPlayer.load();
+
+      try {
+        await setupAudioAnalysis();
+      } catch (err) {
+        console.error("Audio analysis setup error:", err);
+      }
+    });
+
+    artistPhoto.addEventListener("change", function () {
+      const file = this.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = e => {
+        previewPhoto.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    });
+
+    generateBtn.addEventListener("click", async function () {
+      generateDNAValues();
+
+      if (audioContext && audioContext.state === "suspended") {
+        await audioContext.resume();
+      }
+
+      if (audioPlayer.src) {
+        audioPlayer.play().catch(() => {});
+      }
+    });
+
+    audioPlayer.addEventListener("play", async () => {
+      if (audioContext && audioContext.state === "suspended") {
+        await audioContext.resume();
+      }
+    });
+
+    ["input", "change"].forEach(evt => {
+      artistNameInput.addEventListener(evt, updateLabels);
+      artistCountryInput.addEventListener(evt, updateLabels);
+      artistStyleInput.addEventListener(evt, updateLabels);
+      artistStoryInput.addEventListener(evt, updateLabels);
+    });
+
+    updateLabels();
+    generateDNAValues();
+    draw();
+  </script>
+</body>
+</html>
