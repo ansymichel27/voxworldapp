@@ -1,0 +1,1070 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VoxWorld | Global Artist Galaxy</title>
+  <style>
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+    }
+
+    :root{
+      --bg:#030712;
+      --bg2:#0f172a;
+      --card:rgba(15,23,42,0.82);
+      --line:rgba(255,255,255,0.08);
+      --text:#ffffff;
+      --muted:#cbd5e1;
+      --blue:#38bdf8;
+      --green:#22c55e;
+      --red:#ef4444;
+      --gold:#facc15;
+      --purple:#8b5cf6;
+      --pink:#ec4899;
+    }
+
+    body{
+      font-family:Arial, sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(56,189,248,0.18), transparent 26%),
+        radial-gradient(circle at top right, rgba(236,72,153,0.16), transparent 25%),
+        linear-gradient(180deg, #020617 0%, #081120 45%, #020617 100%);
+      min-height:100vh;
+    }
+
+    .hero{
+      position:relative;
+      padding:90px 20px 50px;
+      overflow:hidden;
+    }
+
+    .hero::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:
+        linear-gradient(to bottom, rgba(2,6,23,0.2), rgba(2,6,23,0.92)),
+        url("https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?q=80&w=1600&auto=format&fit=crop") center/cover no-repeat;
+      opacity:0.22;
+    }
+
+    .hero-inner{
+      position:relative;
+      z-index:1;
+      max-width:1350px;
+      margin:auto;
+      display:grid;
+      grid-template-columns:1.1fr 0.9fr;
+      gap:28px;
+      align-items:center;
+    }
+
+    .hero-copy h1{
+      font-size:64px;
+      line-height:1.02;
+      margin-bottom:16px;
+      letter-spacing:-1px;
+    }
+
+    .hero-copy h1 span{
+      background:linear-gradient(90deg, var(--blue), var(--pink), var(--gold));
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+      background-clip:text;
+      color:transparent;
+    }
+
+    .hero-copy p{
+      color:var(--muted);
+      font-size:19px;
+      line-height:1.7;
+      max-width:760px;
+      margin-bottom:26px;
+    }
+
+    .hero-actions{
+      display:flex;
+      flex-wrap:wrap;
+      gap:14px;
+      margin-bottom:26px;
+    }
+
+    .btn{
+      border:none;
+      border-radius:14px;
+      padding:14px 22px;
+      font-size:15px;
+      font-weight:bold;
+      cursor:pointer;
+      transition:.25s ease;
+    }
+
+    .btn-primary{
+      background:linear-gradient(90deg, var(--blue), var(--purple));
+      color:white;
+      box-shadow:0 14px 30px rgba(56,189,248,0.22);
+    }
+
+    .btn-secondary{
+      background:rgba(255,255,255,0.07);
+      color:white;
+      border:1px solid rgba(255,255,255,0.1);
+    }
+
+    .btn:hover{
+      transform:translateY(-2px);
+      opacity:.96;
+    }
+
+    .stats-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:14px;
+    }
+
+    .stat{
+      min-width:150px;
+      padding:16px 18px;
+      border-radius:16px;
+      background:rgba(255,255,255,0.05);
+      border:1px solid var(--line);
+      backdrop-filter:blur(12px);
+    }
+
+    .stat strong{
+      display:block;
+      font-size:24px;
+      margin-bottom:6px;
+    }
+
+    .stat span{
+      color:var(--muted);
+      font-size:14px;
+    }
+
+    .spotlight-panel{
+      background:rgba(10,15,28,0.72);
+      border:1px solid var(--line);
+      border-radius:26px;
+      padding:20px;
+      backdrop-filter:blur(18px);
+      box-shadow:0 20px 50px rgba(0,0,0,0.32);
+    }
+
+    .panel-title{
+      color:var(--blue);
+      font-size:18px;
+      font-weight:bold;
+      margin-bottom:14px;
+    }
+
+    .spotlight-card{
+      position:relative;
+      overflow:hidden;
+      border-radius:22px;
+      min-height:360px;
+      background:#111827;
+    }
+
+    .spotlight-card img{
+      width:100%;
+      height:360px;
+      object-fit:cover;
+      display:block;
+    }
+
+    .spotlight-overlay{
+      position:absolute;
+      inset:0;
+      background:linear-gradient(to top, rgba(2,6,23,0.96), rgba(2,6,23,0.18));
+      display:flex;
+      flex-direction:column;
+      justify-content:flex-end;
+      padding:22px;
+    }
+
+    .world-badge{
+      display:inline-block;
+      width:fit-content;
+      background:linear-gradient(90deg, var(--gold), #f59e0b);
+      color:#111827;
+      font-size:12px;
+      font-weight:bold;
+      padding:7px 12px;
+      border-radius:999px;
+      margin-bottom:10px;
+    }
+
+    .spotlight-overlay h3{
+      font-size:30px;
+      margin-bottom:6px;
+    }
+
+    .spotlight-overlay p{
+      color:var(--muted);
+      line-height:1.6;
+      margin-bottom:14px;
+      font-size:14px;
+    }
+
+    .marquee-wrap{
+      overflow:hidden;
+      border-top:1px solid var(--line);
+      border-bottom:1px solid var(--line);
+      background:rgba(255,255,255,0.03);
+      margin:26px 0 34px;
+    }
+
+    .marquee{
+      display:flex;
+      width:max-content;
+      gap:18px;
+      padding:16px 0;
+      animation:scrollMove 26s linear infinite;
+    }
+
+    .marquee span{
+      padding:10px 18px;
+      border-radius:999px;
+      background:rgba(255,255,255,0.06);
+      border:1px solid rgba(255,255,255,0.06);
+      color:#dbeafe;
+      font-size:14px;
+    }
+
+    @keyframes scrollMove{
+      from{transform:translateX(0);}
+      to{transform:translateX(-50%);}
+    }
+
+    .main-wrap{
+      max-width:1350px;
+      margin:auto;
+      padding:0 20px 70px;
+    }
+
+    .super-grid{
+      display:grid;
+      grid-template-columns:390px 1fr;
+      gap:26px;
+      align-items:start;
+    }
+
+    .form-box{
+      position:sticky;
+      top:20px;
+      background:rgba(255,255,255,0.05);
+      border:1px solid var(--line);
+      border-radius:26px;
+      padding:22px;
+      backdrop-filter:blur(16px);
+      box-shadow:0 16px 42px rgba(0,0,0,0.24);
+    }
+
+    .form-box h2{
+      font-size:28px;
+      margin-bottom:10px;
+    }
+
+    .form-box p{
+      color:var(--muted);
+      line-height:1.6;
+      font-size:14px;
+      margin-bottom:18px;
+    }
+
+    .form-group{
+      margin-bottom:14px;
+    }
+
+    .form-group label{
+      display:block;
+      font-size:13px;
+      font-weight:bold;
+      margin-bottom:7px;
+      color:#e5e7eb;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea{
+      width:100%;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,0.08);
+      background:rgba(255,255,255,0.06);
+      color:white;
+      padding:13px 14px;
+      font-size:14px;
+      outline:none;
+    }
+
+    .form-group textarea{
+      min-height:100px;
+      resize:vertical;
+    }
+
+    .form-note{
+      margin-top:10px;
+      color:#93c5fd;
+      font-size:13px;
+      line-height:1.6;
+    }
+
+    .gallery-box{
+      min-width:0;
+    }
+
+    .filters{
+      background:rgba(255,255,255,0.04);
+      border:1px solid var(--line);
+      border-radius:24px;
+      padding:18px;
+      display:grid;
+      grid-template-columns:1.2fr 1fr 1fr;
+      gap:12px;
+      margin-bottom:20px;
+      backdrop-filter:blur(10px);
+    }
+
+    .filters input,
+    .filters select{
+      width:100%;
+      padding:14px 15px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,0.08);
+      background:rgba(255,255,255,0.06);
+      color:white;
+      outline:none;
+      font-size:14px;
+    }
+
+    .section-head{
+      display:flex;
+      justify-content:space-between;
+      align-items:end;
+      gap:15px;
+      flex-wrap:wrap;
+      margin-bottom:18px;
+    }
+
+    .section-head h2{
+      font-size:34px;
+      margin-bottom:6px;
+    }
+
+    .section-head p{
+      color:var(--muted);
+      line-height:1.6;
+      max-width:850px;
+    }
+
+    .artist-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit, minmax(285px, 1fr));
+      gap:22px;
+    }
+
+    .artist-card{
+      position:relative;
+      background:var(--card);
+      border:1px solid rgba(255,255,255,0.08);
+      border-radius:24px;
+      overflow:hidden;
+      box-shadow:0 18px 40px rgba(0,0,0,0.26);
+      transition:.3s ease;
+      backdrop-filter:blur(12px);
+    }
+
+    .artist-card:hover{
+      transform:translateY(-8px) scale(1.01);
+      border-color:rgba(56,189,248,0.34);
+      box-shadow:0 22px 48px rgba(56,189,248,0.16);
+    }
+
+    .artist-media{
+      position:relative;
+      height:290px;
+      overflow:hidden;
+    }
+
+    .artist-media img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      display:block;
+    }
+
+    .artist-chip{
+      position:absolute;
+      top:14px;
+      left:14px;
+      background:rgba(2,6,23,0.78);
+      border:1px solid rgba(255,255,255,0.12);
+      color:white;
+      padding:7px 11px;
+      border-radius:999px;
+      font-size:12px;
+      backdrop-filter:blur(8px);
+    }
+
+    .live-ring{
+      position:absolute;
+      right:14px;
+      top:14px;
+      background:rgba(34,197,94,0.95);
+      color:#04120a;
+      font-size:12px;
+      font-weight:bold;
+      padding:7px 11px;
+      border-radius:999px;
+    }
+
+    .new-burst{
+      position:absolute;
+      right:14px;
+      bottom:14px;
+      background:linear-gradient(90deg, var(--pink), var(--purple));
+      color:white;
+      font-size:12px;
+      font-weight:bold;
+      padding:9px 13px;
+      border-radius:999px;
+      box-shadow:0 10px 24px rgba(236,72,153,0.25);
+    }
+
+    .artist-content{
+      padding:20px;
+    }
+
+    .artist-top{
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      align-items:start;
+      margin-bottom:10px;
+    }
+
+    .artist-name{
+      font-size:24px;
+      margin-bottom:5px;
+    }
+
+    .artist-meta{
+      font-size:14px;
+      color:var(--muted);
+      line-height:1.5;
+    }
+
+    .rank-badge{
+      white-space:nowrap;
+      padding:8px 10px;
+      border-radius:12px;
+      background:linear-gradient(90deg, #f59e0b, #facc15);
+      color:#111827;
+      font-size:12px;
+      font-weight:bold;
+    }
+
+    .artist-bio{
+      color:#e5e7eb;
+      font-size:14px;
+      line-height:1.65;
+      margin:14px 0 15px;
+      min-height:70px;
+    }
+
+    .artist-stats{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:10px;
+      margin-bottom:15px;
+    }
+
+    .mini-stat{
+      border-radius:14px;
+      padding:12px;
+      text-align:center;
+      background:rgba(255,255,255,0.05);
+      border:1px solid rgba(255,255,255,0.06);
+    }
+
+    .mini-stat strong{
+      display:block;
+      font-size:16px;
+      margin-bottom:4px;
+    }
+
+    .mini-stat span{
+      font-size:12px;
+      color:var(--muted);
+    }
+
+    audio{
+      width:100%;
+      margin-bottom:15px;
+      border-radius:14px;
+    }
+
+    .artist-actions{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:10px;
+    }
+
+    .artist-actions button{
+      padding:11px 8px;
+      border:none;
+      border-radius:12px;
+      font-size:13px;
+      font-weight:bold;
+      cursor:pointer;
+      color:white;
+      transition:.25s ease;
+    }
+
+    .like-btn{background:var(--red);}
+    .follow-btn{background:var(--green);}
+    .collab-btn{background:var(--blue);}
+    .profile-btn{background:var(--purple);}
+
+    .artist-actions button:hover{
+      transform:scale(1.03);
+      opacity:.93;
+    }
+
+    .empty-state{
+      display:none;
+      border:1px dashed rgba(255,255,255,0.12);
+      border-radius:22px;
+      padding:28px;
+      text-align:center;
+      color:var(--muted);
+      background:rgba(255,255,255,0.03);
+    }
+
+    .cta{
+      margin-top:35px;
+      padding:34px 24px;
+      text-align:center;
+      border-radius:28px;
+      background:linear-gradient(135deg, rgba(56,189,248,0.14), rgba(139,92,246,0.16));
+      border:1px solid rgba(255,255,255,0.08);
+    }
+
+    .cta h3{
+      font-size:34px;
+      margin-bottom:12px;
+    }
+
+    .cta p{
+      color:var(--muted);
+      line-height:1.7;
+      max-width:850px;
+      margin:0 auto 20px;
+    }
+
+    .footer-note{
+      text-align:center;
+      padding:26px 20px 40px;
+      color:#94a3b8;
+      font-size:14px;
+    }
+
+    @media (max-width:1100px){
+      .hero-inner{
+        grid-template-columns:1fr;
+      }
+
+      .hero-copy h1{
+        font-size:50px;
+      }
+
+      .super-grid{
+        grid-template-columns:1fr;
+      }
+
+      .form-box{
+        position:relative;
+        top:auto;
+      }
+    }
+
+    @media (max-width:760px){
+      .hero-copy h1{
+        font-size:40px;
+      }
+
+      .filters{
+        grid-template-columns:1fr;
+      }
+
+      .artist-actions{
+        grid-template-columns:repeat(2,1fr);
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <section class="hero">
+    <div class="hero-inner">
+      <div class="hero-copy">
+        <h1>The <span>World’s Artist Galaxy</span> for Global Voices</h1>
+        <p>
+          VoxWorld is designed to go beyond a normal social feed. Artists do not get lost here.
+          They appear, shine, play, and connect instantly. Every profile can become a stage,
+          every voice can become a discovery, and every visitor can feel the future of global music.
+        </p>
+
+        <div class="hero-actions">
+          <button class="btn btn-primary" onclick="scrollToSignup()">Create Artist Profile</button>
+          <button class="btn btn-secondary" onclick="scrollToGallery()">Explore Gallery</button>
+        </div>
+
+        <div class="stats-row">
+          <div class="stat">
+            <strong>190+</strong>
+            <span>Countries Reach</span>
+          </div>
+          <div class="stat">
+            <strong>24/7</strong>
+            <span>Artist Discovery</span>
+          </div>
+          <div class="stat">
+            <strong>1 Voice</strong>
+            <span>1 Identity</span>
+          </div>
+          <div class="stat">
+            <strong>∞</strong>
+            <span>Collaboration Potential</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="spotlight-panel">
+        <div class="panel-title">Featured Global Spotlight</div>
+        <div class="spotlight-card">
+          <img id="spotlightImage" src="https://images.unsplash.com/photo-1516280440614-37939bbacd81?q=80&w=1400&auto=format&fit=crop" alt="Featured artist">
+          <div class="spotlight-overlay">
+            <span class="world-badge">WORLD FEATURED ARTIST</span>
+            <h3 id="spotlightName">Ansy Michel</h3>
+            <p id="spotlightDesc">Future Kompa, Haitian excellence, global voice innovation, and premium digital identity.</p>
+            <div class="hero-actions" style="margin-bottom:0;">
+              <button class="btn btn-primary">Play Voice</button>
+              <button class="btn btn-secondary">Follow Artist</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="marquee-wrap">
+    <div class="marquee">
+      <span>Kompa Voices</span>
+      <span>Afrobeats Creators</span>
+      <span>Global Gospel</span>
+      <span>Rap Identity</span>
+      <span>Pop Stars</span>
+      <span>Voice Licensing</span>
+      <span>Creator Matchmaking</span>
+      <span>Artist Collaborations</span>
+      <span>Premium Profiles</span>
+      <span>Music Innovation</span>
+      <span>Kompa Voices</span>
+      <span>Afrobeats Creators</span>
+      <span>Global Gospel</span>
+      <span>Rap Identity</span>
+      <span>Pop Stars</span>
+      <span>Voice Licensing</span>
+      <span>Creator Matchmaking</span>
+      <span>Artist Collaborations</span>
+      <span>Premium Profiles</span>
+      <span>Music Innovation</span>
+    </div>
+  </div>
+
+  <main class="main-wrap">
+    <div class="super-grid">
+
+      <aside class="form-box" id="signupBox">
+        <h2>Create Artist Profile</h2>
+        <p>
+          When an artist signs up here, the profile appears automatically in the gallery below.
+          This creates a living artist universe instead of a static page.
+        </p>
+
+        <form id="artistForm">
+          <div class="form-group">
+            <label for="artistName">Artist Name / Stage Name</label>
+            <input type="text" id="artistName" required placeholder="Ex: Ansy Michel">
+          </div>
+
+          <div class="form-group">
+            <label for="artistCountry">Country</label>
+            <input type="text" id="artistCountry" required placeholder="Ex: Haiti / USA">
+          </div>
+
+          <div class="form-group">
+            <label for="artistStyle">Voice Style</label>
+            <select id="artistStyle" required>
+              <option value="">Select a style</option>
+              <option value="Kompa">Kompa</option>
+              <option value="Afrobeat">Afrobeat</option>
+              <option value="Soul">Soul</option>
+              <option value="Rap">Rap</option>
+              <option value="Pop">Pop</option>
+              <option value="Gospel">Gospel</option>
+              <option value="Fusion">Fusion</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="artistBio">Artist Bio</label>
+            <textarea id="artistBio" required placeholder="Tell the world what makes this voice unique..."></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="artistImage">Profile Picture</label>
+            <input type="file" id="artistImage" accept="image/*" required>
+          </div>
+
+          <div class="form-group">
+            <label for="artistAudio">Voice Sample</label>
+            <input type="file" id="artistAudio" accept="audio/*">
+          </div>
+
+          <button class="btn btn-primary" type="submit" style="width:100%;">Publish to Gallery</button>
+          <p class="form-note">
+            Demo version: profiles are saved in this browser with localStorage.
+            Later, we can connect this to a real database so the whole world sees each artist permanently.
+          </p>
+        </form>
+      </aside>
+
+      <section class="gallery-box" id="galleryBox">
+        <div class="filters">
+          <input type="text" id="searchInput" placeholder="Search artist, country, style..." onkeyup="filterArtists()">
+          <select id="styleFilter" onchange="filterArtists()">
+            <option value="all">All Styles</option>
+            <option value="Kompa">Kompa</option>
+            <option value="Afrobeat">Afrobeat</option>
+            <option value="Soul">Soul</option>
+            <option value="Rap">Rap</option>
+            <option value="Pop">Pop</option>
+            <option value="Gospel">Gospel</option>
+            <option value="Fusion">Fusion</option>
+          </select>
+          <select id="countryFilter" onchange="filterArtists()">
+            <option value="all">All Countries</option>
+            <option value="Haiti">Haiti</option>
+            <option value="USA">USA</option>
+            <option value="France">France</option>
+            <option value="Nigeria">Nigeria</option>
+            <option value="Canada">Canada</option>
+          </select>
+        </div>
+
+        <div class="section-head">
+          <div>
+            <h2>Explore the World’s Artists</h2>
+            <p>
+              This gallery is made to feel more alive than a normal social platform:
+              more cinematic, more artistic, more immersive, and centered on voice identity.
+            </p>
+          </div>
+        </div>
+
+        <div class="artist-grid" id="artistGrid"></div>
+        <div class="empty-state" id="emptyState">No artist matches your search right now.</div>
+
+        <div class="cta">
+          <h3>Build Your Voice Identity. Be Seen Worldwide.</h3>
+          <p>
+            VoxWorld can become the premium global stage where artists are discovered faster,
+            heard faster, and remembered faster than on ordinary social feeds.
+          </p>
+          <button class="btn btn-primary" onclick="scrollToSignup()">Join VoxWorld Now</button>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <div class="footer-note">
+    VoxWorld • The Global Voice Bank for Artists
+  </div>
+
+  <script>
+    const defaultArtists = [
+      {
+        id: crypto.randomUUID(),
+        name: "Ansy Michel",
+        country: "Haiti / USA",
+        style: "Kompa",
+        bio: "A visionary global artist identity blending Haitian cultural power, innovation, and a future-facing voice universe.",
+        image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=1200&auto=format&fit=crop",
+        audio: "",
+        likes: 240,
+        followers: 5400,
+        collabs: 89,
+        rank: "Top Rising",
+        chip: "Future Kompa",
+        live: true,
+        isNew: false
+      },
+      {
+        id: crypto.randomUUID(),
+        name: "Lina Soul",
+        country: "France",
+        style: "Soul",
+        bio: "Elegant vocal color, emotional depth, and premium performance energy built for global collaborations.",
+        image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=1200&auto=format&fit=crop",
+        audio: "",
+        likes: 198,
+        followers: 3100,
+        collabs: 52,
+        rank: "Featured",
+        chip: "Soul Pop",
+        live: true,
+        isNew: false
+      },
+      {
+        id: crypto.randomUUID(),
+        name: "Maya Beat",
+        country: "Nigeria",
+        style: "Afrobeat",
+        bio: "Bright sonic identity, irresistible hooks, and global appeal for creator growth and collaboration.",
+        image: "https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?q=80&w=1200&auto=format&fit=crop",
+        audio: "",
+        likes: 412,
+        followers: 9100,
+        collabs: 140,
+        rank: "Global Hot",
+        chip: "Afrobeat Star",
+        live: true,
+        isNew: false
+      }
+    ];
+
+    let artists = loadArtists();
+
+    function loadArtists() {
+      const saved = localStorage.getItem("voxworld_artists");
+      if (saved) {
+        return JSON.parse(saved);
+      }
+      localStorage.setItem("voxworld_artists", JSON.stringify(defaultArtists));
+      return [...defaultArtists];
+    }
+
+    function saveArtists() {
+      localStorage.setItem("voxworld_artists", JSON.stringify(artists));
+    }
+
+    function scrollToSignup() {
+      document.getElementById("signupBox").scrollIntoView({ behavior: "smooth" });
+    }
+
+    function scrollToGallery() {
+      document.getElementById("galleryBox").scrollIntoView({ behavior: "smooth" });
+    }
+
+    function createArtistCard(artist) {
+      const audioBlock = artist.audio
+        ? `<audio controls><source src="${artist.audio}"></audio>`
+        : `<div style="margin-bottom:15px; padding:12px; border-radius:14px; background:rgba(255,255,255,0.04); color:#cbd5e1; font-size:13px;">Voice preview will appear here after upload.</div>`;
+
+      return `
+        <div class="artist-card"
+          data-name="${escapeHtml(artist.name)}"
+          data-style="${escapeHtml(artist.style)}"
+          data-country="${escapeHtml(artist.country)}">
+          <div class="artist-media">
+            <img src="${artist.image}" alt="${escapeHtml(artist.name)}">
+            <span class="artist-chip">${escapeHtml(artist.chip || artist.style)}</span>
+            ${artist.live ? `<span class="live-ring">LIVE</span>` : ``}
+            ${artist.isNew ? `<span class="new-burst">NEW ARTIST</span>` : ``}
+          </div>
+          <div class="artist-content">
+            <div class="artist-top">
+              <div>
+                <h3 class="artist-name">${escapeHtml(artist.name)}</h3>
+                <div class="artist-meta">${escapeHtml(artist.country)} · ${escapeHtml(artist.style)}</div>
+              </div>
+              <span class="rank-badge">${escapeHtml(artist.rank || "Rising")}</span>
+            </div>
+
+            <p class="artist-bio">${escapeHtml(artist.bio)}</p>
+
+            <div class="artist-stats">
+              <div class="mini-stat">
+                <strong class="likes-value">${artist.likes || 0}</strong>
+                <span>Likes</span>
+              </div>
+              <div class="mini-stat">
+                <strong>${formatFollowers(artist.followers || 0)}</strong>
+                <span>Followers</span>
+              </div>
+              <div class="mini-stat">
+                <strong>${artist.collabs || 0}</strong>
+                <span>Collabs</span>
+              </div>
+            </div>
+
+            ${audioBlock}
+
+            <div class="artist-actions">
+              <button class="like-btn" onclick="likeArtist(this)">Like</button>
+              <button class="follow-btn">Follow</button>
+              <button class="collab-btn">Collab</button>
+              <button class="profile-btn">Profile</button>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderArtists(list = artists) {
+      const grid = document.getElementById("artistGrid");
+      const empty = document.getElementById("emptyState");
+
+      grid.innerHTML = list.map(createArtistCard).join("");
+
+      if (list.length === 0) {
+        empty.style.display = "block";
+      } else {
+        empty.style.display = "none";
+      }
+
+      updateStats();
+      updateSpotlight();
+    }
+
+    function updateStats() {
+      const total = artists.length;
+      const countries = new Set(
+        artists.flatMap(a => a.country.split("/").map(x => x.trim()))
+      ).size;
+
+      document.querySelectorAll(".stat strong")[0].textContent = countries + "+";
+      document.querySelectorAll(".stat strong")[1].textContent = "24/7";
+      document.querySelectorAll(".stat strong")[2].textContent = total;
+      document.querySelectorAll(".stat strong")[3].textContent = "∞";
+    }
+
+    function updateSpotlight() {
+      if (!artists.length) return;
+      const latest = artists[0];
+      document.getElementById("spotlightName").textContent = latest.name;
+      document.getElementById("spotlightDesc").textContent =
+        `${latest.style} · ${latest.country} · ${latest.bio}`;
+      document.getElementById("spotlightImage").src = latest.image;
+    }
+
+    function filterArtists() {
+      const searchValue = document.getElementById("searchInput").value.toLowerCase();
+      const styleValue = document.getElementById("styleFilter").value;
+      const countryValue = document.getElementById("countryFilter").value;
+
+      const filtered = artists.filter(artist => {
+        const allText = `${artist.name} ${artist.style} ${artist.country} ${artist.bio}`.toLowerCase();
+        const matchesSearch = allText.includes(searchValue);
+        const matchesStyle = styleValue === "all" || artist.style === styleValue;
+        const matchesCountry = countryValue === "all" || artist.country.toLowerCase().includes(countryValue.toLowerCase());
+        return matchesSearch && matchesStyle && matchesCountry;
+      });
+
+      renderArtists(filtered);
+    }
+
+    function likeArtist(button) {
+      const card = button.closest(".artist-card");
+      const name = card.dataset.name;
+      const artist = artists.find(a => a.name === name);
+
+      if (!artist || button.classList.contains("liked")) return;
+
+      artist.likes += 1;
+      saveArtists();
+
+      const likeValue = card.querySelector(".likes-value");
+      likeValue.textContent = artist.likes;
+
+      button.textContent = "Liked";
+      button.classList.add("liked");
+      button.style.opacity = "0.82";
+    }
+
+    function formatFollowers(num) {
+      if (num >= 1000000) return (num / 1000000).toFixed(1) + "M";
+      if (num >= 1000) return (num / 1000).toFixed(1) + "K";
+      return String(num);
+    }
+
+    function escapeHtml(text) {
+      const div = document.createElement("div");
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    async function fileToBase64(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
+    }
+
+    document.getElementById("artistForm").addEventListener("submit", async function(e) {
+      e.preventDefault();
+
+      const name = document.getElementById("artistName").value.trim();
+      const country = document.getElementById("artistCountry").value.trim();
+      const style = document.getElementById("artistStyle").value;
+      const bio = document.getElementById("artistBio").value.trim();
+      const imageFile = document.getElementById("artistImage").files[0];
+      const audioFile = document.getElementById("artistAudio").files[0];
+
+      if (!name || !country || !style || !bio || !imageFile) {
+        alert("Please complete all required fields.");
+        return;
+      }
+
+      const imageBase64 = await fileToBase64(imageFile);
+      const audioBase64 = audioFile ? await fileToBase64(audioFile) : "";
+
+      const newArtist = {
+        id: crypto.randomUUID(),
+        name,
+        country,
+        style,
+        bio,
+        image: imageBase64,
+        audio: audioBase64,
+        likes: Math.floor(Math.random() * 60) + 10,
+        followers: Math.floor(Math.random() * 900) + 100,
+        collabs: Math.floor(Math.random() * 15) + 1,
+        rank: "New Entry",
+        chip: style + " Voice",
+        live: true,
+        isNew: true
+      };
+
+      artists.unshift(newArtist);
+      saveArtists();
+      renderArtists();
+      this.reset();
+
+      document.getElementById("galleryBox").scrollIntoView({ behavior: "smooth" });
+    });
+
+    renderArtists();
+  </script>
+</body>
+</html>
