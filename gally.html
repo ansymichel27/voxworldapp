@@ -1,0 +1,995 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VoxWorld | Global Artist Galaxy</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg: #020617;
+      --bg-soft: #0f172a;
+      --card: rgba(15, 23, 42, 0.9);
+      --line: rgba(255,255,255,0.08);
+      --text: #ffffff;
+      --muted: #cbd5e1;
+      --blue: #38bdf8;
+      --green: #22c55e;
+      --red: #ef4444;
+      --gold: #facc15;
+      --purple: #8b5cf6;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(56,189,248,0.18), transparent 30%),
+        radial-gradient(circle at top right, rgba(139,92,246,0.14), transparent 25%),
+        linear-gradient(180deg, #020617 0%, #081120 45%, #020617 100%);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .hero {
+      position: relative;
+      padding: 90px 20px 60px;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(to bottom, rgba(2,6,23,0.25), rgba(2,6,23,0.9)),
+        url("https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?q=80&w=1600&auto=format&fit=crop") center/cover no-repeat;
+      opacity: 0.25;
+      z-index: 0;
+    }
+
+    .hero-inner {
+      position: relative;
+      z-index: 1;
+      max-width: 1300px;
+      margin: auto;
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 30px;
+      align-items: center;
+    }
+
+    .hero-copy h1 {
+      font-size: 64px;
+      line-height: 1.02;
+      margin-bottom: 18px;
+      letter-spacing: -1px;
+    }
+
+    .hero-copy h1 span {
+      color: var(--blue);
+    }
+
+    .hero-copy p {
+      font-size: 19px;
+      color: var(--muted);
+      max-width: 760px;
+      line-height: 1.7;
+      margin-bottom: 28px;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-bottom: 28px;
+    }
+
+    .btn {
+      border: none;
+      border-radius: 14px;
+      padding: 14px 22px;
+      font-size: 15px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.25s ease;
+    }
+
+    .btn-primary {
+      background: linear-gradient(90deg, var(--blue), var(--purple));
+      color: white;
+      box-shadow: 0 12px 28px rgba(56,189,248,0.25);
+    }
+
+    .btn-secondary {
+      background: rgba(255,255,255,0.08);
+      color: white;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      opacity: 0.96;
+    }
+
+    .hero-stats {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .stat {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid var(--line);
+      padding: 16px 18px;
+      border-radius: 16px;
+      min-width: 150px;
+      backdrop-filter: blur(12px);
+    }
+
+    .stat strong {
+      display: block;
+      font-size: 24px;
+      color: white;
+      margin-bottom: 6px;
+    }
+
+    .stat span {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .hero-panel {
+      background: rgba(10, 15, 28, 0.75);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 24px;
+      padding: 22px;
+      backdrop-filter: blur(18px);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.35);
+    }
+
+    .panel-title {
+      font-size: 18px;
+      color: var(--blue);
+      margin-bottom: 16px;
+      font-weight: bold;
+    }
+
+    .featured-spotlight {
+      position: relative;
+      border-radius: 18px;
+      overflow: hidden;
+      min-height: 360px;
+      background: #111827;
+    }
+
+    .featured-spotlight img {
+      width: 100%;
+      height: 360px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .spotlight-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(2,6,23,0.95), rgba(2,6,23,0.18));
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 22px;
+    }
+
+    .spotlight-badge {
+      display: inline-block;
+      background: linear-gradient(90deg, var(--gold), #f59e0b);
+      color: #111827;
+      padding: 7px 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: bold;
+      margin-bottom: 10px;
+      width: fit-content;
+    }
+
+    .spotlight-overlay h3 {
+      font-size: 28px;
+      margin-bottom: 6px;
+    }
+
+    .spotlight-overlay p {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.6;
+      margin-bottom: 14px;
+    }
+
+    .spotlight-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .section-wrap {
+      max-width: 1350px;
+      margin: auto;
+      padding: 30px 20px 70px;
+    }
+
+    .filters {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      padding: 18px;
+      display: grid;
+      grid-template-columns: 1.3fr 1fr 1fr 1fr;
+      gap: 14px;
+      margin-bottom: 28px;
+      backdrop-filter: blur(10px);
+    }
+
+    .filters input,
+    .filters select {
+      width: 100%;
+      padding: 14px 16px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.06);
+      color: white;
+      font-size: 15px;
+      outline: none;
+    }
+
+    .filters input::placeholder {
+      color: #cbd5e1;
+    }
+
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+      gap: 18px;
+      margin-bottom: 22px;
+      flex-wrap: wrap;
+    }
+
+    .section-head h2 {
+      font-size: 34px;
+    }
+
+    .section-head p {
+      color: var(--muted);
+      max-width: 800px;
+      line-height: 1.6;
+    }
+
+    .artist-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(285px, 1fr));
+      gap: 24px;
+    }
+
+    .artist-card {
+      position: relative;
+      background: var(--card);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: 0 18px 40px rgba(0,0,0,0.28);
+      transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+      backdrop-filter: blur(12px);
+    }
+
+    .artist-card:hover {
+      transform: translateY(-8px);
+      border-color: rgba(56,189,248,0.35);
+      box-shadow: 0 22px 46px rgba(56,189,248,0.16);
+    }
+
+    .card-media {
+      position: relative;
+      height: 280px;
+      overflow: hidden;
+    }
+
+    .card-media img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .floating-tag {
+      position: absolute;
+      top: 14px;
+      left: 14px;
+      background: rgba(2,6,23,0.75);
+      color: white;
+      border: 1px solid rgba(255,255,255,0.1);
+      padding: 7px 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      backdrop-filter: blur(8px);
+    }
+
+    .play-chip {
+      position: absolute;
+      right: 14px;
+      bottom: 14px;
+      background: rgba(56,189,248,0.95);
+      color: #00111d;
+      border: none;
+      border-radius: 999px;
+      padding: 10px 14px;
+      font-size: 12px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .artist-content {
+      padding: 20px;
+    }
+
+    .artist-topline {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: start;
+      margin-bottom: 10px;
+    }
+
+    .artist-name {
+      font-size: 24px;
+      margin-bottom: 5px;
+    }
+
+    .artist-meta {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .rank-badge {
+      background: linear-gradient(90deg, #f59e0b, #facc15);
+      color: #111827;
+      padding: 8px 10px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: bold;
+      white-space: nowrap;
+    }
+
+    .artist-bio {
+      color: #e5e7eb;
+      font-size: 14px;
+      line-height: 1.65;
+      margin: 14px 0 16px;
+      min-height: 68px;
+    }
+
+    .artist-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .mini-stat {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 14px;
+      padding: 12px;
+      text-align: center;
+    }
+
+    .mini-stat strong {
+      display: block;
+      font-size: 16px;
+      margin-bottom: 4px;
+    }
+
+    .mini-stat span {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    audio {
+      width: 100%;
+      margin-bottom: 15px;
+      border-radius: 14px;
+    }
+
+    .artist-actions {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+    }
+
+    .artist-actions button {
+      padding: 11px 8px;
+      border: none;
+      border-radius: 12px;
+      font-size: 13px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.25s ease;
+      color: white;
+    }
+
+    .like-btn { background: var(--red); }
+    .follow-btn { background: var(--green); }
+    .collab-btn { background: var(--blue); }
+    .view-btn { background: var(--purple); }
+
+    .artist-actions button:hover {
+      transform: scale(1.03);
+      opacity: 0.92;
+    }
+
+    .marquee-wrap {
+      overflow: hidden;
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      background: rgba(255,255,255,0.03);
+      margin: 30px 0 40px;
+    }
+
+    .marquee {
+      display: flex;
+      width: max-content;
+      gap: 20px;
+      padding: 16px 0;
+      animation: move 28s linear infinite;
+    }
+
+    .marquee span {
+      padding: 10px 18px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.06);
+      font-size: 14px;
+      color: #dbeafe;
+      border: 1px solid rgba(255,255,255,0.06);
+    }
+
+    @keyframes move {
+      from { transform: translateX(0); }
+      to { transform: translateX(-50%); }
+    }
+
+    .cta-zone {
+      margin-top: 50px;
+      background: linear-gradient(135deg, rgba(56,189,248,0.13), rgba(139,92,246,0.15));
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 28px;
+      padding: 34px 24px;
+      text-align: center;
+    }
+
+    .cta-zone h3 {
+      font-size: 34px;
+      margin-bottom: 12px;
+    }
+
+    .cta-zone p {
+      color: var(--muted);
+      max-width: 850px;
+      margin: auto;
+      line-height: 1.7;
+      margin-bottom: 22px;
+    }
+
+    .footer-note {
+      text-align: center;
+      padding: 28px 20px 40px;
+      color: #94a3b8;
+      font-size: 14px;
+    }
+
+    @media (max-width: 1050px) {
+      .hero-inner {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-copy h1 {
+        font-size: 48px;
+      }
+
+      .filters {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 700px) {
+      .hero-copy h1 {
+        font-size: 38px;
+      }
+
+      .filters {
+        grid-template-columns: 1fr;
+      }
+
+      .artist-actions {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .artist-stats {
+        grid-template-columns: 1fr 1fr 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <section class="hero">
+    <div class="hero-inner">
+      <div class="hero-copy">
+        <h1>The <span>Global Artist Galaxy</span><br>for the World’s Voices</h1>
+        <p>
+          VoxWorld is not just a gallery. It is a global stage where artists,
+          singers, creators, and voice innovators are discovered instantly,
+          heard instantly, followed instantly, and connected instantly.
+          This is where voice identity becomes global opportunity.
+        </p>
+
+        <div class="hero-actions">
+          <button class="btn btn-primary">Enter the Galaxy</button>
+          <button class="btn btn-secondary">Create Artist Profile</button>
+        </div>
+
+        <div class="hero-stats">
+          <div class="stat">
+            <strong>190+</strong>
+            <span>Countries Reach</span>
+          </div>
+          <div class="stat">
+            <strong>24/7</strong>
+            <span>Global Discovery</span>
+          </div>
+          <div class="stat">
+            <strong>1 Voice</strong>
+            <span>1 Unique Identity</span>
+          </div>
+          <div class="stat">
+            <strong>∞</strong>
+            <span>Collaboration Potential</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-panel">
+        <div class="panel-title">Featured Global Spotlight</div>
+        <div class="featured-spotlight">
+          <img src="https://images.unsplash.com/photo-1516280440614-37939bbacd81?q=80&w=1400&auto=format&fit=crop" alt="Featured artist">
+          <div class="spotlight-overlay">
+            <span class="spotlight-badge">WORLD FEATURED ARTIST</span>
+            <h3>Ansy Michel</h3>
+            <p>
+              Future Kompa, global creative identity, Haitian excellence, and digital voice innovation.
+            </p>
+            <div class="spotlight-actions">
+              <button class="btn btn-primary">Play Voice</button>
+              <button class="btn btn-secondary">Follow Artist</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="marquee-wrap">
+    <div class="marquee">
+      <span>Kompa Voices</span>
+      <span>Afrobeats Creators</span>
+      <span>Global Gospel</span>
+      <span>Rap Identity</span>
+      <span>Pop Stars</span>
+      <span>Voice Licensing</span>
+      <span>Creator Matchmaking</span>
+      <span>Artist Collaborations</span>
+      <span>Premium Profiles</span>
+      <span>Music Innovation</span>
+      <span>Kompa Voices</span>
+      <span>Afrobeats Creators</span>
+      <span>Global Gospel</span>
+      <span>Rap Identity</span>
+      <span>Pop Stars</span>
+      <span>Voice Licensing</span>
+      <span>Creator Matchmaking</span>
+      <span>Artist Collaborations</span>
+      <span>Premium Profiles</span>
+      <span>Music Innovation</span>
+    </div>
+  </div>
+
+  <section class="section-wrap">
+    <div class="filters">
+      <input type="text" id="searchInput" placeholder="Search artist, country, style..." onkeyup="filterArtists()" />
+      <select id="styleFilter" onchange="filterArtists()">
+        <option value="all">All Styles</option>
+        <option value="Kompa">Kompa</option>
+        <option value="Afrobeat">Afrobeat</option>
+        <option value="Soul">Soul</option>
+        <option value="Rap">Rap</option>
+        <option value="Pop">Pop</option>
+      </select>
+      <select id="countryFilter" onchange="filterArtists()">
+        <option value="all">All Countries</option>
+        <option value="Haiti">Haiti</option>
+        <option value="USA">USA</option>
+        <option value="France">France</option>
+        <option value="Nigeria">Nigeria</option>
+        <option value="Canada">Canada</option>
+      </select>
+      <select id="sortFilter" onchange="sortArtists()">
+        <option value="popular">Sort by Popularity</option>
+        <option value="likes">Sort by Likes</option>
+        <option value="followers">Sort by Followers</option>
+        <option value="name">Sort by Name</option>
+      </select>
+    </div>
+
+    <div class="section-head">
+      <div>
+        <h2>Explore the World’s Artists</h2>
+        <p>
+          More than a feed. More than a streaming list. More than a social page.
+          This gallery is designed to help visitors discover, hear, follow, and connect
+          with artists immediately.
+        </p>
+      </div>
+    </div>
+
+    <div class="artist-grid" id="artistGrid">
+
+      <div class="artist-card" data-name="Ansy Michel" data-style="Kompa" data-country="Haiti" data-likes="240" data-followers="5400">
+        <div class="card-media">
+          <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=1200&auto=format&fit=crop" alt="Ansy Michel">
+          <span class="floating-tag">Future Kompa</span>
+          <button class="play-chip">▶ Play Preview</button>
+        </div>
+        <div class="artist-content">
+          <div class="artist-topline">
+            <div>
+              <h3 class="artist-name">Ansy Michel</h3>
+              <div class="artist-meta">Haiti / USA · Kompa / Future Voice</div>
+            </div>
+            <span class="rank-badge">Top Rising</span>
+          </div>
+          <p class="artist-bio">
+            A visionary global artist identity blending Haitian cultural energy,
+            innovation, and powerful digital voice branding for the future.
+          </p>
+          <div class="artist-stats">
+            <div class="mini-stat">
+              <strong class="likes-value">240</strong>
+              <span>Likes</span>
+            </div>
+            <div class="mini-stat">
+              <strong>5.4K</strong>
+              <span>Followers</span>
+            </div>
+            <div class="mini-stat">
+              <strong>89</strong>
+              <span>Collabs</span>
+            </div>
+          </div>
+          <audio controls>
+            <source src="sample1.mp3" type="audio/mpeg">
+          </audio>
+          <div class="artist-actions">
+            <button class="like-btn" onclick="likeArtist(this)">Like</button>
+            <button class="follow-btn">Follow</button>
+            <button class="collab-btn">Collab</button>
+            <button class="view-btn">Profile</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="artist-card" data-name="Lina Soul" data-style="Soul" data-country="France" data-likes="198" data-followers="3100">
+        <div class="card-media">
+          <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=1200&auto=format&fit=crop" alt="Lina Soul">
+          <span class="floating-tag">Soul Pop</span>
+          <button class="play-chip">▶ Play Preview</button>
+        </div>
+        <div class="artist-content">
+          <div class="artist-topline">
+            <div>
+              <h3 class="artist-name">Lina Soul</h3>
+              <div class="artist-meta">France · Soul / Pop</div>
+            </div>
+            <span class="rank-badge">Featured</span>
+          </div>
+          <p class="artist-bio">
+            Elegant vocal color, emotional delivery, and cross-border artistry for
+            premium collaborations and cinematic listening experiences.
+          </p>
+          <div class="artist-stats">
+            <div class="mini-stat">
+              <strong class="likes-value">198</strong>
+              <span>Likes</span>
+            </div>
+            <div class="mini-stat">
+              <strong>3.1K</strong>
+              <span>Followers</span>
+            </div>
+            <div class="mini-stat">
+              <strong>52</strong>
+              <span>Collabs</span>
+            </div>
+          </div>
+          <audio controls>
+            <source src="sample2.mp3" type="audio/mpeg">
+          </audio>
+          <div class="artist-actions">
+            <button class="like-btn" onclick="likeArtist(this)">Like</button>
+            <button class="follow-btn">Follow</button>
+            <button class="collab-btn">Collab</button>
+            <button class="view-btn">Profile</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="artist-card" data-name="Jay Rhythm" data-style="Rap" data-country="USA" data-likes="321" data-followers="6800">
+        <div class="card-media">
+          <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=1200&auto=format&fit=crop" alt="Jay Rhythm">
+          <span class="floating-tag">Rap Energy</span>
+          <button class="play-chip">▶ Play Preview</button>
+        </div>
+        <div class="artist-content">
+          <div class="artist-topline">
+            <div>
+              <h3 class="artist-name">Jay Rhythm</h3>
+              <div class="artist-meta">USA · Rap / Urban Voice</div>
+            </div>
+            <span class="rank-badge">Most Played</span>
+          </div>
+          <p class="artist-bio">
+            High-intensity rhythm, sharp lyrical identity, and strong urban
+            performance power built for viral discovery.
+          </p>
+          <div class="artist-stats">
+            <div class="mini-stat">
+              <strong class="likes-value">321</strong>
+              <span>Likes</span>
+            </div>
+            <div class="mini-stat">
+              <strong>6.8K</strong>
+              <span>Followers</span>
+            </div>
+            <div class="mini-stat">
+              <strong>111</strong>
+              <span>Collabs</span>
+            </div>
+          </div>
+          <audio controls>
+            <source src="sample3.mp3" type="audio/mpeg">
+          </audio>
+          <div class="artist-actions">
+            <button class="like-btn" onclick="likeArtist(this)">Like</button>
+            <button class="follow-btn">Follow</button>
+            <button class="collab-btn">Collab</button>
+            <button class="view-btn">Profile</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="artist-card" data-name="Maya Beat" data-style="Afrobeat" data-country="Nigeria" data-likes="412" data-followers="9100">
+        <div class="card-media">
+          <img src="https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?q=80&w=1200&auto=format&fit=crop" alt="Maya Beat">
+          <span class="floating-tag">Afrobeat Star</span>
+          <button class="play-chip">▶ Play Preview</button>
+        </div>
+        <div class="artist-content">
+          <div class="artist-topline">
+            <div>
+              <h3 class="artist-name">Maya Beat</h3>
+              <div class="artist-meta">Nigeria · Afrobeat / Pop</div>
+            </div>
+            <span class="rank-badge">Global Hot</span>
+          </div>
+          <p class="artist-bio">
+            Bright sonic identity, irresistible hooks, and international appeal for
+            global audience growth and creator partnerships.
+          </p>
+          <div class="artist-stats">
+            <div class="mini-stat">
+              <strong class="likes-value">412</strong>
+              <span>Likes</span>
+            </div>
+            <div class="mini-stat">
+              <strong>9.1K</strong>
+              <span>Followers</span>
+            </div>
+            <div class="mini-stat">
+              <strong>140</strong>
+              <span>Collabs</span>
+            </div>
+          </div>
+          <audio controls>
+            <source src="sample4.mp3" type="audio/mpeg">
+          </audio>
+          <div class="artist-actions">
+            <button class="like-btn" onclick="likeArtist(this)">Like</button>
+            <button class="follow-btn">Follow</button>
+            <button class="collab-btn">Collab</button>
+            <button class="view-btn">Profile</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="artist-card" data-name="Naomi Voice" data-style="Pop" data-country="Canada" data-likes="167" data-followers="2700">
+        <div class="card-media">
+          <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?q=80&w=1200&auto=format&fit=crop" alt="Naomi Voice">
+          <span class="floating-tag">Pop Glow</span>
+          <button class="play-chip">▶ Play Preview</button>
+        </div>
+        <div class="artist-content">
+          <div class="artist-topline">
+            <div>
+              <h3 class="artist-name">Naomi Voice</h3>
+              <div class="artist-meta">Canada · Pop / Soft Vocal</div>
+            </div>
+            <span class="rank-badge">New Entry</span>
+          </div>
+          <p class="artist-bio">
+            Soft modern tone with polished melodic precision, perfect for global
+            features, branded voice work, and audience retention.
+          </p>
+          <div class="artist-stats">
+            <div class="mini-stat">
+              <strong class="likes-value">167</strong>
+              <span>Likes</span>
+            </div>
+            <div class="mini-stat">
+              <strong>2.7K</strong>
+              <span>Followers</span>
+            </div>
+            <div class="mini-stat">
+              <strong>37</strong>
+              <span>Collabs</span>
+            </div>
+          </div>
+          <audio controls>
+            <source src="sample5.mp3" type="audio/mpeg">
+          </audio>
+          <div class="artist-actions">
+            <button class="like-btn" onclick="likeArtist(this)">Like</button>
+            <button class="follow-btn">Follow</button>
+            <button class="collab-btn">Collab</button>
+            <button class="view-btn">Profile</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="artist-card" data-name="Kreyol Flame" data-style="Kompa" data-country="Haiti" data-likes="289" data-followers="6200">
+        <div class="card-media">
+          <img src="https://images.unsplash.com/photo-1504593811423-6dd665756598?q=80&w=1200&auto=format&fit=crop" alt="Kreyol Flame">
+          <span class="floating-tag">Kreyol Fire</span>
+          <button class="play-chip">▶ Play Preview</button>
+        </div>
+        <div class="artist-content">
+          <div class="artist-topline">
+            <div>
+              <h3 class="artist-name">Kreyol Flame</h3>
+              <div class="artist-meta">Haiti · Kompa / Fusion</div>
+            </div>
+            <span class="rank-badge">Trending</span>
+          </div>
+          <p class="artist-bio">
+            Caribbean vibration, warm Kreyol identity, and bold rhythmic presence
+            that invites instant discovery and collaboration.
+          </p>
+          <div class="artist-stats">
+            <div class="mini-stat">
+              <strong class="likes-value">289</strong>
+              <span>Likes</span>
+            </div>
+            <div class="mini-stat">
+              <strong>6.2K</strong>
+              <span>Followers</span>
+            </div>
+            <div class="mini-stat">
+              <strong>74</strong>
+              <span>Collabs</span>
+            </div>
+          </div>
+          <audio controls>
+            <source src="sample6.mp3" type="audio/mpeg">
+          </audio>
+          <div class="artist-actions">
+            <button class="like-btn" onclick="likeArtist(this)">Like</button>
+            <button class="follow-btn">Follow</button>
+            <button class="collab-btn">Collab</button>
+            <button class="view-btn">Profile</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="cta-zone">
+      <h3>Build Your Voice Identity. Be Seen Worldwide.</h3>
+      <p>
+        VoxWorld can become the first truly global voice gallery where artists are not buried inside random feeds.
+        They are showcased, searchable, playable, followable, and ready for collaboration in one premium visual universe.
+      </p>
+      <button class="btn btn-primary">Join VoxWorld Now</button>
+    </div>
+  </section>
+
+  <div class="footer-note">
+    VoxWorld • The Global Voice Bank for Artists
+  </div>
+
+  <script>
+    function filterArtists() {
+      const searchValue = document.getElementById("searchInput").value.toLowerCase();
+      const styleValue = document.getElementById("styleFilter").value;
+      const countryValue = document.getElementById("countryFilter").value;
+      const cards = document.querySelectorAll(".artist-card");
+
+      cards.forEach(card => {
+        const name = card.dataset.name.toLowerCase();
+        const style = card.dataset.style;
+        const country = card.dataset.country;
+        const metaText = (name + " " + style + " " + country).toLowerCase();
+
+        const matchesSearch = metaText.includes(searchValue);
+        const matchesStyle = styleValue === "all" || style === styleValue;
+        const matchesCountry = countryValue === "all" || country === countryValue;
+
+        if (matchesSearch && matchesStyle && matchesCountry) {
+          card.style.display = "block";
+        } else {
+          card.style.display = "none";
+        }
+      });
+    }
+
+    function sortArtists() {
+      const grid = document.getElementById("artistGrid");
+      const sortValue = document.getElementById("sortFilter").value;
+      const cards = Array.from(grid.querySelectorAll(".artist-card"));
+
+      cards.sort((a, b) => {
+        if (sortValue === "likes" || sortValue === "popular") {
+          return parseInt(b.dataset.likes) - parseInt(a.dataset.likes);
+        }
+        if (sortValue === "followers") {
+          return parseInt(b.dataset.followers) - parseInt(a.dataset.followers);
+        }
+        if (sortValue === "name") {
+          return a.dataset.name.localeCompare(b.dataset.name);
+        }
+        return 0;
+      });
+
+      cards.forEach(card => grid.appendChild(card));
+    }
+
+    function likeArtist(button) {
+      const card = button.closest(".artist-card");
+      const likeElement = card.querySelector(".likes-value");
+      let likes = parseInt(likeElement.textContent, 10);
+
+      if (!button.classList.contains("liked")) {
+        likes += 1;
+        likeElement.textContent = likes;
+        button.textContent = "Liked";
+        button.classList.add("liked");
+        button.style.opacity = "0.8";
+      }
+    }
+  </script>
+
+</body>
+</html>
