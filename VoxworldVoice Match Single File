@@ -1,0 +1,886 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VoxWorld | Global Artist Galaxy + Vocal DNA + World Map + Voice Match</title>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    :root{
+      --bg:#020617;
+      --bg2:#081120;
+      --panel:rgba(15,23,42,.78);
+      --card:rgba(15,23,42,.88);
+      --line:rgba(255,255,255,.08);
+      --text:#fff;
+      --muted:#cbd5e1;
+      --blue:#38bdf8;
+      --purple:#8b5cf6;
+      --pink:#ec4899;
+      --green:#22c55e;
+      --gold:#facc15;
+      --red:#ef4444;
+      --orange:#f97316;
+    }
+    body{
+      font-family:Arial,sans-serif;
+      color:var(--text);
+      min-height:100vh;
+      background:
+        radial-gradient(circle at top left, rgba(56,189,248,.16), transparent 24%),
+        radial-gradient(circle at top right, rgba(236,72,153,.15), transparent 24%),
+        linear-gradient(180deg,#020617 0%,#081120 46%,#020617 100%);
+    }
+    .hero{position:relative;padding:88px 20px 54px;overflow:hidden}
+    .hero::before{
+      content:"";position:absolute;inset:0;
+      background:linear-gradient(to bottom, rgba(2,6,23,.18), rgba(2,6,23,.9)),
+      url("https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?q=80&w=1600&auto=format&fit=crop") center/cover no-repeat;
+      opacity:.22;
+    }
+    .hero-inner{position:relative;z-index:1;max-width:1380px;margin:auto;display:grid;grid-template-columns:1.1fr .9fr;gap:28px;align-items:center}
+    .hero-copy h1{font-size:62px;line-height:1.01;letter-spacing:-1px;margin-bottom:16px}
+    .hero-copy h1 span{background:linear-gradient(90deg,var(--blue),var(--purple),var(--pink),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;color:transparent}
+    .hero-copy p{color:var(--muted);font-size:19px;line-height:1.7;max-width:770px;margin-bottom:26px}
+    .hero-actions{display:flex;flex-wrap:wrap;gap:14px;margin-bottom:24px}
+    .btn{border:none;border-radius:15px;padding:14px 22px;font-size:15px;font-weight:bold;cursor:pointer;transition:.25s ease;color:white}
+    .btn-primary{background:linear-gradient(90deg,var(--blue),var(--purple));box-shadow:0 14px 30px rgba(56,189,248,.2)}
+    .btn-secondary{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1)}
+    .btn-orange{background:linear-gradient(90deg,var(--orange),var(--pink))}
+    .btn:hover{transform:translateY(-2px);opacity:.96}
+    .hero-stats{display:flex;flex-wrap:wrap;gap:14px}
+    .stat{min-width:150px;padding:16px 18px;border-radius:16px;background:rgba(255,255,255,.05);border:1px solid var(--line);backdrop-filter:blur(12px)}
+    .stat strong{display:block;font-size:24px;margin-bottom:6px}
+    .stat span{font-size:14px;color:var(--muted)}
+    .spotlight-panel{background:rgba(10,15,28,.74);border:1px solid var(--line);border-radius:28px;padding:20px;backdrop-filter:blur(18px);box-shadow:0 20px 50px rgba(0,0,0,.34)}
+    .panel-title{font-size:18px;color:var(--blue);font-weight:bold;margin-bottom:14px}
+    .spotlight-card{position:relative;overflow:hidden;border-radius:24px;min-height:390px;background:#111827}
+    .spotlight-card img{width:100%;height:390px;object-fit:cover;display:block}
+    .spotlight-overlay{position:absolute;inset:0;background:linear-gradient(to top, rgba(2,6,23,.96), rgba(2,6,23,.18));display:flex;flex-direction:column;justify-content:flex-end;padding:22px}
+    .world-badge{display:inline-block;width:fit-content;padding:7px 12px;border-radius:999px;background:linear-gradient(90deg,var(--gold),#f59e0b);color:#111827;font-size:12px;font-weight:bold;margin-bottom:10px}
+    .spotlight-overlay h3{font-size:30px;margin-bottom:6px}
+    .spotlight-overlay p{color:var(--muted);line-height:1.6;font-size:14px;margin-bottom:14px}
+    .spotlight-tags,.tag-row{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:14px}
+    .tag{padding:8px 12px;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.08);font-size:12px;color:#dbeafe}
+    .marquee-wrap{overflow:hidden;border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:rgba(255,255,255,.03);margin:26px 0 34px}
+    .marquee{display:flex;width:max-content;gap:18px;padding:16px 0;animation:scrollMove 26s linear infinite}
+    .marquee span{padding:10px 18px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.06);color:#dbeafe;font-size:14px}
+    @keyframes scrollMove{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+    .main-wrap{max-width:1380px;margin:auto;padding:0 20px 70px}
+    .layout{display:grid;grid-template-columns:400px 1fr;gap:26px;align-items:start}
+    .form-box{position:sticky;top:20px;background:rgba(255,255,255,.05);border:1px solid var(--line);border-radius:28px;padding:22px;backdrop-filter:blur(16px);box-shadow:0 16px 42px rgba(0,0,0,.25)}
+    .form-box h2{font-size:30px;margin-bottom:10px}.form-box p{color:var(--muted);line-height:1.6;font-size:14px;margin-bottom:18px}
+    .form-group{margin-bottom:14px}.form-group label{display:block;font-size:13px;font-weight:bold;margin-bottom:7px;color:#e5e7eb}
+    .form-group input,.form-group select,.form-group textarea{width:100%;border-radius:14px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.06);color:white;padding:13px 14px;font-size:14px;outline:none}
+    .form-group textarea{min-height:96px;resize:vertical}
+    .small-note{margin-top:12px;color:#93c5fd;font-size:13px;line-height:1.6}
+    .gallery-box{min-width:0}
+    .filters{background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:24px;padding:18px;display:grid;grid-template-columns:1.25fr 1fr 1fr;gap:12px;margin-bottom:20px;backdrop-filter:blur(10px)}
+    .filters input,.filters select{width:100%;padding:14px 15px;border-radius:14px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.06);color:white;outline:none;font-size:14px}
+    .section-head{display:flex;justify-content:space-between;align-items:end;gap:14px;flex-wrap:wrap;margin-bottom:18px}
+    .section-head h2{font-size:34px;margin-bottom:6px}.section-head p{color:var(--muted);line-height:1.6;max-width:850px}
+    .artist-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:22px}
+    .artist-card{position:relative;background:var(--card);border:1px solid rgba(255,255,255,.08);border-radius:24px;overflow:hidden;box-shadow:0 18px 40px rgba(0,0,0,.28);transition:.3s ease;backdrop-filter:blur(12px)}
+    .artist-card:hover{transform:translateY(-8px) scale(1.01);border-color:rgba(56,189,248,.34);box-shadow:0 22px 48px rgba(56,189,248,.16)}
+    .artist-media{position:relative;height:290px;overflow:hidden;background:#111827}.artist-media img{width:100%;height:100%;object-fit:cover;display:block}
+    .artist-chip{position:absolute;top:14px;left:14px;background:rgba(2,6,23,.78);border:1px solid rgba(255,255,255,.12);color:white;padding:7px 11px;border-radius:999px;font-size:12px;backdrop-filter:blur(8px)}
+    .dna-chip{position:absolute;right:14px;top:14px;background:linear-gradient(90deg,var(--pink),var(--purple));color:white;font-size:12px;font-weight:bold;padding:8px 11px;border-radius:999px;box-shadow:0 10px 24px rgba(236,72,153,.22)}
+    .artist-content{padding:20px}.artist-top{display:flex;justify-content:space-between;gap:10px;align-items:start;margin-bottom:10px}
+    .artist-name{font-size:24px;margin-bottom:5px}.artist-meta{font-size:14px;color:var(--muted);line-height:1.5}
+    .rank-badge{white-space:nowrap;padding:8px 10px;border-radius:12px;background:linear-gradient(90deg,#f59e0b,#facc15);color:#111827;font-size:12px;font-weight:bold}
+    .artist-bio{color:#e5e7eb;font-size:14px;line-height:1.65;margin:14px 0 15px;min-height:70px}
+    .dna-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}.dna-pill{padding:8px 10px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.06);color:#dbeafe;font-size:12px}
+    .artist-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:15px}
+    .mini-stat{border-radius:14px;padding:12px;text-align:center;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.06)}
+    .mini-stat strong{display:block;font-size:16px;margin-bottom:4px}.mini-stat span{font-size:12px;color:var(--muted)}
+    audio{width:100%;margin-bottom:15px;border-radius:14px}
+    .artist-actions{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+    .artist-actions button{padding:11px 8px;border:none;border-radius:12px;font-size:13px;font-weight:bold;cursor:pointer;color:white;transition:.25s ease}
+    .like-btn{background:var(--red)}.follow-btn{background:var(--green)}.collab-btn{background:var(--blue)}.dna-btn{background:var(--purple)}
+    .artist-actions button:hover{transform:scale(1.03);opacity:.93}
+    .empty-state{display:none;border:1px dashed rgba(255,255,255,.12);border-radius:22px;padding:28px;text-align:center;color:var(--muted);background:rgba(255,255,255,.03)}
+    .map-panel,.match-panel{margin-top:26px;background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:28px;padding:20px;backdrop-filter:blur(14px)}
+    .map-header,.match-header{display:flex;justify-content:space-between;gap:12px;align-items:end;flex-wrap:wrap;margin-bottom:16px}
+    .map-header h3,.match-header h3{font-size:30px}.map-header p,.match-header p{color:var(--muted);max-width:820px;line-height:1.6}
+    .world-map-wrap{position:relative;border-radius:24px;overflow:hidden;background:linear-gradient(180deg,rgba(255,255,255,.03),rgba(255,255,255,.015));border:1px solid rgba(255,255,255,.08);padding:12px}
+    svg.world-map{width:100%;height:auto;display:block}
+    .map-svg-bg{fill:#0a1424;stroke:rgba(255,255,255,.06);stroke-width:1}
+    .continent{fill:rgba(56,189,248,.08);stroke:rgba(148,163,184,.18);stroke-width:1.2}
+    .country-dot{cursor:pointer;transition:.2s ease}
+    .country-dot:hover{transform:scale(1.12)}
+    .map-legend{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}.legend-pill{padding:8px 12px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.06);font-size:12px;color:#dbeafe}
+    .country-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-top:18px}
+    .country-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:18px;padding:16px}
+    .country-card h4{font-size:20px;margin-bottom:6px}.country-card p{color:var(--muted);font-size:14px;line-height:1.6;margin-bottom:10px}
+    .country-card strong{font-size:22px}
+    .match-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+    .match-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:22px;padding:18px;position:relative;overflow:hidden}
+    .match-card::before{content:"";position:absolute;inset:auto -20% -40% auto;width:180px;height:180px;background:radial-gradient(circle,rgba(56,189,248,.16),transparent 65%);pointer-events:none}
+    .match-score{display:inline-block;padding:7px 10px;border-radius:999px;background:linear-gradient(90deg,var(--blue),var(--purple));font-size:12px;font-weight:bold;margin-bottom:10px}
+    .match-card h4{font-size:23px;margin-bottom:6px}.match-card p{color:var(--muted);font-size:14px;line-height:1.6;margin-bottom:12px}
+    .match-reasons{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+    .match-actions{display:flex;gap:10px;flex-wrap:wrap}.mini-btn{border:none;border-radius:12px;padding:10px 14px;font-weight:bold;cursor:pointer;color:white;background:rgba(255,255,255,.08)}.mini-btn.primary{background:linear-gradient(90deg,var(--green),var(--blue))}
+    .cta{margin-top:35px;padding:34px 24px;text-align:center;border-radius:28px;background:linear-gradient(135deg,rgba(56,189,248,.14),rgba(139,92,246,.16));border:1px solid rgba(255,255,255,.08)}
+    .cta h3{font-size:34px;margin-bottom:12px}.cta p{color:var(--muted);line-height:1.7;max-width:850px;margin:0 auto 20px}
+    .footer-note{text-align:center;padding:26px 20px 40px;color:#94a3b8;font-size:14px}
+    .modal{position:fixed;inset:0;background:rgba(2,6,23,.78);backdrop-filter:blur(10px);display:none;align-items:center;justify-content:center;padding:20px;z-index:999}
+    .modal.show{display:flex}.modal-card{width:min(1100px,100%);background:rgba(8,17,32,.96);border:1px solid rgba(255,255,255,.08);border-radius:28px;overflow:hidden;box-shadow:0 30px 70px rgba(0,0,0,.4)}
+    .modal-top{display:flex;justify-content:space-between;align-items:center;padding:18px 20px;border-bottom:1px solid rgba(255,255,255,.07)}.modal-top h3{font-size:24px}
+    .close-btn{border:none;background:rgba(255,255,255,.08);color:white;border-radius:12px;padding:10px 14px;cursor:pointer;font-weight:bold}
+    .modal-body{display:grid;grid-template-columns:340px 1fr;gap:0}.modal-side{padding:22px;border-right:1px solid rgba(255,255,255,.07);background:rgba(255,255,255,.03)}
+    .modal-photo{width:100%;height:320px;border-radius:22px;overflow:hidden;margin-bottom:16px;background:#111827}.modal-photo img{width:100%;height:100%;object-fit:cover;display:block}
+    .modal-side p{color:var(--muted);font-size:14px;line-height:1.7;margin-bottom:14px}.modal-main{padding:20px}
+    .dna-top-cards{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px}.dna-stat-card{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.07);border-radius:18px;padding:14px}
+    .dna-stat-card span{display:block;color:var(--muted);font-size:12px;margin-bottom:8px;text-transform:uppercase;letter-spacing:.06em}.dna-stat-card strong{font-size:20px}
+    .dna-canvas-wrap{position:relative;min-height:480px;overflow:hidden;border-radius:26px;background:radial-gradient(circle at center, rgba(56,189,248,.10), transparent 25%),linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.015));border:1px solid rgba(255,255,255,.08);margin-bottom:16px}
+    #dnaCanvas{width:100%;height:480px;display:block}
+    .canvas-overlay{position:absolute;top:18px;left:18px;right:18px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;pointer-events:none}
+    .glass-badge{background:rgba(2,6,23,.58);border:1px solid rgba(255,255,255,.08);border-radius:18px;padding:11px 13px;backdrop-filter:blur(12px);min-width:180px}
+    .glass-badge .label{display:block;font-size:11px;color:#cbd5e1;margin-bottom:6px;letter-spacing:.08em;text-transform:uppercase}.glass-badge .value{display:block;font-size:17px;font-weight:bold}
+    .metrics{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}.metric{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:18px;padding:14px;text-align:center}
+    .metric strong{display:block;font-size:21px;margin-bottom:6px}.metric span{color:var(--muted);font-size:12px}
+    @media (max-width:1140px){.hero-inner{grid-template-columns:1fr}.hero-copy h1{font-size:50px}.layout{grid-template-columns:1fr}.form-box{position:relative;top:auto}.modal-body{grid-template-columns:1fr}.modal-side{border-right:none;border-bottom:1px solid rgba(255,255,255,.07)}.match-grid{grid-template-columns:1fr}}
+    @media (max-width:760px){.hero-copy h1{font-size:40px}.filters{grid-template-columns:1fr}.artist-actions{grid-template-columns:repeat(2,1fr)}.dna-top-cards{grid-template-columns:repeat(2,1fr)}.metrics{grid-template-columns:repeat(2,1fr)}.country-cards{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <section class="hero">
+    <div class="hero-inner">
+      <div class="hero-copy">
+        <h1>The <span>World’s Artist Galaxy</span> with Vocal DNA</h1>
+        <p>
+          VoxWorld becomes more than a feed when every artist has a living identity, a world presence,
+          and instant AI-style collaboration proposals. This single file includes the gallery, Vocal DNA,
+          a world map, and Voice Match in one experience.
+        </p>
+        <div class="hero-actions">
+          <button class="btn btn-primary" onclick="scrollToSignup()">Create Artist Profile</button>
+          <button class="btn btn-secondary" onclick="scrollToGallery()">Explore Gallery</button>
+          <button class="btn btn-orange" onclick="scrollToMap()">Open World Map</button>
+        </div>
+        <div class="hero-stats">
+          <div class="stat"><strong id="countriesStat">190+</strong><span>Countries Reach</span></div>
+          <div class="stat"><strong>24/7</strong><span>Artist Discovery</span></div>
+          <div class="stat"><strong id="artistsStat">0</strong><span>Artists Visible</span></div>
+          <div class="stat"><strong id="matchesStat">0</strong><span>Voice Matches</span></div>
+        </div>
+      </div>
+      <div class="spotlight-panel">
+        <div class="panel-title">Featured Global Spotlight</div>
+        <div class="spotlight-card">
+          <img id="spotlightImage" src="https://images.unsplash.com/photo-1516280440614-37939bbacd81?q=80&w=1400&auto=format&fit=crop" alt="Featured artist">
+          <div class="spotlight-overlay">
+            <span class="world-badge">WORLD FEATURED ARTIST</span>
+            <h3 id="spotlightName">Ansy Michel</h3>
+            <p id="spotlightDesc">Future Kompa, Haitian excellence, global voice innovation, and premium digital identity.</p>
+            <div class="spotlight-tags">
+              <span class="tag" id="spotlightDNA">VX-0000-0000</span>
+              <span class="tag" id="spotlightAura">Celestial Blue</span>
+              <span class="tag" id="spotlightEnergy">Balanced</span>
+            </div>
+            <div class="hero-actions" style="margin-bottom:0">
+              <button class="btn btn-primary" onclick="openSpotlightDNA()">Open Vocal DNA</button>
+              <button class="btn btn-secondary" onclick="openSpotlightMatch()">Open Voice Match</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="marquee-wrap">
+    <div class="marquee">
+      <span>Vocal DNA</span><span>Living Voice Identity</span><span>World Map Discovery</span><span>Voice Match AI</span>
+      <span>Kompa Voices</span><span>Afrobeats Creators</span><span>Global Gospel</span><span>Rap Identity</span>
+      <span>Pop Stars</span><span>Creator Matchmaking</span><span>Artist Collaborations</span>
+      <span>Vocal DNA</span><span>Living Voice Identity</span><span>World Map Discovery</span><span>Voice Match AI</span>
+      <span>Kompa Voices</span><span>Afrobeats Creators</span><span>Global Gospel</span><span>Rap Identity</span>
+      <span>Pop Stars</span><span>Creator Matchmaking</span><span>Artist Collaborations</span>
+    </div>
+  </div>
+
+  <main class="main-wrap">
+    <div class="layout">
+      <aside class="form-box" id="signupBox">
+        <h2>Create Artist + Vocal DNA</h2>
+        <p>
+          Publish an artist with photo, audio, Vocal DNA identity, world visibility, and instant Voice Match suggestions.
+        </p>
+        <form id="artistForm">
+          <div class="form-group">
+            <label for="artistName">Artist Name / Stage Name</label>
+            <input type="text" id="artistName" required placeholder="Ex: Ansy Michel">
+          </div>
+          <div class="form-group">
+            <label for="artistCountry">Country</label>
+            <input type="text" id="artistCountry" required placeholder="Ex: Haiti / USA">
+          </div>
+          <div class="form-group">
+            <label for="artistStyle">Voice Style</label>
+            <select id="artistStyle" required>
+              <option value="">Select a style</option>
+              <option value="Kompa">Kompa</option>
+              <option value="Afrobeat">Afrobeat</option>
+              <option value="Soul">Soul</option>
+              <option value="Rap">Rap</option>
+              <option value="Pop">Pop</option>
+              <option value="Gospel">Gospel</option>
+              <option value="Fusion">Fusion</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="artistBio">Artist Bio / Voice Identity</label>
+            <textarea id="artistBio" required placeholder="Tell the world what makes this voice unique..."></textarea>
+          </div>
+          <div class="form-group">
+            <label for="artistImage">Profile Picture</label>
+            <input type="file" id="artistImage" accept="image/*" required>
+          </div>
+          <div class="form-group">
+            <label for="artistAudio">Voice Sample</label>
+            <input type="file" id="artistAudio" accept="audio/*">
+          </div>
+          <button class="btn btn-primary" type="submit" style="width:100%">Publish to Gallery</button>
+          <div class="small-note">
+            Demo version: everything is saved in this browser with localStorage. Later you can connect it to Supabase or Firebase.
+          </div>
+        </form>
+      </aside>
+
+      <section class="gallery-box" id="galleryBox">
+        <div class="filters">
+          <input type="text" id="searchInput" placeholder="Search artist, country, style, DNA..." onkeyup="filterArtists()">
+          <select id="styleFilter" onchange="filterArtists()">
+            <option value="all">All Styles</option>
+            <option value="Kompa">Kompa</option>
+            <option value="Afrobeat">Afrobeat</option>
+            <option value="Soul">Soul</option>
+            <option value="Rap">Rap</option>
+            <option value="Pop">Pop</option>
+            <option value="Gospel">Gospel</option>
+            <option value="Fusion">Fusion</option>
+          </select>
+          <select id="countryFilter" onchange="filterArtists()">
+            <option value="all">All Countries</option>
+            <option value="Haiti">Haiti</option>
+            <option value="USA">USA</option>
+            <option value="France">France</option>
+            <option value="Nigeria">Nigeria</option>
+            <option value="Canada">Canada</option>
+          </select>
+        </div>
+        <div class="section-head">
+          <div>
+            <h2>Explore the World’s Artists</h2>
+            <p>Every card shows photo, voice, Vocal DNA, aura, energy, and direct actions for spotlight and Voice Match.</p>
+          </div>
+        </div>
+        <div class="artist-grid" id="artistGrid"></div>
+        <div class="empty-state" id="emptyState">No artist matches your search right now.</div>
+
+        <section class="map-panel" id="worldMapSection">
+          <div class="map-header">
+            <div>
+              <h3>World Artist Map</h3>
+              <p>See where artists appear on the global stage. Click a glowing point to spotlight artists by country.</p>
+            </div>
+          </div>
+          <div class="world-map-wrap">
+            <svg class="world-map" viewBox="0 0 1000 500" aria-label="World artist map">
+              <rect class="map-svg-bg" x="0" y="0" width="1000" height="500" rx="22"></rect>
+              <path class="continent" d="M90 160 L140 120 L220 110 L290 130 L310 170 L270 210 L210 220 L180 200 L150 210 L110 190 Z"></path>
+              <path class="continent" d="M250 240 L285 230 L310 250 L300 320 L270 390 L240 370 L225 300 Z"></path>
+              <path class="continent" d="M440 130 L520 110 L610 120 L690 145 L755 155 L820 190 L805 240 L735 250 L685 225 L620 235 L565 225 L520 200 L470 205 L430 180 Z"></path>
+              <path class="continent" d="M540 250 L590 260 L620 320 L590 400 L550 415 L520 380 L510 320 Z"></path>
+              <path class="continent" d="M770 300 L840 320 L900 355 L875 390 L805 382 L760 350 Z"></path>
+              <g id="mapDots"></g>
+            </svg>
+          </div>
+          <div class="map-legend" id="mapLegend"></div>
+          <div class="country-cards" id="countryCards"></div>
+        </section>
+
+        <section class="match-panel" id="voiceMatchSection">
+          <div class="match-header">
+            <div>
+              <h3>Voice Match AI</h3>
+              <p>Selected artist gets 3 strongest collaboration proposals based on style, region, and Vocal DNA closeness.</p>
+            </div>
+            <div class="tag-row">
+              <span class="tag" id="matchForArtist">Select an artist</span>
+              <span class="tag" id="matchDNARef">DNA Reference</span>
+            </div>
+          </div>
+          <div class="match-grid" id="matchGrid"></div>
+        </section>
+
+        <div class="cta">
+          <h3>Build Your Voice Identity. Be Seen Worldwide.</h3>
+          <p>
+            VoxWorld can become the first gallery where artists are not only seen and heard, but also mapped globally and matched instantly.
+          </p>
+          <button class="btn btn-primary" onclick="scrollToSignup()">Join VoxWorld Now</button>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <div class="footer-note">VoxWorld • Not just a profile. A living voice identity.</div>
+
+  <div class="modal" id="dnaModal">
+    <div class="modal-card">
+      <div class="modal-top">
+        <h3 id="modalTitle">Vocal DNA</h3>
+        <button class="close-btn" onclick="closeDNA()">Close</button>
+      </div>
+      <div class="modal-body">
+        <div class="modal-side">
+          <div class="modal-photo"><img id="modalPhoto" src="" alt="Artist"></div>
+          <p id="modalBio"></p>
+          <div class="spotlight-tags">
+            <span class="tag" id="modalCountry"></span>
+            <span class="tag" id="modalStyle"></span>
+            <span class="tag" id="modalDNAID"></span>
+          </div>
+          <audio id="modalAudio" controls style="width:100%;margin-top:10px"></audio>
+        </div>
+        <div class="modal-main">
+          <div class="dna-top-cards">
+            <div class="dna-stat-card"><span>Vocal DNA ID</span><strong id="dnaId">VX-0000-0000</strong></div>
+            <div class="dna-stat-card"><span>Primary Aura</span><strong id="primaryAura">Celestial Blue</strong></div>
+            <div class="dna-stat-card"><span>Voice Energy</span><strong id="voiceEnergy">Balanced</strong></div>
+            <div class="dna-stat-card"><span>Global Match</span><strong id="globalMatch">Creative Pulse</strong></div>
+          </div>
+          <div class="dna-canvas-wrap">
+            <canvas id="dnaCanvas" width="900" height="480"></canvas>
+            <div class="canvas-overlay">
+              <div class="glass-badge"><span class="label">Aura Signature</span><span class="value" id="auraSignature">Ocean Pulse</span></div>
+              <div class="glass-badge"><span class="label">Emotional Core</span><span class="value" id="emotionalCore">Warm / Expansive</span></div>
+              <div class="glass-badge"><span class="label">Voice Pattern</span><span class="value" id="voicePattern">Radiant Spiral</span></div>
+            </div>
+          </div>
+          <div class="metrics">
+            <div class="metric"><strong id="metricPower">72</strong><span>Power</span></div>
+            <div class="metric"><strong id="metricWarmth">81</strong><span>Warmth</span></div>
+            <div class="metric"><strong id="metricClarity">76</strong><span>Clarity</span></div>
+            <div class="metric"><strong id="metricRhythm">85</strong><span>Rhythm</span></div>
+            <div class="metric"><strong id="metricEmotion">88</strong><span>Emotion</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const COUNTRY_COORDS = {
+      "Haiti": { x: 260, y: 196 },
+      "USA": { x: 210, y: 160 },
+      "France": { x: 495, y: 150 },
+      "Nigeria": { x: 545, y: 282 },
+      "Canada": { x: 205, y: 118 },
+      "Brazil": { x: 305, y: 318 },
+      "UK": { x: 475, y: 142 },
+      "Spain": { x: 480, y: 165 },
+      "Germany": { x: 515, y: 150 },
+      "Jamaica": { x: 245, y: 194 },
+      "Dominican Republic": { x: 270, y: 194 },
+      "Mexico": { x: 180, y: 185 },
+      "South Africa": { x: 565, y: 382 },
+      "Japan": { x: 845, y: 192 },
+      "Australia": { x: 830, y: 360 }
+    };
+
+    function seededHash(str) {
+      let hash = 0;
+      for (let i = 0; i < str.length; i++) {
+        hash = ((hash << 5) - hash) + str.charCodeAt(i);
+        hash |= 0;
+      }
+      return Math.abs(hash);
+    }
+    function randomFromSeed(seed, min, max) {
+      const x = Math.sin(seed) * 10000;
+      const frac = x - Math.floor(x);
+      return min + frac * (max - min);
+    }
+    function generateVocalDNA(name, country, style, bio) {
+      const seed = seededHash(`${name}|${country}|${style}|${bio}`);
+      const auraNames = ["Celestial Blue", "Solar Gold", "Neon Rose", "Royal Violet", "Ocean Pulse", "Crimson Echo", "Aurora Flame", "Midnight Wave"];
+      const energyNames = ["Magnetic", "Elevated", "Balanced", "Expansive", "Radiant", "Dynamic", "Intense", "Velvet Pulse"];
+      const matchNames = ["Creative Pulse", "Global Harmony", "Cinematic Aura", "World Fusion", "Voice Prestige", "Future Rhythm"];
+      const emotionNames = ["Warm / Expansive", "Bold / Electric", "Velvet / Soulful", "Sacred / Rising", "Fresh / Magnetic", "Deep / Emotional"];
+      const patternNames = ["Radiant Spiral", "Orbital Bloom", "Quantum Halo", "Echo Ring Matrix", "Solar Constellation", "Pulse Flower"];
+      return {
+        dnaId: `VX-${String((seed % 9000) + 1000)}-${String(((seed * 7) % 9000) + 1000)}`,
+        primaryAura: auraNames[seed % auraNames.length],
+        voiceEnergy: energyNames[(seed + 1) % energyNames.length],
+        globalMatch: matchNames[(seed + 2) % matchNames.length],
+        auraSignature: auraNames[(seed + 3) % auraNames.length],
+        emotionalCore: emotionNames[(seed + 4) % emotionNames.length],
+        voicePattern: patternNames[(seed + 5) % patternNames.length],
+        power: Math.floor(randomFromSeed(seed + 11, 52, 97)),
+        warmth: Math.floor(randomFromSeed(seed + 22, 45, 98)),
+        clarity: Math.floor(randomFromSeed(seed + 33, 50, 97)),
+        rhythm: Math.floor(randomFromSeed(seed + 44, 48, 99)),
+        emotion: Math.floor(randomFromSeed(seed + 55, 54, 99)),
+        hueA: Math.floor(randomFromSeed(seed + 66, 180, 340)),
+        hueB: Math.floor(randomFromSeed(seed + 77, 190, 320)),
+        hueC: Math.floor(randomFromSeed(seed + 88, 20, 80))
+      };
+    }
+
+    const defaultArtists = [
+      {
+        id: crypto.randomUUID(), name: "Ansy Michel", country: "Haiti / USA", style: "Kompa",
+        bio: "A visionary global artist identity blending Haitian cultural power, innovation, and a future-facing voice universe.",
+        image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=1200&auto=format&fit=crop",
+        audio: "", likes: 240, followers: 5400, collabs: 89, rank: "Top Rising"
+      },
+      {
+        id: crypto.randomUUID(), name: "Lina Soul", country: "France", style: "Soul",
+        bio: "Elegant vocal color, emotional depth, and premium performance energy built for global collaborations.",
+        image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=1200&auto=format&fit=crop",
+        audio: "", likes: 198, followers: 3100, collabs: 52, rank: "Featured"
+      },
+      {
+        id: crypto.randomUUID(), name: "Maya Beat", country: "Nigeria", style: "Afrobeat",
+        bio: "Bright sonic identity, irresistible hooks, and global appeal for creator growth and collaboration.",
+        image: "https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?q=80&w=1200&auto=format&fit=crop",
+        audio: "", likes: 412, followers: 9100, collabs: 140, rank: "Global Hot"
+      }
+    ].map(a => ({ ...a, dna: generateVocalDNA(a.name, a.country, a.style, a.bio) }));
+
+    let artists = loadArtists();
+    let spotlightArtist = artists[0] || null;
+    let currentDNAArtist = null;
+    let selectedMatchArtist = artists[0] || null;
+
+    function loadArtists() {
+      const saved = localStorage.getItem("voxworld_artists_dna_map_match");
+      if (saved) return JSON.parse(saved);
+      localStorage.setItem("voxworld_artists_dna_map_match", JSON.stringify(defaultArtists));
+      return [...defaultArtists];
+    }
+    function saveArtists() {
+      localStorage.setItem("voxworld_artists_dna_map_match", JSON.stringify(artists));
+    }
+    function scrollToSignup() { document.getElementById("signupBox").scrollIntoView({ behavior: "smooth" }); }
+    function scrollToGallery() { document.getElementById("galleryBox").scrollIntoView({ behavior: "smooth" }); }
+    function scrollToMap() { document.getElementById("worldMapSection").scrollIntoView({ behavior: "smooth" }); }
+    function formatFollowers(num) { if (num >= 1000000) return (num / 1000000).toFixed(1) + "M"; if (num >= 1000) return (num / 1000).toFixed(1) + "K"; return String(num); }
+    function escapeHtml(text) { const div = document.createElement("div"); div.textContent = text; return div.innerHTML; }
+
+    function createArtistCard(artist) {
+      const audioBlock = artist.audio
+        ? `<audio controls><source src="${artist.audio}"></audio>`
+        : `<div style="margin-bottom:15px;padding:12px;border-radius:14px;background:rgba(255,255,255,.04);color:#cbd5e1;font-size:13px;">Voice preview will appear here after upload.</div>`;
+      return `
+        <div class="artist-card" data-id="${artist.id}" data-name="${escapeHtml(artist.name)}" data-style="${escapeHtml(artist.style)}" data-country="${escapeHtml(artist.country)}" data-dna="${escapeHtml(artist.dna.dnaId)}">
+          <div class="artist-media">
+            <img src="${artist.image}" alt="${escapeHtml(artist.name)}">
+            <span class="artist-chip">${escapeHtml(artist.style)} Voice</span>
+            <span class="dna-chip">${escapeHtml(artist.dna.dnaId)}</span>
+          </div>
+          <div class="artist-content">
+            <div class="artist-top">
+              <div>
+                <h3 class="artist-name">${escapeHtml(artist.name)}</h3>
+                <div class="artist-meta">${escapeHtml(artist.country)} · ${escapeHtml(artist.style)}</div>
+              </div>
+              <span class="rank-badge">${escapeHtml(artist.rank || "Rising")}</span>
+            </div>
+            <p class="artist-bio">${escapeHtml(artist.bio)}</p>
+            <div class="dna-row">
+              <span class="dna-pill">${escapeHtml(artist.dna.primaryAura)}</span>
+              <span class="dna-pill">${escapeHtml(artist.dna.voiceEnergy)}</span>
+              <span class="dna-pill">${escapeHtml(artist.dna.voicePattern)}</span>
+            </div>
+            <div class="artist-stats">
+              <div class="mini-stat"><strong class="likes-value">${artist.likes || 0}</strong><span>Likes</span></div>
+              <div class="mini-stat"><strong>${formatFollowers(artist.followers || 0)}</strong><span>Followers</span></div>
+              <div class="mini-stat"><strong>${artist.collabs || 0}</strong><span>Collabs</span></div>
+            </div>
+            ${audioBlock}
+            <div class="artist-actions">
+              <button class="like-btn" onclick="likeArtist('${artist.id}', this)">Like</button>
+              <button class="follow-btn" onclick="setMatchArtist('${artist.id}')">Match</button>
+              <button class="collab-btn" onclick="setSpotlight('${artist.id}')">Spotlight</button>
+              <button class="dna-btn" onclick="openDNA('${artist.id}')">Vocal DNA</button>
+            </div>
+          </div>
+        </div>`;
+    }
+
+    function renderArtists(list = artists) {
+      const grid = document.getElementById("artistGrid");
+      const empty = document.getElementById("emptyState");
+      grid.innerHTML = list.map(createArtistCard).join("");
+      empty.style.display = list.length ? "none" : "block";
+      updateStats();
+      updateSpotlight();
+      renderMap();
+      if (!selectedMatchArtist && artists.length) selectedMatchArtist = artists[0];
+      renderVoiceMatches(selectedMatchArtist);
+    }
+
+    function updateStats() {
+      const countries = new Set(artists.flatMap(a => a.country.split("/").map(x => x.trim()))).size;
+      document.getElementById("countriesStat").textContent = countries + "+";
+      document.getElementById("artistsStat").textContent = artists.length;
+      document.getElementById("matchesStat").textContent = Math.max(artists.length - 1, 0) * 3;
+    }
+
+    function updateSpotlight() {
+      if (!spotlightArtist && artists.length) spotlightArtist = artists[0];
+      if (!spotlightArtist) return;
+      document.getElementById("spotlightImage").src = spotlightArtist.image;
+      document.getElementById("spotlightName").textContent = spotlightArtist.name;
+      document.getElementById("spotlightDesc").textContent = `${spotlightArtist.style} · ${spotlightArtist.country} · ${spotlightArtist.bio}`;
+      document.getElementById("spotlightDNA").textContent = spotlightArtist.dna.dnaId;
+      document.getElementById("spotlightAura").textContent = spotlightArtist.dna.primaryAura;
+      document.getElementById("spotlightEnergy").textContent = spotlightArtist.dna.voiceEnergy;
+    }
+    function setSpotlight(id) {
+      const artist = artists.find(a => a.id === id);
+      if (!artist) return;
+      spotlightArtist = artist;
+      updateSpotlight();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+    function openSpotlightDNA() { if (spotlightArtist) openDNA(spotlightArtist.id); }
+    function openSpotlightMatch() { if (spotlightArtist) { setMatchArtist(spotlightArtist.id); scrollToMap(); } }
+
+    function filterArtists() {
+      const searchValue = document.getElementById("searchInput").value.toLowerCase();
+      const styleValue = document.getElementById("styleFilter").value;
+      const countryValue = document.getElementById("countryFilter").value;
+      const filtered = artists.filter(artist => {
+        const allText = `${artist.name} ${artist.style} ${artist.country} ${artist.bio} ${artist.dna.dnaId} ${artist.dna.primaryAura} ${artist.dna.voiceEnergy}`.toLowerCase();
+        const matchesSearch = allText.includes(searchValue);
+        const matchesStyle = styleValue === "all" || artist.style === styleValue;
+        const matchesCountry = countryValue === "all" || artist.country.toLowerCase().includes(countryValue.toLowerCase());
+        return matchesSearch && matchesStyle && matchesCountry;
+      });
+      renderArtists(filtered);
+    }
+
+    function likeArtist(id, button) {
+      const artist = artists.find(a => a.id === id);
+      if (!artist || button.classList.contains("liked")) return;
+      artist.likes += 1;
+      saveArtists();
+      const likeValue = button.closest(".artist-card").querySelector(".likes-value");
+      likeValue.textContent = artist.likes;
+      button.textContent = "Liked";
+      button.classList.add("liked");
+      button.style.opacity = "0.82";
+    }
+
+    async function fileToBase64(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
+    }
+
+    document.getElementById("artistForm").addEventListener("submit", async function(e) {
+      e.preventDefault();
+      const name = document.getElementById("artistName").value.trim();
+      const country = document.getElementById("artistCountry").value.trim();
+      const style = document.getElementById("artistStyle").value;
+      const bio = document.getElementById("artistBio").value.trim();
+      const imageFile = document.getElementById("artistImage").files[0];
+      const audioFile = document.getElementById("artistAudio").files[0];
+      if (!name || !country || !style || !bio || !imageFile) {
+        alert("Please complete all required fields.");
+        return;
+      }
+      const imageBase64 = await fileToBase64(imageFile);
+      const audioBase64 = audioFile ? await fileToBase64(audioFile) : "";
+      const dna = generateVocalDNA(name, country, style, bio);
+      const newArtist = {
+        id: crypto.randomUUID(), name, country, style, bio, image: imageBase64, audio: audioBase64,
+        likes: Math.floor(Math.random() * 60) + 10,
+        followers: Math.floor(Math.random() * 900) + 100,
+        collabs: Math.floor(Math.random() * 15) + 1,
+        rank: "New Entry", dna
+      };
+      artists.unshift(newArtist);
+      spotlightArtist = newArtist;
+      selectedMatchArtist = newArtist;
+      saveArtists();
+      renderArtists();
+      this.reset();
+      document.getElementById("galleryBox").scrollIntoView({ behavior: "smooth" });
+    });
+
+    function normalizeCountry(country) {
+      const first = country.split("/")[0].trim();
+      if (COUNTRY_COORDS[first]) return first;
+      const found = Object.keys(COUNTRY_COORDS).find(k => country.toLowerCase().includes(k.toLowerCase()));
+      return found || null;
+    }
+
+    function renderMap() {
+      const mapDots = document.getElementById("mapDots");
+      const mapLegend = document.getElementById("mapLegend");
+      const countryCards = document.getElementById("countryCards");
+      const grouped = {};
+      artists.forEach(artist => {
+        const normalized = normalizeCountry(artist.country);
+        if (!normalized) return;
+        if (!grouped[normalized]) grouped[normalized] = [];
+        grouped[normalized].push(artist);
+      });
+      mapDots.innerHTML = "";
+      mapLegend.innerHTML = "";
+      countryCards.innerHTML = "";
+      Object.entries(grouped).forEach(([country, list]) => {
+        const coord = COUNTRY_COORDS[country];
+        if (!coord) return;
+        const r = 8 + Math.min(list.length * 2, 12);
+        const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+        circle.setAttribute("cx", coord.x);
+        circle.setAttribute("cy", coord.y);
+        circle.setAttribute("r", r);
+        circle.setAttribute("fill", "rgba(56,189,248,.85)");
+        circle.setAttribute("stroke", "rgba(255,255,255,.85)");
+        circle.setAttribute("stroke-width", "2");
+        circle.setAttribute("class", "country-dot");
+        circle.addEventListener("click", () => selectCountry(country));
+        mapDots.appendChild(circle);
+
+        const glow = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+        glow.setAttribute("cx", coord.x);
+        glow.setAttribute("cy", coord.y);
+        glow.setAttribute("r", r + 10);
+        glow.setAttribute("fill", "rgba(56,189,248,.12)");
+        mapDots.appendChild(glow);
+
+        const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+        text.setAttribute("x", coord.x + 12);
+        text.setAttribute("y", coord.y - 12);
+        text.setAttribute("fill", "#dbeafe");
+        text.setAttribute("font-size", "12");
+        text.textContent = country;
+        mapDots.appendChild(text);
+
+        mapLegend.innerHTML += `<span class="legend-pill">${country} • ${list.length} artist${list.length > 1 ? 's' : ''}</span>`;
+        countryCards.innerHTML += `
+          <div class="country-card">
+            <h4>${country}</h4>
+            <p>${list.map(a => a.name).join(", ")}</p>
+            <strong>${list.length}</strong>
+          </div>`;
+      });
+    }
+
+    function selectCountry(country) {
+      const countryArtists = artists.filter(a => normalizeCountry(a.country) === country);
+      if (countryArtists.length) {
+        setSpotlight(countryArtists[0].id);
+        setMatchArtist(countryArtists[0].id);
+      }
+    }
+
+    function similarityScore(a, b) {
+      let score = 45;
+      if (a.style === b.style) score += 22;
+      if (normalizeCountry(a.country) === normalizeCountry(b.country)) score += 12;
+      const dnaA = a.dna, dnaB = b.dna;
+      const closeness = 100 - (
+        Math.abs(dnaA.power - dnaB.power) +
+        Math.abs(dnaA.warmth - dnaB.warmth) +
+        Math.abs(dnaA.clarity - dnaB.clarity) +
+        Math.abs(dnaA.rhythm - dnaB.rhythm) +
+        Math.abs(dnaA.emotion - dnaB.emotion)
+      ) / 5;
+      score += Math.round(closeness * 0.28);
+      return Math.min(score, 99);
+    }
+
+    function matchReasons(a, b) {
+      const reasons = [];
+      if (a.style === b.style) reasons.push(`Shared ${a.style} energy`);
+      else reasons.push(`${a.style} x ${b.style} fusion`);
+      if (normalizeCountry(a.country) === normalizeCountry(b.country)) reasons.push("Regional connection");
+      else reasons.push("Cross-border discovery");
+      if (Math.abs(a.dna.rhythm - b.dna.rhythm) < 12) reasons.push("Rhythm alignment");
+      if (Math.abs(a.dna.emotion - b.dna.emotion) < 12) reasons.push("Emotional closeness");
+      if (reasons.length < 3) reasons.push("Strong Vocal DNA contrast");
+      return reasons.slice(0, 3);
+    }
+
+    function renderVoiceMatches(baseArtist) {
+      const matchGrid = document.getElementById("matchGrid");
+      if (!baseArtist) {
+        matchGrid.innerHTML = `<div class="empty-state" style="display:block">Select an artist to see matches.</div>`;
+        document.getElementById("matchForArtist").textContent = "Select an artist";
+        document.getElementById("matchDNARef").textContent = "DNA Reference";
+        return;
+      }
+      document.getElementById("matchForArtist").textContent = `Matching for ${baseArtist.name}`;
+      document.getElementById("matchDNARef").textContent = baseArtist.dna.dnaId;
+      const matches = artists
+        .filter(a => a.id !== baseArtist.id)
+        .map(other => ({ artist: other, score: similarityScore(baseArtist, other), reasons: matchReasons(baseArtist, other) }))
+        .sort((x, y) => y.score - x.score)
+        .slice(0, 3);
+      if (!matches.length) {
+        matchGrid.innerHTML = `<div class="empty-state" style="display:block">Add more artists to generate Voice Match proposals.</div>`;
+        return;
+      }
+      matchGrid.innerHTML = matches.map(match => `
+        <div class="match-card">
+          <span class="match-score">${match.score}% match</span>
+          <h4>${escapeHtml(match.artist.name)}</h4>
+          <p>${escapeHtml(match.artist.country)} · ${escapeHtml(match.artist.style)} · ${escapeHtml(match.artist.dna.primaryAura)}</p>
+          <div class="match-reasons">
+            ${match.reasons.map(r => `<span class="dna-pill">${escapeHtml(r)}</span>`).join("")}
+          </div>
+          <div class="match-actions">
+            <button class="mini-btn primary" onclick="setSpotlight('${match.artist.id}')">Spotlight</button>
+            <button class="mini-btn" onclick="openDNA('${match.artist.id}')">DNA</button>
+          </div>
+        </div>`).join("");
+    }
+
+    function setMatchArtist(id) {
+      const artist = artists.find(a => a.id === id);
+      if (!artist) return;
+      selectedMatchArtist = artist;
+      renderVoiceMatches(artist);
+      document.getElementById("voiceMatchSection").scrollIntoView({ behavior: "smooth" });
+    }
+
+    const dnaModal = document.getElementById("dnaModal");
+    const canvas = document.getElementById("dnaCanvas");
+    const ctx = canvas.getContext("2d");
+    let animationFrameId = null;
+
+    function openDNA(id) {
+      const artist = artists.find(a => a.id === id);
+      if (!artist) return;
+      currentDNAArtist = artist;
+      document.getElementById("modalTitle").textContent = `${artist.name} • Vocal DNA`;
+      document.getElementById("modalPhoto").src = artist.image;
+      document.getElementById("modalBio").textContent = artist.bio;
+      document.getElementById("modalCountry").textContent = artist.country;
+      document.getElementById("modalStyle").textContent = artist.style;
+      document.getElementById("modalDNAID").textContent = artist.dna.dnaId;
+      document.getElementById("dnaId").textContent = artist.dna.dnaId;
+      document.getElementById("primaryAura").textContent = artist.dna.primaryAura;
+      document.getElementById("voiceEnergy").textContent = artist.dna.voiceEnergy;
+      document.getElementById("globalMatch").textContent = artist.dna.globalMatch;
+      document.getElementById("auraSignature").textContent = artist.dna.auraSignature;
+      document.getElementById("emotionalCore").textContent = artist.dna.emotionalCore;
+      document.getElementById("voicePattern").textContent = artist.dna.voicePattern;
+      document.getElementById("metricPower").textContent = artist.dna.power;
+      document.getElementById("metricWarmth").textContent = artist.dna.warmth;
+      document.getElementById("metricClarity").textContent = artist.dna.clarity;
+      document.getElementById("metricRhythm").textContent = artist.dna.rhythm;
+      document.getElementById("metricEmotion").textContent = artist.dna.emotion;
+      const modalAudio = document.getElementById("modalAudio");
+      if (artist.audio) { modalAudio.src = artist.audio; modalAudio.style.display = "block"; }
+      else { modalAudio.removeAttribute("src"); modalAudio.style.display = "none"; }
+      dnaModal.classList.add("show");
+      startDNARender();
+    }
+    function closeDNA() { dnaModal.classList.remove("show"); if (animationFrameId) cancelAnimationFrame(animationFrameId); }
+    dnaModal.addEventListener("click", function(e) { if (e.target === dnaModal) closeDNA(); });
+
+    function drawBackground(w, h, t, dna) {
+      const grad = ctx.createRadialGradient(w / 2, h / 2, 30, w / 2, h / 2, h / 1.2);
+      grad.addColorStop(0, `hsla(${dna.hueA}, 80%, 58%, 0.16)`);
+      grad.addColorStop(0.5, `hsla(${dna.hueB}, 80%, 50%, 0.08)`);
+      grad.addColorStop(1, `rgba(2,6,23,0.96)`);
+      ctx.fillStyle = grad; ctx.fillRect(0, 0, w, h);
+      for (let i = 0; i < 90; i++) {
+        const x = (i * 137.5 + t * 0.008 * (i % 5 + 1)) % w;
+        const y = (i * 89.1 + t * 0.006 * (i % 7 + 1)) % h;
+        const r = (i % 3) + 0.7;
+        ctx.beginPath(); ctx.fillStyle = `hsla(${dna.hueC}, 90%, 80%, ${0.08 + (i % 4) * 0.03})`; ctx.arc(x, y, r, 0, Math.PI * 2); ctx.fill();
+      }
+    }
+    function drawAuraRings(w, h, t, dna) {
+      const cx = w / 2, cy = h / 2, energyFactor = dna.rhythm / 100;
+      for (let layer = 0; layer < 5; layer++) {
+        ctx.beginPath(); const baseRadius = 85 + layer * 28, points = 220;
+        for (let i = 0; i <= points; i++) {
+          const angle = (Math.PI * 2 * i) / points;
+          const waveA = Math.sin(angle * (3 + layer) + t * 0.0017 * (layer + 1));
+          const waveB = Math.cos(angle * (5 + layer) - t * 0.0014 * (layer + 2));
+          const pulse = 12 * energyFactor * Math.sin(angle * 8 + t * 0.0024);
+          const radius = baseRadius + waveA * 14 + waveB * 10 + pulse;
+          const x = cx + Math.cos(angle) * radius, y = cy + Math.sin(angle) * radius;
+          if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+        }
+        const hue = [dna.hueA, dna.hueB, dna.hueC, dna.hueA + 30, dna.hueB + 20][layer] % 360;
+        ctx.strokeStyle = `hsla(${hue}, 90%, ${58 + layer * 4}%, ${0.18 + layer * 0.08})`;
+        ctx.lineWidth = 2 + layer * 0.6; ctx.shadowBlur = 18 + layer * 5; ctx.shadowColor = `hsla(${hue}, 90%, 60%, 0.34)`; ctx.stroke();
+      }
+      ctx.shadowBlur = 0;
+    }
+    function drawDNAHelix(w, h, t, dna) {
+      const cx = w / 2, cy = h / 2, helixHeight = 270, amplitude = 120 + (dna.power / 100) * 45;
+      const top = cy - helixHeight / 2, bottom = cy + helixHeight / 2; ctx.lineWidth = 2;
+      for (let strand = 0; strand < 2; strand++) {
+        ctx.beginPath();
+        for (let i = 0; i <= 140; i++) {
+          const p = i / 140, y = top + p * (bottom - top), phase = p * Math.PI * 8 + t * 0.002 + strand * Math.PI, x = cx + Math.sin(phase) * amplitude * 0.55;
+          if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+        }
+        const hue = strand === 0 ? dna.hueA : dna.hueB;
+        ctx.strokeStyle = `hsla(${hue}, 90%, 64%, 0.8)`; ctx.shadowBlur = 16; ctx.shadowColor = `hsla(${hue}, 90%, 60%, 0.45)`; ctx.stroke();
+      }
+      for (let i = 0; i <= 24; i++) {
+        const p = i / 24, y = top + p * (bottom - top), phase = p * Math.PI * 8 + t * 0.002;
+        const x1 = cx + Math.sin(phase) * amplitude * 0.55, x2 = cx + Math.sin(phase + Math.PI) * amplitude * 0.55;
+        ctx.beginPath(); ctx.moveTo(x1, y); ctx.lineTo(x2, y); ctx.strokeStyle = `hsla(${dna.hueC}, 95%, 70%, ${0.35 + 0.3 * Math.sin(t * 0.002 + i)})`; ctx.lineWidth = 1.6; ctx.stroke();
+      }
+      ctx.shadowBlur = 0;
+    }
+    function drawCoreOrb(w, h, t, dna) {
+      const cx = w / 2, cy = h / 2, pulse = 1 + Math.sin(t * 0.004) * 0.05 + (dna.emotion / 100) * 0.12, r = 46 * pulse;
+      const grad = ctx.createRadialGradient(cx, cy, 8, cx, cy, r * 2.1);
+      grad.addColorStop(0, `hsla(${dna.hueC}, 100%, 88%, 0.95)`);
+      grad.addColorStop(0.35, `hsla(${dna.hueA}, 100%, 68%, 0.75)`);
+      grad.addColorStop(0.7, `hsla(${dna.hueB}, 100%, 58%, 0.28)`);
+      grad.addColorStop(1, `hsla(${dna.hueB}, 100%, 45%, 0)`);
+      ctx.beginPath(); ctx.fillStyle = grad; ctx.arc(cx, cy, r * 2.1, 0, Math.PI * 2); ctx.fill();
+      ctx.beginPath(); ctx.fillStyle = `hsla(${dna.hueA}, 95%, 78%, 0.95)`; ctx.arc(cx, cy, r, 0, Math.PI * 2); ctx.fill();
+    }
+    function drawPulseDots(w, h, t, dna) {
+      const cx = w / 2, cy = h / 2;
+      for (let i = 0; i < 24; i++) {
+        const angle = (Math.PI * 2 * i) / 24 + t * 0.00055;
+        const dist = 165 + Math.sin(t * 0.002 + i) * 16 + (dna.clarity / 100) * 30;
+        const x = cx + Math.cos(angle) * dist, y = cy + Math.sin(angle) * dist, r = 3 + ((i % 4) * 1.1);
+        ctx.beginPath(); ctx.fillStyle = `hsla(${(dna.hueB + i * 7) % 360}, 95%, 72%, 0.88)`; ctx.shadowBlur = 14; ctx.shadowColor = `hsla(${(dna.hueB + i * 7) % 360}, 95%, 65%, 0.45)`; ctx.arc(x, y, r, 0, Math.PI * 2); ctx.fill();
+      }
+      ctx.shadowBlur = 0;
+    }
+    function drawBars(w, h, t, dna) {
+      const bars = 52, barWidth = w / bars, bottom = h - 28;
+      for (let i = 0; i < bars; i++) {
+        const wave = (Math.sin(t * 0.003 + i * 0.35) + 1) / 2;
+        const value = ((dna.rhythm + dna.power) / 200) * wave;
+        const barHeight = 8 + value * 90, hue = (dna.hueA + i * 2.2) % 360;
+        ctx.fillStyle = `hsla(${hue}, 90%, 62%, 0.72)`; ctx.fillRect(i * barWidth + 2, bottom - barHeight, barWidth - 4, barHeight);
+      }
+    }
+    function renderDNAFrame(t = 0) {
+      if (!currentDNAArtist) return;
+      const dna = currentDNAArtist.dna, w = canvas.width, h = canvas.height;
+      ctx.clearRect(0, 0, w, h);
+      drawBackground(w, h, t, dna); drawAuraRings(w, h, t, dna); drawDNAHelix(w, h, t, dna); drawCoreOrb(w, h, t, dna); drawPulseDots(w, h, t, dna); drawBars(w, h, t, dna);
+      animationFrameId = requestAnimationFrame(renderDNAFrame);
+    }
+    function startDNARender() { if (animationFrameId) cancelAnimationFrame(animationFrameId); renderDNAFrame(); }
+
+    renderArtists();
+  </script>
+</body>
+</html>
