@@ -1393,4 +1393,661 @@
     setLanguage(currentLang);
   </script>
 </body>
+  <div id="vxw-discovery-passport-block">
+  <style>
+    #vxw-discovery-passport-block{
+      font-family:Arial,sans-serif;
+      color:#fff;
+      margin:28px auto;
+      max-width:1200px;
+      padding:0 16px;
+    }
+    #vxw-discovery-passport-block *{box-sizing:border-box}
+    .vxw-discovery-wrap{
+      background:
+        radial-gradient(circle at top left, rgba(62,197,255,.18), transparent 30%),
+        radial-gradient(circle at bottom right, rgba(31,208,122,.14), transparent 28%),
+        linear-gradient(135deg,#08111f,#10233a);
+      border:1px solid rgba(255,255,255,.12);
+      border-radius:28px;
+      overflow:hidden;
+      box-shadow:0 22px 50px rgba(0,0,0,.28);
+    }
+    .vxw-top{
+      display:grid;
+      grid-template-columns:1.15fr .85fr;
+      gap:24px;
+      padding:34px;
+      border-bottom:1px solid rgba(255,255,255,.09);
+    }
+    .vxw-eyebrow{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:9px 14px;
+      border-radius:999px;
+      background:rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.12);
+      color:#bdeaff;
+      font-size:.85rem;
+      font-weight:700;
+      margin-bottom:16px;
+    }
+    .vxw-title{
+      font-size:clamp(2rem,4vw,3.4rem);
+      line-height:1.05;
+      font-weight:800;
+      margin-bottom:12px;
+      letter-spacing:-1px;
+    }
+    .vxw-subtitle{
+      font-size:1.05rem;
+      color:#d4deeb;
+      line-height:1.75;
+      max-width:760px;
+      margin-bottom:18px;
+    }
+    .vxw-strong-line{
+      font-size:1.08rem;
+      color:#7df2b3;
+      font-weight:700;
+      margin-bottom:22px;
+    }
+    .vxw-cta-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:12px;
+      margin-bottom:18px;
+    }
+    .vxw-btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      border:none;
+      cursor:pointer;
+      text-decoration:none;
+      padding:14px 20px;
+      border-radius:999px;
+      font-weight:800;
+      transition:.22s ease;
+    }
+    .vxw-btn:hover{transform:translateY(-1px)}
+    .vxw-btn-primary{
+      background:linear-gradient(135deg,#3ec5ff,#1fd07a);
+      color:#06111e;
+      box-shadow:0 14px 28px rgba(0,0,0,.22);
+    }
+    .vxw-btn-secondary{
+      background:rgba(255,255,255,.07);
+      color:#fff;
+      border:1px solid rgba(255,255,255,.12);
+    }
+    .vxw-mini-note{
+      color:#c5d2e2;
+      font-size:.96rem;
+      line-height:1.7;
+    }
+    .vxw-mini-note strong{color:#fff}
+
+    .vxw-opps{
+      background:rgba(255,255,255,.05);
+      border:1px solid rgba(255,255,255,.1);
+      border-radius:22px;
+      padding:20px;
+      align-self:center;
+    }
+    .vxw-opps h3{
+      font-size:1.05rem;
+      margin-bottom:10px;
+      color:#bdeaff;
+    }
+    .vxw-opps p{
+      color:#d4deeb;
+      font-size:.95rem;
+      line-height:1.65;
+      margin-bottom:14px;
+    }
+    .vxw-opps-list{
+      display:grid;
+      gap:10px;
+    }
+    .vxw-op-item{
+      padding:12px 14px;
+      border-radius:14px;
+      background:rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.08);
+      font-size:.93rem;
+      color:#fff;
+    }
+    .vxw-op-item span{
+      display:block;
+      color:#8ddcff;
+      font-size:.8rem;
+      margin-bottom:4px;
+      font-weight:700;
+    }
+
+    .vxw-bottom{
+      padding:30px 34px 34px;
+    }
+    .vxw-bottom-head{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-end;
+      gap:18px;
+      flex-wrap:wrap;
+      margin-bottom:18px;
+    }
+    .vxw-bottom-head h2{
+      font-size:1.55rem;
+      margin-bottom:8px;
+    }
+    .vxw-bottom-head p{
+      color:#cfdaea;
+      max-width:720px;
+      line-height:1.7;
+    }
+
+    .vxw-passport-grid{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:18px;
+      margin-top:20px;
+    }
+    .vxw-passport{
+      background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.04));
+      border:1px solid rgba(255,255,255,.1);
+      border-radius:24px;
+      overflow:hidden;
+      box-shadow:0 16px 32px rgba(0,0,0,.2);
+    }
+    .vxw-passport-top{
+      position:relative;
+      height:130px;
+      background:
+        radial-gradient(circle at top left, rgba(62,197,255,.28), transparent 34%),
+        radial-gradient(circle at bottom right, rgba(31,208,122,.22), transparent 30%),
+        linear-gradient(135deg,#0c1c30,#143052);
+    }
+    .vxw-rank-badge{
+      position:absolute;
+      top:14px;
+      right:14px;
+      background:rgba(255,204,102,.14);
+      color:#ffd97d;
+      border:1px solid rgba(255,204,102,.35);
+      padding:8px 11px;
+      border-radius:999px;
+      font-size:.78rem;
+      font-weight:800;
+    }
+    .vxw-avatar{
+      position:absolute;
+      left:18px;
+      bottom:-28px;
+      width:86px;
+      height:86px;
+      border-radius:20px;
+      object-fit:cover;
+      border:3px solid #10233a;
+      background:#0f172a;
+      box-shadow:0 10px 22px rgba(0,0,0,.25);
+    }
+    .vxw-passport-body{
+      padding:42px 18px 18px;
+    }
+    .vxw-passport-name{
+      font-size:1.15rem;
+      font-weight:800;
+      margin-bottom:4px;
+    }
+    .vxw-passport-role{
+      color:#8ddcff;
+      font-size:.92rem;
+      margin-bottom:14px;
+    }
+    .vxw-verified{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:8px 12px;
+      border-radius:999px;
+      background:rgba(31,208,122,.13);
+      color:#7df2b3;
+      border:1px solid rgba(31,208,122,.32);
+      font-size:.82rem;
+      font-weight:800;
+      margin-bottom:14px;
+    }
+    .vxw-data{
+      display:grid;
+      gap:10px;
+      margin-bottom:16px;
+    }
+    .vxw-data-item{
+      padding:11px 12px;
+      background:rgba(255,255,255,.05);
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:14px;
+    }
+    .vxw-data-item small{
+      display:block;
+      font-size:.72rem;
+      text-transform:uppercase;
+      letter-spacing:.8px;
+      color:#9cc7e7;
+      margin-bottom:5px;
+    }
+    .vxw-data-item strong{
+      display:block;
+      color:#fff;
+      font-size:.95rem;
+      line-height:1.45;
+    }
+    .vxw-tags{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin:6px 0 16px;
+    }
+    .vxw-tag{
+      padding:7px 10px;
+      border-radius:999px;
+      font-size:.78rem;
+      font-weight:700;
+      background:rgba(255,255,255,.07);
+      border:1px solid rgba(255,255,255,.1);
+      color:#e8eff8;
+    }
+    .vxw-passport-actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+    .vxw-small-btn{
+      flex:1;
+      min-width:130px;
+      border:none;
+      cursor:pointer;
+      padding:11px 14px;
+      border-radius:12px;
+      font-weight:800;
+      transition:.2s ease;
+    }
+    .vxw-small-btn:hover{transform:translateY(-1px)}
+    .vxw-share{
+      background:linear-gradient(135deg,#3ec5ff,#1fd07a);
+      color:#06111e;
+    }
+    .vxw-open{
+      background:rgba(255,255,255,.07);
+      color:#fff;
+      border:1px solid rgba(255,255,255,.12);
+    }
+
+    .vxw-modal{
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,.72);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      padding:18px;
+      z-index:99999;
+    }
+    .vxw-modal.show{display:flex}
+    .vxw-modal-card{
+      width:min(760px,100%);
+      background:linear-gradient(180deg,#10233a,#0b1726);
+      color:#fff;
+      border:1px solid rgba(255,255,255,.12);
+      border-radius:24px;
+      overflow:hidden;
+      box-shadow:0 24px 60px rgba(0,0,0,.42);
+    }
+    .vxw-modal-head{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px;
+      padding:18px 22px;
+      border-bottom:1px solid rgba(255,255,255,.1);
+    }
+    .vxw-close{
+      width:40px;height:40px;border:none;border-radius:12px;
+      background:rgba(255,255,255,.08);color:#fff;cursor:pointer;font-size:1rem
+    }
+    .vxw-modal-body{
+      padding:22px;
+      display:grid;
+      gap:16px;
+    }
+    .vxw-share-card{
+      background:
+        radial-gradient(circle at top left, rgba(62,197,255,.22), transparent 30%),
+        linear-gradient(135deg,#0c1c30,#143052);
+      border:1px solid rgba(255,255,255,.1);
+      border-radius:22px;
+      padding:20px;
+      display:grid;
+      grid-template-columns:92px 1fr;
+      gap:16px;
+      align-items:center;
+    }
+    .vxw-share-card img{
+      width:92px;height:92px;border-radius:20px;object-fit:cover;
+      border:2px solid rgba(255,255,255,.18)
+    }
+    .vxw-share-card h3{
+      font-size:1.2rem;
+      margin-bottom:4px;
+    }
+    .vxw-share-card p{
+      color:#d6e1ee;
+      line-height:1.6;
+      font-size:.95rem;
+    }
+    .vxw-share-line{
+      margin-top:10px;
+      color:#7df2b3;
+      font-weight:800;
+      font-size:.92rem;
+    }
+    .vxw-share-actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    @media (max-width:980px){
+      .vxw-top{grid-template-columns:1fr}
+      .vxw-passport-grid{grid-template-columns:1fr 1fr}
+    }
+    @media (max-width:680px){
+      .vxw-top,.vxw-bottom{padding:24px}
+      .vxw-passport-grid{grid-template-columns:1fr}
+      .vxw-share-card{grid-template-columns:1fr}
+    }
+  </style>
+
+  <div class="vxw-discovery-wrap">
+    <div class="vxw-top">
+      <div>
+        <div class="vxw-eyebrow">Artists get discovered in real time</div>
+
+        <div class="vxw-title">Join VoxWorldApp. Get your voice discovered. Start earning.</div>
+
+        <div class="vxw-subtitle">Upload your voice. Get discovered instantly. Get paid globally.</div>
+
+        <div class="vxw-strong-line">We connect your voice to real opportunities instantly.</div>
+
+        <div class="vxw-cta-row">
+          <a href="#signup" class="vxw-btn vxw-btn-primary">Get Matched Now</a>
+          <a href="#artists" class="vxw-btn vxw-btn-secondary">Explore Artists</a>
+        </div>
+
+        <div class="vxw-mini-note">
+          <strong>Why it works:</strong> artists join faster when they feel they can be seen, matched, and contacted quickly for real collaborations.
+        </div>
+      </div>
+
+      <div class="vxw-opps">
+        <h3>Live Opportunity Style Preview</h3>
+        <p>This makes your site feel active, valuable, and ready for artists right now.</p>
+
+        <div class="vxw-opps-list">
+          <div class="vxw-op-item">
+            <span>NEW MATCH</span>
+            Producer looking for female Afro / Kompa voice
+          </div>
+          <div class="vxw-op-item">
+            <span>VOICE REQUEST</span>
+            Brand needs French voiceover for promo campaign
+          </div>
+          <div class="vxw-op-item">
+            <span>FEATURE OPEN</span>
+            Independent artist searching for Zouk / Afro collab
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="vxw-bottom">
+      <div class="vxw-bottom-head">
+        <div>
+          <h2>Voice Passport Rank</h2>
+          <p>Each artist receives a vocal passport that makes their identity more valuable, more visible, and more shareable across the web and social media.</p>
+        </div>
+      </div>
+
+      <div class="vxw-passport-grid">
+        <div class="vxw-passport">
+          <div class="vxw-passport-top">
+            <div class="vxw-rank-badge">RANK A</div>
+            <img class="vxw-avatar" src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=500&q=80" alt="Artist photo">
+          </div>
+          <div class="vxw-passport-body">
+            <div class="vxw-passport-name">Ansy Michel</div>
+            <div class="vxw-passport-role">Future Kompa • Afro Fusion • Digital Creator</div>
+            <div class="vxw-verified">Verified Badge</div>
+
+            <div class="vxw-data">
+              <div class="vxw-data-item">
+                <small>Voice ID</small>
+                <strong class="vxw-voice-id">VXW-ANS-2026-XXXXXX</strong>
+              </div>
+              <div class="vxw-data-item">
+                <small>Country</small>
+                <strong>USA / Haiti</strong>
+              </div>
+              <div class="vxw-data-item">
+                <small>Sung Languages</small>
+                <strong>English, French, Haitian Creole, Spanish</strong>
+              </div>
+              <div class="vxw-data-item">
+                <small>Genres</small>
+                <strong>Kompa, Zouk, Afro Fusion, Love Music</strong>
+              </div>
+              <div class="vxw-data-item">
+                <small>Collab Level</small>
+                <strong>Global Open Collaboration</strong>
+              </div>
+            </div>
+
+            <div class="vxw-tags">
+              <span class="vxw-tag">Voice Passport</span>
+              <span class="vxw-tag">Share Card</span>
+              <span class="vxw-tag">Artist Identity</span>
+            </div>
+
+            <div class="vxw-passport-actions">
+              <button class="vxw-small-btn vxw-share" type="button" data-vxw-share="Ansy Michel">Share Card</button>
+              <button class="vxw-small-btn vxw-open" type="button">Open Profile</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="vxw-passport">
+          <div class="vxw-passport-top">
+            <div class="vxw-rank-badge">RANK B+</div>
+            <img class="vxw-avatar" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=500&q=80" alt="Artist photo">
+          </div>
+          <div class="vxw-passport-body">
+            <div class="vxw-passport-name">Maya Rose</div>
+            <div class="vxw-passport-role">Soul Pop • Voiceover • Storytelling</div>
+            <div class="vxw-verified">Verified Badge</div>
+
+            <div class="vxw-data">
+              <div class="vxw-data-item">
+                <small>Voice ID</small>
+                <strong class="vxw-voice-id">VXW-MAY-2026-XXXXXX</strong>
+              </div>
+              <div class="vxw-data-item">
+                <small>Country</small>
+                <strong>France</strong>
+              </div>
+              <div class="vxw-data-item">
+                <small>Sung Languages</small>
+                <strong>French, English</strong>
+              </div>
+              <div class="vxw-data-item">
+                <small>Genres</small>
+                <strong>Soul Pop, Acoustic, Voiceover</strong>
+              </div>
+              <div class="vxw-data-item">
+                <small>Collab Level</small>
+                <strong>Open for Commercial Projects</strong>
+              </div>
+            </div>
+
+            <div class="vxw-tags">
+              <span class="vxw-tag">Commercial Ready</span>
+              <span class="vxw-tag">Verified</span>
+              <span class="vxw-tag">Share Card</span>
+            </div>
+
+            <div class="vxw-passport-actions">
+              <button class="vxw-small-btn vxw-share" type="button" data-vxw-share="Maya Rose">Share Card</button>
+              <button class="vxw-small-btn vxw-open" type="button">Open Profile</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="vxw-passport">
+          <div class="vxw-passport-top">
+            <div class="vxw-rank-badge">RANK A-</div>
+            <img class="vxw-avatar" src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=500&q=80" alt="Artist photo">
+          </div>
+          <div class="vxw-passport-body">
+            <div class="vxw-passport-name">Carlos Vega</div>
+            <div class="vxw-passport-role">Latin Urban • Afrobeat • Hook Specialist</div>
+            <div class="vxw-verified">Verified Badge</div>
+
+            <div class="vxw-data">
+              <div class="vxw-data-item">
+                <small>Voice ID</small>
+                <strong class="vxw-voice-id">VXW-CAR-2026-XXXXXX</strong>
+              </div>
+              <div class="vxw-data-item">
+                <small>Country</small>
+                <strong>Spain</strong>
+              </div>
+              <div class="vxw-data-item">
+                <small>Sung Languages</small>
+                <strong>Spanish, English</strong>
+              </div>
+              <div class="vxw-data-item">
+                <small>Genres</small>
+                <strong>Latin Urban, Afrobeat, Pop</strong>
+              </div>
+              <div class="vxw-data-item">
+                <small>Collab Level</small>
+                <strong>High Demand Features</strong>
+              </div>
+            </div>
+
+            <div class="vxw-tags">
+              <span class="vxw-tag">Fast Match</span>
+              <span class="vxw-tag">Open Features</span>
+              <span class="vxw-tag">Share Card</span>
+            </div>
+
+            <div class="vxw-passport-actions">
+              <button class="vxw-small-btn vxw-share" type="button" data-vxw-share="Carlos Vega">Share Card</button>
+              <button class="vxw-small-btn vxw-open" type="button">Open Profile</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="vxw-modal" id="vxwShareModal">
+    <div class="vxw-modal-card">
+      <div class="vxw-modal-head">
+        <h3>Voice Passport Share Card</h3>
+        <button class="vxw-close" id="vxwCloseShare" type="button">✕</button>
+      </div>
+
+      <div class="vxw-modal-body">
+        <div class="vxw-share-card" id="vxwShareCard">
+          <img id="vxwShareImg" src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=500&q=80" alt="Artist">
+          <div>
+            <h3 id="vxwShareName">Ansy Michel</h3>
+            <p id="vxwShareDesc">Verified Voice Passport • Global Artist Identity • Ready for discovery and collaboration.</p>
+            <div class="vxw-share-line" id="vxwShareId">Voice ID: VXW-ANS-2026-XXXXXX</div>
+          </div>
+        </div>
+
+        <div class="vxw-share-actions">
+          <button class="vxw-btn vxw-btn-primary" id="vxwCopyShareText" type="button">Copy Share Text</button>
+          <button class="vxw-btn vxw-btn-secondary" id="vxwCloseShare2" type="button">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function(){
+      function makeId(name){
+        const clean = (name || "ART").replace(/[^a-zA-Z0-9]/g,"").toUpperCase().slice(0,3) || "ART";
+        const year = new Date().getFullYear();
+        const random = Math.random().toString(36).substring(2,8).toUpperCase();
+        return "VXW-" + clean + "-" + year + "-" + random;
+      }
+
+      document.querySelectorAll(".vxw-passport").forEach(function(card){
+        const name = card.querySelector(".vxw-passport-name").textContent.trim();
+        const idEl = card.querySelector(".vxw-voice-id");
+        idEl.textContent = makeId(name);
+      });
+
+      const modal = document.getElementById("vxwShareModal");
+      const closeBtn = document.getElementById("vxwCloseShare");
+      const closeBtn2 = document.getElementById("vxwCloseShare2");
+      const shareName = document.getElementById("vxwShareName");
+      const shareDesc = document.getElementById("vxwShareDesc");
+      const shareId = document.getElementById("vxwShareId");
+      const shareImg = document.getElementById("vxwShareImg");
+      const copyBtn = document.getElementById("vxwCopyShareText");
+
+      document.querySelectorAll(".vxw-share").forEach(function(btn){
+        btn.addEventListener("click", function(){
+          const card = btn.closest(".vxw-passport");
+          const name = card.querySelector(".vxw-passport-name").textContent.trim();
+          const role = card.querySelector(".vxw-passport-role").textContent.trim();
+          const voiceId = card.querySelector(".vxw-voice-id").textContent.trim();
+          const img = card.querySelector(".vxw-avatar").getAttribute("src");
+
+          shareName.textContent = name;
+          shareDesc.textContent = role + " • Verified Voice Passport • Ready for discovery and collaboration.";
+          shareId.textContent = "Voice ID: " + voiceId;
+          shareImg.src = img;
+          modal.classList.add("show");
+        });
+      });
+
+      function closeModal(){ modal.classList.remove("show"); }
+
+      closeBtn.addEventListener("click", closeModal);
+      closeBtn2.addEventListener("click", closeModal);
+      modal.addEventListener("click", function(e){
+        if(e.target === modal) closeModal();
+      });
+
+      copyBtn.addEventListener("click", async function(){
+        const text = shareName.textContent + " | " + shareDesc.textContent + " | " + shareId.textContent + " | Join VoxWorldApp. Get your voice discovered. Start earning.";
+        try{
+          await navigator.clipboard.writeText(text);
+          copyBtn.textContent = "Copied";
+          setTimeout(function(){ copyBtn.textContent = "Copy Share Text"; }, 1600);
+        }catch(e){
+          copyBtn.textContent = "Copy Failed";
+          setTimeout(function(){ copyBtn.textContent = "Copy Share Text"; }, 1600);
+        }
+      });
+    })();
+  </script>
+</div>
 </html>
