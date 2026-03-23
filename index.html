@@ -2612,6 +2612,365 @@
       renderQuickButtons();
       addMessage("ai", t("ai_welcome"));
     });
-  </script>
+  <script>
+document.addEventListener("DOMContentLoaded", () => {
+  const $ = (s, root = document) => root.querySelector(s);
+  const $$ = (s, root = document) => [...root.querySelectorAll(s)];
+
+  const DB_KEY = "voxworldapp_db_v1";
+
+  const defaultDB = {
+    artists: [
+      {
+        id: "artist-1",
+        name: "Ansy Michel",
+        stage_name: "Ansy777_DDC",
+        rank: "A",
+        voice_id: "VXW-ANS-2026-000001",
+        country: "USA / Haiti",
+        languages: ["English", "French", "Haitian Creole", "Spanish"],
+        genres: ["Kompa", "Zouk", "Afro Fusion", "Love Music"],
+        collab_level: "Global Open Collaboration",
+        bio: "Future Kompa • Afro Fusion • Digital Creator",
+        image: "",
+        verified: true,
+        audio: [
+          { id: "a1", title: "Closer Every Night", url: "" },
+          { id: "a2", title: "Secret Lanmou", url: "" }
+        ],
+        videos: [
+          { id: "v1", title: "Performance Clip", url: "" },
+          { id: "v2", title: "Music Video Preview", url: "" }
+        ]
+      },
+      {
+        id: "artist-2",
+        name: "Maya Rose",
+        stage_name: "Maya Rose",
+        rank: "B+",
+        voice_id: "VXW-MAY-2026-000002",
+        country: "France",
+        languages: ["French", "English"],
+        genres: ["Soul Pop", "Acoustic", "Voiceover"],
+        collab_level: "Open for Commercial Projects",
+        bio: "Soul Pop • Voiceover • Storytelling",
+        image: "",
+        verified: true,
+        audio: [],
+        videos: []
+      },
+      {
+        id: "artist-3",
+        name: "Carlos Vega",
+        stage_name: "Carlos Vega",
+        rank: "A-",
+        voice_id: "VXW-CAR-2026-000003",
+        country: "Spain",
+        languages: ["Spanish", "English"],
+        genres: ["Latin Urban", "Afrobeat", "Pop"],
+        collab_level: "High Demand Features",
+        bio: "Latin Urban • Afrobeat • Hook Specialist",
+        image: "",
+        verified: true,
+        audio: [],
+        videos: []
+      }
+    ],
+    follows: [],
+    messages: [],
+    lastUpdated: new Date().toISOString()
+  };
+
+  function loadDB() {
+    try {
+      const raw = localStorage.getItem(DB_KEY);
+      if (!raw) {
+        localStorage.setItem(DB_KEY, JSON.stringify(defaultDB));
+        return structuredClone(defaultDB);
+      }
+      return JSON.parse(raw);
+    } catch (err) {
+      console.error("DB load error:", err);
+      localStorage.setItem(DB_KEY, JSON.stringify(defaultDB));
+      return structuredClone(defaultDB);
+    }
+  }
+
+  function saveDB(db) {
+    db.lastUpdated = new Date().toISOString();
+    localStorage.setItem(DB_KEY, JSON.stringify(db));
+  }
+
+  let db = loadDB();
+
+  function findArtistByName(name) {
+    if (!name) return null;
+    return db.artists.find(a =>
+      a.stage_name?.toLowerCase() === name.toLowerCase() ||
+      a.name?.toLowerCase() === name.toLowerCase()
+    ) || null;
+  }
+
+  function setButtonText(el, text) {
+    if (el) el.textContent = text;
+  }
+
+  function safeAlert(text) {
+    if (window.innerWidth < 700) {
+      console.log(text);
+    } else {
+      alert(text);
+    }
+  }
+
+  // Smooth scroll for anchor buttons
+  $$('a[href^="#"]').forEach(link => {
+    link.addEventListener("click", e => {
+      const target = link.getAttribute("href");
+      if (!target || target === "#") return;
+      const section = $(target);
+      if (!section) return;
+      e.preventDefault();
+      section.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+  });
+
+  // Join / signup buttons
+  $$('a[href="signup.html"], [data-signup], .btn, .tiny-btn').forEach(btn => {
+    const text = (btn.textContent || "").trim().toLowerCase();
+    if (
+      text.includes("join now") ||
+      text.includes("start your profile") ||
+      text.includes("go to sign up") ||
+      text.includes("create my profile") ||
+      text.includes("sign up")
+    ) {
+      btn.addEventListener("click", e => {
+        e.preventDefault();
+        window.location.href = "signup.html";
+      });
+    }
+  });
+
+  // Chat
+  const chatToggle = $("#chatToggle");
+  const chatbox = $("#chatbox");
+  const chatClose = $("#chatClose");
+  const chatForm = $("#chatForm");
+  const chatInput = $("#chatInput");
+  const chatMessages = $("#chatMessages");
+  const quickQuestions = $("#quickQuestions");
+
+  function openChat() {
+    if (chatbox) chatbox.classList.add("open");
+  }
+
+  function closeChat() {
+    if (chatbox) chatbox.classList.remove("open");
+  }
+
+  function addChatMessage(type, text) {
+    if (!chatMessages) return;
+    const div = document.createElement("div");
+    div.className = `msg msg-${type}`;
+    div.style.margin = "8px 0";
+    div.style.padding = "10px 12px";
+    div.style.borderRadius = "14px";
+    div.style.background = type === "user" ? "rgba(62,197,255,.18)" : "rgba(255,255,255,.08)";
+    div.style.color = "#fff";
+    div.textContent = text;
+    chatMessages.appendChild(div);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+  }
+
+  function answerChat(q) {
+    const text = (q || "").toLowerCase();
+    if (text.includes("profile")) return "To create your profile, use any Join Now or Sign Up button.";
+    if (text.includes("voice id") || text.includes("passport") || text.includes("id")) return "Each artist can have a Voice ID / Passport card stored in the site database.";
+    if (text.includes("gallery")) return "Artists in the local database can be shown in the home page gallery cards.";
+    if (text.includes("audio")) return "Audio buttons can link to artist track URLs stored in the database.";
+    if (text.includes("video")) return "Video buttons can link to artist video URLs stored in the database.";
+    return "Welcome to VoxWorldApp. Ask about profile, voice ID, gallery, audio, or video.";
+  }
+
+  if (chatToggle) chatToggle.addEventListener("click", openChat);
+  if (chatClose) chatClose.addEventListener("click", closeChat);
+
+  if (chatForm) {
+    chatForm.addEventListener("submit", e => {
+      e.preventDefault();
+      const q = (chatInput?.value || "").trim();
+      if (!q) return;
+      openChat();
+      addChatMessage("user", q);
+      addChatMessage("ai", answerChat(q));
+      if (chatInput) chatInput.value = "";
+    });
+  }
+
+  if (quickQuestions) {
+    const qs = [
+      "How do I create my profile?",
+      "How do I get a Voice ID?",
+      "How do audio buttons work?",
+      "How do artists appear in gallery?"
+    ];
+    quickQuestions.innerHTML = "";
+    qs.forEach(q => {
+      const b = document.createElement("button");
+      b.type = "button";
+      b.className = "btn btn-secondary";
+      b.style.margin = "6px 6px 0 0";
+      b.textContent = q;
+      b.addEventListener("click", () => {
+        openChat();
+        addChatMessage("user", q);
+        addChatMessage("ai", answerChat(q));
+      });
+      quickQuestions.appendChild(b);
+    });
+  }
+
+  // Follow buttons
+  function toggleFollow(artistName, btn) {
+    const artist = findArtistByName(artistName);
+    if (!artist) {
+      safeAlert("Artist not found in database.");
+      return;
+    }
+
+    const exists = db.follows.includes(artist.id);
+    if (exists) {
+      db.follows = db.follows.filter(id => id !== artist.id);
+      setButtonText(btn, "Follow");
+    } else {
+      db.follows.push(artist.id);
+      setButtonText(btn, "Following");
+    }
+    saveDB(db);
+  }
+
+  // Detect cards and attach actions
+  $$("button, a").forEach(el => {
+    const label = (el.textContent || "").trim().toLowerCase();
+
+    if (label === "follow" || label === "following") {
+      el.addEventListener("click", e => {
+        e.preventDefault();
+        const card = el.closest("article, .passport-card, .gallery-card, .artist-card, .voice-card") || document;
+        const nameEl = card.querySelector("h3, h4, strong");
+        const artistName = nameEl?.textContent?.trim() || "Ansy777_DDC";
+        toggleFollow(artistName, el);
+      });
+    }
+
+    if (label.includes("open profile") || label.includes("view profile")) {
+      el.addEventListener("click", e => {
+        e.preventDefault();
+        document.querySelector("#home")?.scrollIntoView({ behavior: "smooth" });
+        safeAlert("Profile action connected. Next step: link this button to profile.html?id=artist-1");
+      });
+    }
+
+    if (label.includes("share card")) {
+      el.addEventListener("click", e => {
+        e.preventDefault();
+        const shareText = "Check out this artist on VoxWorldApp.";
+        navigator.clipboard?.writeText(shareText);
+        safeAlert("Share text copied.");
+      });
+    }
+
+    if (label.includes("copy share text")) {
+      el.addEventListener("click", e => {
+        e.preventDefault();
+        navigator.clipboard?.writeText("Verified Voice Passport • Global Artist Identity • Ready for discovery and collaboration.");
+        safeAlert("Share text copied.");
+      });
+    }
+
+    if (label === "close") {
+      el.addEventListener("click", e => {
+        const modal = el.closest(".modal, .share-modal, .passport-modal");
+        if (modal) {
+          e.preventDefault();
+          modal.style.display = "none";
+        }
+      });
+    }
+
+    if (label.includes("audio") || label === "▶" || label.includes("play")) {
+      el.addEventListener("click", e => {
+        if (el.dataset.boundAudio === "true") return;
+        el.dataset.boundAudio = "true";
+        e.preventDefault();
+        safeAlert("Audio button works. Add a real MP3 URL in the database to play a track.");
+      });
+    }
+
+    if (label.includes("video") || label.includes("open video")) {
+      el.addEventListener("click", e => {
+        if (el.dataset.boundVideo === "true") return;
+        el.dataset.boundVideo = "true";
+        e.preventDefault();
+        safeAlert("Video button works. Add a real video URL in the database to open a clip.");
+      });
+    }
+  });
+
+  // Language buttons
+  const translations = {
+    en: {
+      nav_cta: "Join Now",
+      hero_btn_1: "Start Your Profile",
+      cta_btn: "Go to Sign Up",
+      chat_send: "Send"
+    },
+    fr: {
+      nav_cta: "Rejoindre",
+      hero_btn_1: "Créer votre profil",
+      cta_btn: "Aller à l'inscription",
+      chat_send: "Envoyer"
+    },
+    es: {
+      nav_cta: "Únete",
+      hero_btn_1: "Crear tu perfil",
+      cta_btn: "Ir al registro",
+      chat_send: "Enviar"
+    }
+  };
+
+  let currentLang = localStorage.getItem("voxworld_lang") || "en";
+
+  function applyLanguage(lang) {
+    currentLang = translations[lang] ? lang : "en";
+    localStorage.setItem("voxworld_lang", currentLang);
+
+    $$("[data-i18n]").forEach(node => {
+      const key = node.getAttribute("data-i18n");
+      if (translations[currentLang]?.[key]) {
+        node.textContent = translations[currentLang][key];
+      }
+    });
+
+    $$(".lang-btn").forEach(btn => {
+      btn.classList.toggle("active", btn.dataset.lang === currentLang);
+    });
+  }
+
+  $$(".lang-btn").forEach(btn => {
+    btn.addEventListener("click", () => applyLanguage(btn.dataset.lang));
+  });
+
+  applyLanguage(currentLang);
+
+  // First welcome
+  if (chatMessages && !chatMessages.children.length) {
+    addChatMessage("ai", "Welcome to VoxWorldApp. Your local site database is ready.");
+  }
+
+  console.log("VoxWorld local database ready:", db);
+});
+</script>
 </body>
 </html>
