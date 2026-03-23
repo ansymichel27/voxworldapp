@@ -2048,6 +2048,301 @@
     setLanguage(currentLang);
   </script>
 </body>
-  </script>
+  <script>
+document.addEventListener("DOMContentLoaded", () => {
+  const $ = (selector, root = document) => root.querySelector(selector);
+  const $$ = (selector, root = document) => Array.from(root.querySelectorAll(selector));
+
+  const fallbackTranslations = {
+    en: {
+      nav_features: "Features",
+      nav_how: "How It Works",
+      nav_contact: "Contact",
+      nav_cta: "Join Now",
+      eyebrow: "Global Voice Identity • Collaboration • Opportunity",
+      hero_title: "Build your voice identity. Connect with creators worldwide. Turn your talent into real opportunity.",
+      hero_text: "VoxWorldApp is a next-generation marketplace for singers, voice artists, producers, creators, and clients. Create your profile, showcase your unique sound, collaborate internationally, and grow your creative brand on one powerful platform.",
+      hero_btn_1: "Start Your Profile",
+      hero_btn_2: "Explore Features",
+      features_title: "Powerful features for modern creators",
+      features_text: "Everything you need to build a voice-based brand, collaborate globally, and monetize creative talent on one professional platform.",
+      how_title: "How VoxWorldApp works",
+      how_text: "A simple path for artists and creators to join, showcase their sound, collaborate, and grow.",
+      cta_title: "Ready to launch your voice identity?",
+      cta_text: "Create a stronger home page experience, guide your visitors clearly, and let them get help instantly with the built-in assistant.",
+      cta_btn: "Go to Sign Up",
+      chat_title: "VoxWorld Assistant",
+      chat_subtitle: "Ask questions about the platform",
+      chat_send: "Send",
+      chat_placeholder: "Ask a question...",
+      footer_desc: "The global marketplace for voice identity, collaboration, and creator opportunity.",
+      footer_copy: "© 2026 VoxWorldApp. All rights reserved.",
+      qq1: "How do I create my profile?",
+      qq2: "How can I upload my voice?",
+      qq3: "How do artists earn money?",
+      qq4: "Is VoxWorldApp international?",
+      ai_welcome: "Hi! I’m the VoxWorld Assistant. Ask me anything about profiles, voice uploads, collaboration, or payments.",
+      ai_profile: "To create your profile, click any Join Now or Sign Up button and complete your artist details.",
+      ai_upload: "You can upload your voice samples, demos, and references in your profile/dashboard area.",
+      ai_money: "Artists can earn through collaborations, paid services, features, and other creator opportunities on the platform.",
+      ai_global: "Yes. VoxWorldApp is designed for worldwide collaboration in multiple languages."
+    },
+    fr: {
+      nav_features: "Fonctionnalités",
+      nav_how: "Comment ça marche",
+      nav_contact: "Contact",
+      nav_cta: "Rejoindre",
+      eyebrow: "Identité vocale mondiale • Collaboration • Opportunité",
+      hero_title: "Construisez votre identité vocale. Connectez-vous avec des créateurs du monde entier. Transformez votre talent en véritable opportunité.",
+      hero_text: "VoxWorldApp est une marketplace nouvelle génération pour chanteurs, artistes vocaux, producteurs, créateurs et clients. Créez votre profil, présentez votre son unique, collaborez à l’international et développez votre marque créative.",
+      hero_btn_1: "Créer votre profil",
+      hero_btn_2: "Explorer les fonctionnalités",
+      features_title: "Des fonctionnalités puissantes pour les créateurs modernes",
+      features_text: "Tout ce qu’il faut pour construire une marque vocale, collaborer mondialement et monétiser le talent créatif sur une seule plateforme.",
+      how_title: "Comment fonctionne VoxWorldApp",
+      how_text: "Un parcours simple pour les artistes et créateurs afin de rejoindre, présenter leur son, collaborer et grandir.",
+      cta_title: "Prêt à lancer votre identité vocale ?",
+      cta_text: "Créez une meilleure expérience d’accueil, guidez clairement vos visiteurs et permettez-leur d’obtenir de l’aide instantanément grâce à l’assistant intégré.",
+      cta_btn: "Aller à l’inscription",
+      chat_title: "Assistant VoxWorld",
+      chat_subtitle: "Posez vos questions sur la plateforme",
+      chat_send: "Envoyer",
+      chat_placeholder: "Posez une question...",
+      footer_desc: "La marketplace mondiale de l’identité vocale, de la collaboration et des opportunités créatives.",
+      footer_copy: "© 2026 VoxWorldApp. Tous droits réservés.",
+      qq1: "Comment créer mon profil ?",
+      qq2: "Comment téléverser ma voix ?",
+      qq3: "Comment les artistes gagnent-ils de l’argent ?",
+      qq4: "VoxWorldApp est-il international ?",
+      ai_welcome: "Bonjour ! Je suis l’assistant VoxWorld. Posez-moi vos questions sur les profils, les uploads vocaux, la collaboration ou les paiements.",
+      ai_profile: "Pour créer votre profil, cliquez sur Join Now ou Sign Up puis remplissez vos informations d’artiste.",
+      ai_upload: "Vous pourrez téléverser vos échantillons vocaux, démos et références dans votre espace profil/tableau de bord.",
+      ai_money: "Les artistes peuvent gagner de l’argent grâce aux collaborations, services payants, feats et autres opportunités créatives.",
+      ai_global: "Oui. VoxWorldApp est conçu pour une collaboration mondiale en plusieurs langues."
+    },
+    es: {
+      nav_features: "Funciones",
+      nav_how: "Cómo funciona",
+      nav_contact: "Contacto",
+      nav_cta: "Únete",
+      eyebrow: "Identidad vocal global • Colaboración • Oportunidad",
+      hero_title: "Construye tu identidad vocal. Conéctate con creadores de todo el mundo. Convierte tu talento en una oportunidad real.",
+      hero_text: "VoxWorldApp es un marketplace de nueva generación para cantantes, artistas de voz, productores, creadores y clientes. Crea tu perfil, muestra tu sonido único, colabora internacionalmente y haz crecer tu marca creativa.",
+      hero_btn_1: "Crear tu perfil",
+      hero_btn_2: "Explorar funciones",
+      features_title: "Funciones poderosas para creadores modernos",
+      features_text: "Todo lo que necesitas para construir una marca basada en la voz, colaborar globalmente y monetizar el talento creativo en una sola plataforma.",
+      how_title: "Cómo funciona VoxWorldApp",
+      how_text: "Un camino simple para que artistas y creadores se unan, muestren su sonido, colaboren y crezcan.",
+      cta_title: "¿Listo para lanzar tu identidad vocal?",
+      cta_text: "Crea una mejor experiencia en la página principal, guía claramente a tus visitantes y permíteles obtener ayuda al instante con el asistente integrado.",
+      cta_btn: "Ir al registro",
+      chat_title: "Asistente VoxWorld",
+      chat_subtitle: "Haz preguntas sobre la plataforma",
+      chat_send: "Enviar",
+      chat_placeholder: "Haz una pregunta...",
+      footer_desc: "El marketplace global para identidad vocal, colaboración y oportunidad creativa.",
+      footer_copy: "© 2026 VoxWorldApp. Todos los derechos reservados.",
+      qq1: "¿Cómo creo mi perfil?",
+      qq2: "¿Cómo subo mi voz?",
+      qq3: "¿Cómo ganan dinero los artistas?",
+      qq4: "¿VoxWorldApp es internacional?",
+      ai_welcome: "¡Hola! Soy el asistente de VoxWorld. Pregúntame sobre perfiles, carga de voz, colaboración o pagos.",
+      ai_profile: "Para crear tu perfil, haz clic en Join Now o Sign Up y completa tus datos de artista.",
+      ai_upload: "Podrás subir muestras de voz, demos y referencias dentro de tu área de perfil/panel.",
+      ai_money: "Los artistas pueden ganar dinero mediante colaboraciones, servicios pagados, participaciones y otras oportunidades creativas.",
+      ai_global: "Sí. VoxWorldApp está diseñado para la colaboración mundial en varios idiomas."
+    }
+  };
+
+  const translations =
+    (typeof window.translations === "object" && window.translations) ||
+    fallbackTranslations;
+
+  const langButtons = $$(".lang-btn");
+  const translatableNodes = $$("[data-i18n]");
+  const chatToggle = $("#chatToggle");
+  const chatbox = $("#chatbox");
+  const chatClose = $("#chatClose");
+  const chatForm = $("#chatForm");
+  const chatInput = $("#chatInput");
+  const chatMessages = $("#chatMessages");
+  const quickQuestions = $("#quickQuestions");
+
+  let currentLang = localStorage.getItem("voxworld_lang") || "en";
+
+  function safeText(key, lang) {
+    return (translations?.[lang] && translations[lang][key]) ||
+           (translations?.en && translations.en[key]) ||
+           key;
+  }
+
+  function applyLanguage(lang) {
+    currentLang = translations[lang] ? lang : "en";
+    localStorage.setItem("voxworld_lang", currentLang);
+
+    translatableNodes.forEach((node) => {
+      const key = node.getAttribute("data-i18n");
+      const value = safeText(key, currentLang);
+      if (value) node.textContent = value;
+    });
+
+    if (chatInput) {
+      chatInput.placeholder = safeText("chat_placeholder", currentLang);
+    }
+
+    langButtons.forEach((btn) => {
+      const isActive = btn.dataset.lang === currentLang;
+      btn.classList.toggle("active", isActive);
+      btn.setAttribute("aria-pressed", String(isActive));
+    });
+
+    renderQuickQuestions();
+  }
+
+  langButtons.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const lang = btn.dataset.lang || "en";
+      applyLanguage(lang);
+    });
+  });
+
+  function normalizeHashTarget(href) {
+    if (!href) return null;
+    if (href === "#" || href.trim() === "") return null;
+    if (href.startsWith("#")) return href;
+    return null;
+  }
+
+  $$('a[href]').forEach((link) => {
+    const href = link.getAttribute("href");
+
+    if (!href) return;
+
+    if (href.toLowerCase().includes("signup.html")) {
+      link.addEventListener("click", (e) => {
+        e.preventDefault();
+        window.location.href = "signup.html";
+      });
+      return;
+    }
+
+    const hash = normalizeHashTarget(href);
+    if (!hash) return;
+
+    link.addEventListener("click", (e) => {
+      const target = document.querySelector(hash);
+      if (!target) return;
+      e.preventDefault();
+      target.scrollIntoView({ behavior: "smooth", block: "start" });
+      history.replaceState(null, "", hash);
+    });
+  });
+
+  function openChat() {
+    if (!chatbox) return;
+    chatbox.classList.add("open");
+    chatbox.style.display = "flex";
+    if (chatInput) chatInput.focus();
+  }
+
+  function closeChat() {
+    if (!chatbox) return;
+    chatbox.classList.remove("open");
+    chatbox.style.display = "";
+  }
+
+  if (chatToggle) {
+    chatToggle.addEventListener("click", openChat);
+  }
+
+  if (chatClose) {
+    chatClose.addEventListener("click", closeChat);
+  }
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") closeChat();
+  });
+
+  function appendMessage(text, who = "ai") {
+    if (!chatMessages) return;
+    const msg = document.createElement("div");
+    msg.className = `msg msg-${who}`;
+    msg.style.margin = "8px 0";
+    msg.style.padding = "10px 12px";
+    msg.style.borderRadius = "14px";
+    msg.style.background = who === "ai" ? "rgba(255,255,255,.08)" : "rgba(62,197,255,.18)";
+    msg.style.color = "#fff";
+    msg.textContent = text;
+    chatMessages.appendChild(msg);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+  }
+
+  function answerQuestion(question) {
+    const q = question.toLowerCase();
+
+    if (q.includes("profile") || q.includes("profil")) return safeText("ai_profile", currentLang);
+    if (q.includes("upload") || q.includes("voice") || q.includes("voix") || q.includes("voz")) return safeText("ai_upload", currentLang);
+    if (q.includes("earn") || q.includes("money") || q.includes("argent") || q.includes("dinero") || q.includes("paid")) return safeText("ai_money", currentLang);
+    if (q.includes("international") || q.includes("global") || q.includes("world")) return safeText("ai_global", currentLang);
+
+    return safeText("ai_welcome", currentLang);
+  }
+
+  function askBot(question) {
+    if (!question || !question.trim()) return;
+    appendMessage(question.trim(), "user");
+    setTimeout(() => {
+      appendMessage(answerQuestion(question), "ai");
+    }, 250);
+  }
+
+  function renderQuickQuestions() {
+    if (!quickQuestions) return;
+    quickQuestions.innerHTML = "";
+
+    const keys = ["qq1", "qq2", "qq3", "qq4"];
+    keys.forEach((key) => {
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "btn btn-secondary";
+      btn.style.padding = "10px 14px";
+      btn.style.fontSize = ".9rem";
+      btn.style.margin = "6px 6px 0 0";
+      btn.textContent = safeText(key, currentLang);
+      btn.addEventListener("click", () => {
+        openChat();
+        askBot(btn.textContent);
+      });
+      quickQuestions.appendChild(btn);
+    });
+  }
+
+  if (chatForm) {
+    chatForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const question = chatInput ? chatInput.value : "";
+      if (!question.trim()) return;
+      askBot(question);
+      if (chatInput) chatInput.value = "";
+    });
+  }
+
+  if (chatMessages && chatMessages.children.length === 0) {
+    appendMessage(safeText("ai_welcome", currentLang), "ai");
+  }
+
+  if (window.location.hash) {
+    const target = document.querySelector(window.location.hash);
+    if (target) {
+      setTimeout(() => {
+        target.scrollIntoView({ behavior: "smooth", block: "start" });
+      }, 150);
+    }
+  }
+
+  applyLanguage(currentLang);
+});
+</script>
 </div>
 </html>
