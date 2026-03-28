@@ -4,715 +4,520 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>VoxWorldApp — Global Voice Identity</title>
-  <meta name="description" content="VoxWorldApp is a next-generation artist platform for voice identity, profile discovery, collaboration, media showcases, and creator growth." />
+  <meta name="description" content="VoxWorldApp is a next-generation artist platform for voice identity, artist discovery, collaboration, media showcases, and creator growth." />
   <style>
-    :root{
-      --bg:#07111f;
-      --bg2:#0d1830;
-      --card:rgba(255,255,255,.08);
-      --card2:rgba(255,255,255,.05);
-      --stroke:rgba(255,255,255,.12);
-      --text:#eef4ff;
-      --muted:#b8c6e3;
-      --blue:#45c2ff;
-      --blue2:#7c5cff;
-      --gold:#ffcf66;
-      --green:#29d68a;
-      --danger:#ff6b81;
-      --shadow:0 20px 60px rgba(0,0,0,.35);
-      --radius:22px;
-      --radius-sm:14px;
-      --max:1280px;
+    :root {
+      --bg: #07111f;
+      --bg2: #0d1830;
+      --card: rgba(255,255,255,.08);
+      --card-2: rgba(255,255,255,.05);
+      --stroke: rgba(255,255,255,.12);
+      --text: #eef4ff;
+      --muted: #b8c6e3;
+      --blue: #45c2ff;
+      --blue2: #7c5cff;
+      --green: #29d68a;
+      --danger: #ff6b81;
+      --shadow: 0 20px 60px rgba(0,0,0,.35);
+      --radius: 24px;
+      --max: 1280px;
     }
 
-    *{box-sizing:border-box}
-    html{scroll-behavior:smooth}
-    body{
-      margin:0;
-      font-family:Inter,Arial,Helvetica,sans-serif;
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: Inter, Arial, Helvetica, sans-serif;
       background:
         radial-gradient(circle at top left, rgba(69,194,255,.16), transparent 32%),
         radial-gradient(circle at top right, rgba(124,92,255,.16), transparent 28%),
-        linear-gradient(180deg,var(--bg),#091325 32%,#0c1730 65%,#08111f 100%);
-      color:var(--text);
-      overflow-x:hidden;
+        linear-gradient(180deg, var(--bg), #091325 32%, #0c1730 65%, #08111f 100%);
+      color: var(--text);
+      overflow-x: hidden;
     }
 
-    a{color:inherit;text-decoration:none}
-    img{max-width:100%;display:block}
-    button{
-      font:inherit;
-      border:none;
-      cursor:pointer;
-      transition:.25s ease;
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; }
+    button, input { font: inherit; }
+    button {
+      border: none;
+      cursor: pointer;
+      transition: .25s ease;
     }
 
-    .container{
-      width:min(100% - 32px,var(--max));
-      margin:auto;
+    .container {
+      width: min(100% - 32px, var(--max));
+      margin: auto;
     }
 
-    .glass{
-      background:var(--card);
-      border:1px solid var(--stroke);
-      backdrop-filter:blur(14px);
-      -webkit-backdrop-filter:blur(14px);
-      box-shadow:var(--shadow);
+    .glass {
+      background: var(--card);
+      border: 1px solid var(--stroke);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      box-shadow: var(--shadow);
     }
 
-    .topbar{
-      position:sticky;
-      top:0;
-      z-index:1000;
-      border-bottom:1px solid rgba(255,255,255,.08);
-      background:rgba(7,17,31,.72);
-      backdrop-filter:blur(16px);
-      -webkit-backdrop-filter:blur(16px);
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      border-bottom: 1px solid rgba(255,255,255,.08);
+      background: rgba(7,17,31,.72);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
     }
 
-    .nav{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:18px;
-      min-height:78px;
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      min-height: 78px;
     }
 
-    .brand{
-      display:flex;
-      align-items:center;
-      gap:14px;
-      min-width:0;
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      min-width: 0;
     }
 
-    .brand-mark{
-      width:48px;
-      height:48px;
-      border-radius:16px;
-      background:
-        linear-gradient(135deg, rgba(69,194,255,.95), rgba(124,92,255,.95));
-      display:grid;
-      place-items:center;
-      font-weight:900;
-      color:white;
-      box-shadow:0 10px 30px rgba(69,194,255,.25);
-      flex:none;
+    .brand-mark {
+      width: 48px;
+      height: 48px;
+      border-radius: 16px;
+      background: linear-gradient(135deg, rgba(69,194,255,.95), rgba(124,92,255,.95));
+      display: grid;
+      place-items: center;
+      font-weight: 900;
+      color: white;
+      box-shadow: 0 10px 30px rgba(69,194,255,.25);
+      flex: none;
     }
 
-    .brand-text{
-      min-width:0;
+    .brand-text strong {
+      display: block;
+      font-size: 1.05rem;
+      letter-spacing: .2px;
     }
 
-    .brand-text strong{
-      display:block;
-      font-size:1.05rem;
-      letter-spacing:.2px;
+    .brand-text span {
+      display: block;
+      color: var(--muted);
+      font-size: .84rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
-    .brand-text span{
-      display:block;
-      color:var(--muted);
-      font-size:.84rem;
-      white-space:nowrap;
-      overflow:hidden;
-      text-overflow:ellipsis;
+    .nav-links,
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
     }
 
-    .nav-links{
-      display:flex;
-      align-items:center;
-      gap:12px;
-      flex-wrap:wrap;
+    .nav-links a {
+      padding: 10px 14px;
+      border-radius: 999px;
+      color: var(--muted);
+      font-size: .96rem;
     }
 
-    .nav-links a{
-      padding:10px 14px;
-      border-radius:999px;
-      color:var(--muted);
-      font-size:.96rem;
+    .nav-links a:hover {
+      background: rgba(255,255,255,.08);
+      color: white;
     }
 
-    .nav-links a:hover{
-      background:rgba(255,255,255,.08);
-      color:white;
+    .lang-switch {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.08);
     }
 
-    .nav-actions{
-      display:flex;
-      align-items:center;
-      gap:10px;
-      flex-wrap:wrap;
-      justify-content:flex-end;
-    }
-
-    .lang-switch{
-      display:flex;
-      align-items:center;
-      gap:6px;
-      padding:6px;
-      border-radius:999px;
-      background:rgba(255,255,255,.06);
-      border:1px solid rgba(255,255,255,.08);
-    }
-
-    .lang-btn{
-      min-width:44px;
-      padding:10px 12px;
-      border-radius:999px;
-      background:transparent;
-      color:var(--muted);
-      font-weight:700;
+    .lang-btn {
+      min-width: 44px;
+      padding: 10px 12px;
+      border-radius: 999px;
+      background: transparent;
+      color: var(--muted);
+      font-weight: 700;
     }
 
     .lang-btn.active,
-    .lang-btn:hover{
-      background:linear-gradient(135deg,var(--blue),var(--blue2));
-      color:white;
+    .lang-btn:hover {
+      background: linear-gradient(135deg, var(--blue), var(--blue2));
+      color: white;
     }
 
-    .btn{
-      padding:13px 18px;
-      border-radius:999px;
-      font-weight:800;
-      letter-spacing:.2px;
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      gap:10px;
+    .btn {
+      padding: 13px 18px;
+      border-radius: 999px;
+      font-weight: 800;
+      letter-spacing: .2px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
     }
 
-    .btn-primary{
-      color:#06111f;
-      background:linear-gradient(135deg,#8fe8ff,var(--blue),#a58cff);
-      box-shadow:0 12px 30px rgba(69,194,255,.24);
+    .btn-primary {
+      color: #06111f;
+      background: linear-gradient(135deg, #8fe8ff, var(--blue), #a58cff);
+      box-shadow: 0 12px 30px rgba(69,194,255,.24);
     }
 
-    .btn-primary:hover{transform:translateY(-1px) scale(1.01)}
-
-    .btn-secondary{
-      background:rgba(255,255,255,.06);
-      border:1px solid rgba(255,255,255,.12);
-      color:white;
+    .btn-secondary {
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.12);
+      color: white;
     }
 
-    .btn-secondary:hover{
-      background:rgba(255,255,255,.1);
+    .menu-btn {
+      display: none;
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+      background: rgba(255,255,255,.08);
+      color: white;
+      font-size: 1.15rem;
     }
 
-    .menu-btn{
-      display:none;
-      width:48px;
-      height:48px;
-      border-radius:14px;
-      background:rgba(255,255,255,.08);
-      color:white;
-      font-size:1.15rem;
+    .hero,
+    section {
+      padding: 34px 0;
     }
 
-    .hero{
-      position:relative;
-      padding:64px 0 34px;
+    .hero { padding-top: 64px; }
+
+    .hero-grid,
+    .profile-wrap,
+    .cta-panel,
+    .footer-grid,
+    .media-grid {
+      display: grid;
+      gap: 18px;
     }
 
-    .hero-grid{
-      display:grid;
-      grid-template-columns:1.15fr .95fr;
-      gap:26px;
-      align-items:stretch;
+    .hero-grid {
+      grid-template-columns: 1.15fr .95fr;
+      gap: 26px;
     }
 
-    .hero-copy{
-      padding:34px;
-      border-radius:32px;
-      position:relative;
-      overflow:hidden;
+    .hero-copy,
+    .feature-panel,
+    .profile-main,
+    .id-card,
+    .media-card,
+    .cta-panel,
+    .footer-card {
+      padding: 22px;
+      border-radius: 28px;
     }
 
-    .hero-copy::before{
-      content:"";
-      position:absolute;
-      inset:auto -100px -100px auto;
-      width:240px;
-      height:240px;
-      background:radial-gradient(circle, rgba(255,207,102,.24), transparent 60%);
-      pointer-events:none;
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 9px 14px;
+      border-radius: 999px;
+      font-size: .88rem;
+      color: #ddedff;
+      background: rgba(255,255,255,.07);
+      border: 1px solid rgba(255,255,255,.1);
+      margin-bottom: 18px;
     }
 
-    .eyebrow{
-      display:inline-flex;
-      align-items:center;
-      gap:10px;
-      padding:9px 14px;
-      border-radius:999px;
-      font-size:.88rem;
-      color:#ddedff;
-      background:rgba(255,255,255,.07);
-      border:1px solid rgba(255,255,255,.1);
-      margin-bottom:18px;
+    .hero h1 {
+      margin: 0 0 16px;
+      font-size: clamp(2.1rem, 4.6vw, 4.3rem);
+      line-height: 1.02;
+      letter-spacing: -1.6px;
+      max-width: 13ch;
     }
 
-    .hero h1{
-      margin:0 0 16px;
-      font-size:clamp(2.1rem,4.6vw,4.3rem);
-      line-height:1.02;
-      letter-spacing:-1.6px;
-      max-width:13ch;
-    }
-
-    .hero p{
-      margin:0;
-      color:var(--muted);
-      font-size:1.08rem;
-      line-height:1.7;
-      max-width:58ch;
-    }
-
-    .hero-actions{
-      margin-top:24px;
-      display:flex;
-      flex-wrap:wrap;
-      gap:12px;
-    }
-
-    .hero-stats{
-      display:grid;
-      grid-template-columns:repeat(3,1fr);
-      gap:12px;
-      margin-top:24px;
-    }
-
-    .stat{
-      padding:16px;
-      border-radius:20px;
-      background:rgba(255,255,255,.05);
-      border:1px solid rgba(255,255,255,.08);
-    }
-
-    .stat strong{
-      display:block;
-      font-size:1.35rem;
-      margin-bottom:6px;
-    }
-
-    .stat span{
-      color:var(--muted);
-      font-size:.92rem;
-    }
-
-    .hero-side{
-      display:grid;
-      gap:16px;
-    }
-
-    .feature-panel{
-      padding:20px;
-      border-radius:28px;
-    }
-
-    .panel-top{
-      display:flex;
-      gap:14px;
-      align-items:flex-start;
-      justify-content:space-between;
-      margin-bottom:16px;
-    }
-
-    .panel-chip{
-      padding:8px 12px;
-      border-radius:999px;
-      background:rgba(69,194,255,.16);
-      color:#dff7ff;
-      font-size:.82rem;
-      font-weight:700;
-      border:1px solid rgba(69,194,255,.2);
-      white-space:nowrap;
-    }
-
-    .mini-grid{
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:12px;
-    }
-
-    .mini-card{
-      background:rgba(255,255,255,.04);
-      border:1px solid rgba(255,255,255,.08);
-      padding:16px;
-      border-radius:18px;
-    }
-
-    .mini-card strong{
-      display:block;
-      margin-bottom:6px;
-      font-size:.98rem;
-    }
-
-    .mini-card span{
-      color:var(--muted);
-      font-size:.9rem;
-      line-height:1.5;
-    }
-
-    .artist-spotlight{
-      display:grid;
-      grid-template-columns:92px 1fr;
-      gap:16px;
-      align-items:center;
-    }
-
-    .avatar-big{
-      width:92px;
-      height:92px;
-      border-radius:24px;
-      background:linear-gradient(135deg,#2a6bff,#7c5cff,#45c2ff);
-      display:grid;
-      place-items:center;
-      font-size:2rem;
-      font-weight:900;
-      color:white;
-      overflow:hidden;
-      border:2px solid rgba(255,255,255,.12);
-    }
-
-    .spot-tags{
-      display:flex;
-      flex-wrap:wrap;
-      gap:8px;
-      margin-top:10px;
-    }
-
-    .tag{
-      padding:8px 10px;
-      border-radius:999px;
-      background:rgba(255,255,255,.06);
-      border:1px solid rgba(255,255,255,.08);
-      color:#d9e4fb;
-      font-size:.82rem;
-    }
-
-    section{
-      padding:34px 0;
-    }
-
-    .section-head{
-      display:flex;
-      align-items:end;
-      justify-content:space-between;
-      gap:16px;
-      margin-bottom:18px;
-    }
-
-    .section-head h2{
-      margin:0;
-      font-size:clamp(1.55rem,3vw,2.45rem);
-      letter-spacing:-.8px;
-    }
-
-    .section-head p{
-      margin:8px 0 0;
-      color:var(--muted);
-      max-width:60ch;
-      line-height:1.7;
-    }
-
-    .cards-3{
-      display:grid;
-      grid-template-columns:repeat(3,1fr);
-      gap:16px;
-    }
-
-    .feature-card{
-      padding:22px;
-      border-radius:26px;
-      min-height:220px;
-      position:relative;
-      overflow:hidden;
-    }
-
-    .feature-card .icon{
-      width:54px;
-      height:54px;
-      border-radius:18px;
-      display:grid;
-      place-items:center;
-      font-size:1.3rem;
-      background:linear-gradient(135deg,rgba(69,194,255,.2),rgba(124,92,255,.2));
-      border:1px solid rgba(255,255,255,.1);
-      margin-bottom:16px;
-    }
-
-    .feature-card h3{
-      margin:0 0 10px;
-      font-size:1.15rem;
-    }
-
-    .feature-card p{
-      margin:0;
-      color:var(--muted);
-      line-height:1.7;
-    }
-
-    .profile-wrap{
-      display:grid;
-      grid-template-columns:1.1fr .9fr;
-      gap:18px;
-      align-items:start;
-    }
-
-    .profile-main{
-      padding:22px;
-      border-radius:28px;
-    }
-
-    .profile-top{
-      display:grid;
-      grid-template-columns:140px 1fr auto;
-      gap:18px;
-      align-items:center;
-      margin-bottom:20px;
-    }
-
-    .profile-avatar{
-      width:140px;
-      height:140px;
-      border-radius:28px;
-      overflow:hidden;
-      background:linear-gradient(135deg,#102448,#1f3e77,#4a68ff);
-      display:grid;
-      place-items:center;
-      font-size:3rem;
-      font-weight:900;
-      border:2px solid rgba(255,255,255,.12);
-    }
-
-    .verified-badge{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      padding:8px 12px;
-      border-radius:999px;
-      background:rgba(41,214,138,.12);
-      border:1px solid rgba(41,214,138,.25);
-      color:#dff8ee;
-      font-weight:700;
-      font-size:.84rem;
-    }
-
-    .profile-name{
-      font-size:2rem;
-      margin:0 0 8px;
-      letter-spacing:-.8px;
-    }
-
-    .profile-meta{
-      color:var(--muted);
-      line-height:1.7;
-      margin-bottom:12px;
-    }
-
-    .pill-row{
-      display:flex;
-      flex-wrap:wrap;
-      gap:10px;
-    }
-
-    .pill{
-      padding:10px 12px;
-      border-radius:999px;
-      background:rgba(255,255,255,.06);
-      border:1px solid rgba(255,255,255,.08);
-      font-size:.88rem;
-      color:#e8f0ff;
-    }
-
-    .profile-cta{
-      display:flex;
-      flex-direction:column;
-      gap:10px;
-      min-width:180px;
-    }
-
-    .profile-bio{
-      margin:18px 0 0;
-      color:var(--muted);
-      line-height:1.8;
-      font-size:1rem;
-    }
-
-    .profile-sections{
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:14px;
-      margin-top:20px;
-    }
-
-    .sub-card{
-      padding:18px;
-      border-radius:22px;
-      background:rgba(255,255,255,.04);
-      border:1px solid rgba(255,255,255,.08);
-    }
-
-    .sub-card h4{
-      margin:0 0 10px;
-      font-size:1rem;
-    }
-
+    .hero p,
+    .section-head p,
+    .feature-card p,
+    .profile-meta,
+    .profile-bio,
     .sub-card p,
-    .sub-card li{
-      color:var(--muted);
-      line-height:1.7;
-      font-size:.95rem;
+    .sub-card li,
+    .gallery-info p,
+    .track-sub,
+    .cta-panel p,
+    .footer-links a,
+    .mini-card span {
+      color: var(--muted);
+      line-height: 1.7;
     }
 
-    .sub-card ul{
-      margin:0;
-      padding-left:18px;
+    .hero-actions,
+    .gallery-actions,
+    .pill-row,
+    .spot-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
     }
 
-    .id-card{
-      padding:20px;
-      border-radius:28px;
-      position:relative;
-      overflow:hidden;
+    .hero-stats,
+    .cards-3,
+    .profile-sections,
+    .steps,
+    .gallery-grid,
+    .cta-boxes,
+    .mini-grid,
+    .id-grid {
+      display: grid;
+      gap: 16px;
     }
 
-    .id-card::before{
-      content:"";
-      position:absolute;
-      inset:auto -30px -40px auto;
-      width:170px;
-      height:170px;
-      background:radial-gradient(circle, rgba(69,194,255,.22), transparent 65%);
-      pointer-events:none;
+    .hero-stats { grid-template-columns: repeat(3,1fr); margin-top: 24px; }
+    .cards-3 { grid-template-columns: repeat(3,1fr); }
+    .profile-sections { grid-template-columns: 1fr 1fr; }
+    .steps { grid-template-columns: repeat(4,1fr); }
+    .gallery-grid { grid-template-columns: repeat(4,1fr); }
+    .cta-boxes { grid-template-columns: 1fr 1fr; }
+    .mini-grid { grid-template-columns: 1fr 1fr; }
+    .id-grid { grid-template-columns: 1fr 1fr; margin-top: 14px; }
+
+    .stat,
+    .mini-card,
+    .sub-card,
+    .cta-mini,
+    .track,
+    .video-card,
+    .id-field {
+      background: rgba(255,255,255,.05);
+      border: 1px solid rgba(255,255,255,.08);
     }
 
-    .id-top{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:12px;
-      margin-bottom:16px;
+    .stat,
+    .mini-card,
+    .sub-card,
+    .cta-mini,
+    .id-field { padding: 16px; }
+
+    .stat { border-radius: 20px; }
+    .mini-card,
+    .track,
+    .video-card,
+    .cta-mini,
+    .id-field { border-radius: 18px; }
+    .sub-card { border-radius: 22px; padding: 18px; }
+
+    .stat strong {
+      display: block;
+      font-size: 1.35rem;
+      margin-bottom: 6px;
     }
 
-    .id-title{
-      display:flex;
-      align-items:center;
-      gap:12px;
+    .hero-side { display: grid; gap: 16px; }
+
+    .artist-spotlight {
+      display: grid;
+      grid-template-columns: 92px 1fr;
+      gap: 16px;
+      align-items: center;
     }
 
-    .id-logo{
-      width:48px;
-      height:48px;
-      border-radius:16px;
-      background:linear-gradient(135deg,#45c2ff,#7c5cff);
-      display:grid;
-      place-items:center;
-      font-weight:900;
+    .avatar-big,
+    .profile-avatar,
+    .id-avatar {
+      display: grid;
+      place-items: center;
+      font-weight: 900;
+      color: white;
+      border: 2px solid rgba(255,255,255,.12);
     }
 
-    .id-body{
-      display:grid;
-      grid-template-columns:92px 1fr;
-      gap:14px;
-      align-items:center;
-      margin-bottom:14px;
+    .avatar-big {
+      width: 92px;
+      height: 92px;
+      border-radius: 24px;
+      background: linear-gradient(135deg,#2a6bff,#7c5cff,#45c2ff);
+      font-size: 2rem;
     }
 
-    .id-avatar{
-      width:92px;
-      height:92px;
-      border-radius:22px;
-      background:linear-gradient(135deg,#18366b,#2e5ab7,#7c5cff);
-      display:grid;
-      place-items:center;
-      font-size:2rem;
-      font-weight:900;
-      border:1px solid rgba(255,255,255,.15);
+    .section-head {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 18px;
     }
 
-    .id-grid{
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:10px;
-      margin-top:14px;
+    .section-head h2 {
+      margin: 0;
+      font-size: clamp(1.55rem,3vw,2.45rem);
+      letter-spacing: -.8px;
     }
 
-    .id-field{
-      padding:12px;
-      border-radius:16px;
-      background:rgba(255,255,255,.05);
-      border:1px solid rgba(255,255,255,.08);
+    .feature-card {
+      padding: 22px;
+      border-radius: 26px;
+      min-height: 220px;
     }
 
-    .id-field small{
-      display:block;
-      color:#b4c8f1;
-      margin-bottom:6px;
-      font-size:.76rem;
-      text-transform:uppercase;
-      letter-spacing:.8px;
+    .feature-card .icon {
+      width: 54px;
+      height: 54px;
+      border-radius: 18px;
+      display: grid;
+      place-items: center;
+      font-size: 1.3rem;
+      background: linear-gradient(135deg, rgba(69,194,255,.2), rgba(124,92,255,.2));
+      border: 1px solid rgba(255,255,255,.1);
+      margin-bottom: 16px;
     }
 
-    .id-field strong{
-      display:block;
-      font-size:.95rem;
+    .profile-wrap {
+      grid-template-columns: 1.1fr .9fr;
+      align-items: start;
     }
 
-    .gallery-controls{
-      display:flex;
-      flex-wrap:wrap;
-      gap:10px;
-      margin-bottom:16px;
+    .profile-top {
+      display: grid;
+      grid-template-columns: 140px 1fr auto;
+      gap: 18px;
+      align-items: center;
+      margin-bottom: 20px;
     }
 
-    .filter-btn{
-      padding:11px 14px;
-      border-radius:999px;
-      background:rgba(255,255,255,.06);
-      border:1px solid rgba(255,255,255,.08);
-      color:#e4edff;
-      font-weight:700;
+    .profile-avatar {
+      width: 140px;
+      height: 140px;
+      border-radius: 28px;
+      background: linear-gradient(135deg,#102448,#1f3e77,#4a68ff);
+      font-size: 3rem;
+    }
+
+    .verified-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(41,214,138,.12);
+      border: 1px solid rgba(41,214,138,.25);
+      color: #dff8ee;
+      font-weight: 700;
+      font-size: .84rem;
+    }
+
+    .profile-name {
+      font-size: 2rem;
+      margin: 0 0 8px;
+    }
+
+    .profile-cta {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      min-width: 180px;
+    }
+
+    .sub-card ul {
+      margin: 0;
+      padding-left: 18px;
+    }
+
+    .id-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .id-title {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .id-logo {
+      width: 48px;
+      height: 48px;
+      border-radius: 16px;
+      background: linear-gradient(135deg,#45c2ff,#7c5cff);
+      display: grid;
+      place-items: center;
+      font-weight: 900;
+    }
+
+    .id-body {
+      display: grid;
+      grid-template-columns: 92px 1fr;
+      gap: 14px;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+
+    .id-avatar {
+      width: 92px;
+      height: 92px;
+      border-radius: 22px;
+      background: linear-gradient(135deg,#18366b,#2e5ab7,#7c5cff);
+      font-size: 2rem;
+    }
+
+    .id-field small {
+      display: block;
+      color: #b4c8f1;
+      margin-bottom: 6px;
+      font-size: .76rem;
+      text-transform: uppercase;
+      letter-spacing: .8px;
+    }
+
+    .gallery-controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .filter-btn,
+    .tiny-btn {
+      padding: 11px 14px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.08);
+      color: #e4edff;
+      font-weight: 700;
     }
 
     .filter-btn.active,
-    .filter-btn:hover{
-      background:linear-gradient(135deg,var(--blue),var(--blue2));
-      color:white;
+    .filter-btn:hover,
+    .tiny-btn:hover {
+      background: linear-gradient(135deg,var(--blue),var(--blue2));
+      color: white;
     }
 
-    .gallery-grid{
-      display:grid;
-      grid-template-columns:repeat(4,1fr);
-      gap:16px;
+    .gallery-card {
+      border-radius: 24px;
+      overflow: hidden;
+      min-height: 300px;
+      background: linear-gradient(180deg,#122240,#0d1830 58%,#09111f 100%);
+      border: 1px solid rgba(255,255,255,.09);
+      box-shadow: var(--shadow);
     }
 
-    .gallery-card{
-      border-radius:24px;
-      overflow:hidden;
-      position:relative;
-      min-height:300px;
-      background:linear-gradient(180deg,#122240,#0d1830 58%,#09111f 100%);
-      border:1px solid rgba(255,255,255,.09);
-      box-shadow:var(--shadow);
-      transition:.25s ease;
-    }
-
-    .gallery-card:hover{
-      transform:translateY(-4px);
-      border-color:rgba(69,194,255,.22);
-    }
-
-    .gallery-cover{
-      height:190px;
-      position:relative;
-      display:grid;
-      place-items:center;
-      font-size:2.6rem;
-      font-weight:900;
-      letter-spacing:1px;
-      color:white;
-      overflow:hidden;
+    .gallery-cover {
+      height: 190px;
+      display: grid;
+      place-items: center;
+      font-size: 2.6rem;
+      font-weight: 900;
+      color: white;
     }
 
     .cover-1{background:linear-gradient(135deg,#172e5f,#1a4d9f,#45c2ff)}
@@ -724,533 +529,303 @@
     .cover-7{background:linear-gradient(135deg,#10314f,#2196f3,#7c5cff)}
     .cover-8{background:linear-gradient(135deg,#203b23,#3fbf5a,#baff66)}
 
-    .gallery-cover::after{
-      content:"";
-      position:absolute;
-      inset:auto 0 0 0;
-      height:46%;
-      background:linear-gradient(180deg,transparent,rgba(0,0,0,.35));
+    .gallery-info { padding: 16px; }
+
+    .media-grid { grid-template-columns: 1fr 1fr; }
+
+    .track {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: 14px;
+      align-items: center;
+      margin-bottom: 12px;
     }
 
-    .gallery-info{
-      padding:16px;
+    .track-index {
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, rgba(69,194,255,.2), rgba(124,92,255,.2));
+      font-weight: 800;
     }
 
-    .gallery-info h3{
-      margin:0 0 6px;
-      font-size:1.05rem;
+    .track-title {
+      font-weight: 800;
+      margin-bottom: 4px;
     }
 
-    .gallery-info p{
-      margin:0;
-      color:var(--muted);
-      line-height:1.6;
-      font-size:.92rem;
+    .play-btn {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: linear-gradient(135deg,var(--blue),var(--blue2));
+      color: white;
+      font-weight: 900;
+      box-shadow: 0 10px 25px rgba(69,194,255,.25);
     }
 
-    .gallery-actions{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      margin-top:14px;
+    .video-card {
+      display: grid;
+      gap: 12px;
+      margin-bottom: 12px;
     }
 
-    .tiny-btn{
-      padding:10px 12px;
-      border-radius:999px;
-      background:rgba(255,255,255,.08);
-      border:1px solid rgba(255,255,255,.1);
-      color:white;
-      font-weight:700;
-      font-size:.85rem;
+    .video-thumb {
+      height: 170px;
+      border-radius: 18px;
+      display: grid;
+      place-items: center;
+      font-size: 2rem;
+      font-weight: 900;
+      background: linear-gradient(135deg,#122c54,#3c2c90,#6f5bff);
     }
 
-    .tiny-btn:hover{
-      background:rgba(255,255,255,.14);
+    .step {
+      padding: 22px;
+      border-radius: 24px;
     }
 
-    .media-grid{
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:18px;
+    .step-num {
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg,var(--blue),var(--blue2));
+      margin-bottom: 14px;
+      font-weight: 900;
     }
 
-    .media-card{
-      padding:22px;
-      border-radius:28px;
+    .cta-panel {
+      grid-template-columns: 1.1fr .9fr;
+      align-items: center;
     }
 
-    .track{
-      display:grid;
-      grid-template-columns:auto 1fr auto;
-      gap:14px;
-      align-items:center;
-      padding:14px;
-      border-radius:18px;
-      background:rgba(255,255,255,.05);
-      border:1px solid rgba(255,255,255,.08);
-      margin-bottom:12px;
+    .cta-panel h2 {
+      margin: 0 0 12px;
+      font-size: clamp(1.8rem,3.3vw,3rem);
     }
 
-    .track-index{
-      width:42px;
-      height:42px;
-      border-radius:14px;
-      display:grid;
-      place-items:center;
-      background:linear-gradient(135deg,rgba(69,194,255,.2),rgba(124,92,255,.2));
-      font-weight:800;
+    .footer {
+      padding: 36px 0 100px;
+      color: var(--muted);
     }
 
-    .track-title{
-      font-weight:800;
-      margin-bottom:4px;
+    .footer-grid {
+      grid-template-columns: 1.2fr .8fr .8fr;
     }
 
-    .track-sub{
-      color:var(--muted);
-      font-size:.9rem;
+    .footer-card {
+      padding: 20px;
+      border-radius: 24px;
     }
 
-    .play-btn{
-      width:48px;
-      height:48px;
-      border-radius:50%;
-      background:linear-gradient(135deg,var(--blue),var(--blue2));
-      color:white;
-      font-weight:900;
-      box-shadow:0 10px 25px rgba(69,194,255,.25);
+    .footer-links {
+      display: grid;
+      gap: 10px;
     }
 
-    .video-card{
-      display:grid;
-      gap:12px;
-      border-radius:22px;
-      padding:16px;
-      background:rgba(255,255,255,.05);
-      border:1px solid rgba(255,255,255,.08);
-      margin-bottom:12px;
+    .floating-chat-btn {
+      position: fixed;
+      right: 22px;
+      bottom: 22px;
+      width: 66px;
+      height: 66px;
+      border-radius: 50%;
+      z-index: 1200;
+      background: linear-gradient(135deg,var(--blue),var(--blue2));
+      color: white;
+      font-size: 1.5rem;
+      box-shadow: 0 18px 40px rgba(69,194,255,.35);
     }
 
-    .video-thumb{
-      height:170px;
-      border-radius:18px;
-      position:relative;
-      overflow:hidden;
-      background:linear-gradient(135deg,#122c54,#3c2c90,#6f5bff);
-      display:grid;
-      place-items:center;
-      font-size:2rem;
-      font-weight:900;
+    .chatbox {
+      position: fixed;
+      right: 22px;
+      bottom: 100px;
+      width: min(92vw,390px);
+      border-radius: 26px;
+      z-index: 1200;
+      overflow: hidden;
+      display: none;
+      flex-direction: column;
     }
 
-    .video-thumb::after{
-      content:"▶";
-      position:absolute;
-      width:64px;
-      height:64px;
-      border-radius:50%;
-      display:grid;
-      place-items:center;
-      background:rgba(255,255,255,.14);
-      border:1px solid rgba(255,255,255,.18);
-      backdrop-filter:blur(8px);
-      font-size:1.2rem;
+    .chatbox.open { display: flex; }
+
+    .chat-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 16px 16px 14px;
+      background: rgba(255,255,255,.06);
+      border-bottom: 1px solid rgba(255,255,255,.08);
     }
 
-    .steps{
-      display:grid;
-      grid-template-columns:repeat(4,1fr);
-      gap:16px;
+    .chat-head-title {
+      display: flex;
+      align-items: center;
+      gap: 12px;
     }
 
-    .step{
-      padding:22px;
-      border-radius:24px;
-      position:relative;
+    .chat-head-logo {
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg,var(--blue),var(--blue2));
+      font-weight: 900;
     }
 
-    .step-num{
-      width:42px;
-      height:42px;
-      border-radius:14px;
-      display:grid;
-      place-items:center;
-      background:linear-gradient(135deg,var(--blue),var(--blue2));
-      margin-bottom:14px;
-      font-weight:900;
+    .chat-close {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      background: rgba(255,255,255,.08);
+      color: white;
     }
 
-    .step h3{
-      margin:0 0 10px;
-      font-size:1.08rem;
+    .chat-messages {
+      max-height: 340px;
+      overflow: auto;
+      padding: 16px;
+      background: rgba(7,17,31,.86);
     }
 
-    .step p{
-      margin:0;
-      color:var(--muted);
-      line-height:1.7;
-      font-size:.95rem;
+    .msg {
+      max-width: 86%;
+      margin-bottom: 12px;
+      padding: 12px 14px;
+      border-radius: 18px;
+      line-height: 1.6;
+      font-size: .95rem;
     }
 
-    .cta-panel{
-      padding:28px;
-      border-radius:32px;
-      display:grid;
-      grid-template-columns:1.1fr .9fr;
-      gap:18px;
-      align-items:center;
+    .msg-ai {
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.08);
     }
 
-    .cta-panel h2{
-      margin:0 0 12px;
-      font-size:clamp(1.8rem,3.3vw,3rem);
-      letter-spacing:-1px;
+    .msg-user {
+      background: linear-gradient(135deg,rgba(69,194,255,.22),rgba(124,92,255,.22));
+      border: 1px solid rgba(69,194,255,.18);
+      margin-left: auto;
     }
 
-    .cta-panel p{
-      margin:0;
-      color:var(--muted);
-      line-height:1.8;
-      max-width:58ch;
+    .chat-quick {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding: 0 16px 14px;
+      background: rgba(7,17,31,.86);
     }
 
-    .cta-boxes{
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:12px;
+    .chat-quick button {
+      padding: 10px 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.08);
+      color: white;
+      font-size: .84rem;
+      font-weight: 700;
     }
 
-    .cta-mini{
-      padding:16px;
-      border-radius:20px;
-      background:rgba(255,255,255,.05);
-      border:1px solid rgba(255,255,255,.08);
+    .chat-form {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 10px;
+      padding: 14px;
+      background: rgba(255,255,255,.05);
+      border-top: 1px solid rgba(255,255,255,.08);
     }
 
-    .footer{
-      padding:36px 0 100px;
-      color:var(--muted);
+    .chat-form input {
+      width: 100%;
+      border: none;
+      outline: none;
+      border-radius: 16px;
+      padding: 14px;
+      background: rgba(255,255,255,.08);
+      color: white;
     }
 
-    .footer-grid{
-      display:grid;
-      grid-template-columns:1.2fr .8fr .8fr;
-      gap:18px;
+    .send-btn {
+      padding: 0 18px;
+      border-radius: 16px;
+      background: linear-gradient(135deg,var(--blue),var(--blue2));
+      color: white;
+      font-weight: 800;
     }
 
-    .footer-card{
-      padding:20px;
-      border-radius:24px;
+    .mobile-menu {
+      display: none;
+      flex-direction: column;
+      gap: 10px;
+      padding: 0 0 16px;
     }
 
-    .footer-card h4{
-      margin:0 0 12px;
-      color:white;
-    }
+    .mobile-menu.show { display: flex; }
 
-    .footer-links{
-      display:grid;
-      gap:10px;
-    }
-
-    .footer-links a{
-      color:var(--muted);
-    }
-
-    .footer-links a:hover{
-      color:white;
-    }
-
-    .floating-chat-btn{
-      position:fixed;
-      right:22px;
-      bottom:22px;
-      width:66px;
-      height:66px;
-      border-radius:50%;
-      z-index:1200;
-      background:linear-gradient(135deg,var(--blue),var(--blue2));
-      color:white;
-      font-size:1.5rem;
-      box-shadow:0 18px 40px rgba(69,194,255,.35);
-    }
-
-    .chatbox{
-      position:fixed;
-      right:22px;
-      bottom:100px;
-      width:min(92vw,390px);
-      border-radius:26px;
-      z-index:1200;
-      overflow:hidden;
-      display:none;
-      flex-direction:column;
-    }
-
-    .chatbox.open{
-      display:flex;
-    }
-
-    .chat-head{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:12px;
-      padding:16px 16px 14px;
-      background:rgba(255,255,255,.06);
-      border-bottom:1px solid rgba(255,255,255,.08);
-    }
-
-    .chat-head-title{
-      display:flex;
-      align-items:center;
-      gap:12px;
-    }
-
-    .chat-head-logo{
-      width:42px;
-      height:42px;
-      border-radius:14px;
-      display:grid;
-      place-items:center;
-      background:linear-gradient(135deg,var(--blue),var(--blue2));
-      font-weight:900;
-    }
-
-    .chat-close{
-      width:40px;
-      height:40px;
-      border-radius:12px;
-      background:rgba(255,255,255,.08);
-      color:white;
-    }
-
-    .chat-messages{
-      max-height:340px;
-      overflow:auto;
-      padding:16px;
-      background:rgba(7,17,31,.86);
-    }
-
-    .msg{
-      max-width:86%;
-      margin-bottom:12px;
-      padding:12px 14px;
-      border-radius:18px;
-      line-height:1.6;
-      font-size:.95rem;
-    }
-
-    .msg-ai{
-      background:rgba(255,255,255,.08);
-      border:1px solid rgba(255,255,255,.08);
-      color:#eef4ff;
-    }
-
-    .msg-user{
-      background:linear-gradient(135deg,rgba(69,194,255,.22),rgba(124,92,255,.22));
-      border:1px solid rgba(69,194,255,.18);
-      margin-left:auto;
-    }
-
-    .chat-quick{
-      display:flex;
-      flex-wrap:wrap;
-      gap:8px;
-      padding:0 16px 14px;
-      background:rgba(7,17,31,.86);
-    }
-
-    .chat-quick button{
-      padding:10px 12px;
-      border-radius:999px;
-      background:rgba(255,255,255,.08);
-      border:1px solid rgba(255,255,255,.08);
-      color:white;
-      font-size:.84rem;
-      font-weight:700;
-    }
-
-    .chat-form{
-      display:grid;
-      grid-template-columns:1fr auto;
-      gap:10px;
-      padding:14px;
-      background:rgba(255,255,255,.05);
-      border-top:1px solid rgba(255,255,255,.08);
-    }
-
-    .chat-form input{
-      width:100%;
-      border:none;
-      outline:none;
-      border-radius:16px;
-      padding:14px 14px;
-      background:rgba(255,255,255,.08);
-      color:white;
-      font:inherit;
-    }
-
-    .chat-form input::placeholder{
-      color:#adc3e9;
-    }
-
-    .send-btn{
-      padding:0 18px;
-      border-radius:16px;
-      background:linear-gradient(135deg,var(--blue),var(--blue2));
-      color:white;
-      font-weight:800;
-    }
-
-    .mobile-menu{
-      display:none;
-      flex-direction:column;
-      gap:10px;
-      padding:0 0 16px;
-    }
-
-    .mobile-panel{
-      padding:16px;
-      border-radius:22px;
-      display:grid;
-      gap:10px;
+    .mobile-panel {
+      padding: 16px;
+      border-radius: 22px;
+      display: grid;
+      gap: 10px;
     }
 
     .mobile-panel a,
-    .mobile-panel button{
-      width:100%;
-      text-align:left;
-      padding:13px 14px;
-      border-radius:14px;
-      background:rgba(255,255,255,.05);
-      color:white;
-      border:1px solid rgba(255,255,255,.08);
+    .mobile-panel button {
+      width: 100%;
+      text-align: left;
+      padding: 13px 14px;
+      border-radius: 14px;
+      background: rgba(255,255,255,.05);
+      color: white;
+      border: 1px solid rgba(255,255,255,.08);
     }
 
-    .hidden{
-      display:none !important;
-    }
-
-    @media (max-width: 1100px){
+    @media (max-width:1100px) {
       .hero-grid,
       .profile-wrap,
       .cta-panel,
       .footer-grid,
-      .media-grid{
-        grid-template-columns:1fr;
-      }
-
+      .media-grid { grid-template-columns: 1fr; }
       .cards-3,
-      .steps{
-        grid-template-columns:1fr 1fr;
-      }
-
-      .gallery-grid{
-        grid-template-columns:repeat(3,1fr);
-      }
-
-      .profile-top{
-        grid-template-columns:110px 1fr;
-      }
-
-      .profile-cta{
-        grid-column:1 / -1;
-        flex-direction:row;
-        flex-wrap:wrap;
-      }
+      .steps { grid-template-columns: 1fr 1fr; }
+      .gallery-grid { grid-template-columns: repeat(3,1fr); }
+      .profile-top { grid-template-columns: 110px 1fr; }
+      .profile-cta { grid-column: 1 / -1; flex-direction: row; flex-wrap: wrap; }
     }
 
-    @media (max-width: 820px){
+    @media (max-width:820px) {
       .nav-links,
       .nav-actions > .lang-switch,
-      .nav-actions > .btn{
-        display:none;
-      }
-
-      .menu-btn{
-        display:grid;
-        place-items:center;
-      }
-
-      .mobile-menu.show{
-        display:flex;
-      }
-
-      .hero-copy,
-      .feature-panel,
-      .profile-main,
-      .id-card,
-      .media-card,
-      .cta-panel,
-      .footer-card{
-        border-radius:24px;
-      }
-
+      .nav-actions > .btn { display: none; }
+      .menu-btn { display: grid; place-items: center; }
       .hero-stats,
       .profile-sections,
       .cta-boxes,
       .cards-3,
       .steps,
-      .gallery-grid{
-        grid-template-columns:1fr;
-      }
-
-      .mini-grid{
-        grid-template-columns:1fr;
-      }
-
-      .profile-top{
-        grid-template-columns:1fr;
-      }
-
-      .profile-avatar{
-        width:120px;
-        height:120px;
-      }
-
-      .id-grid{
-        grid-template-columns:1fr;
-      }
+      .gallery-grid,
+      .mini-grid,
+      .id-grid { grid-template-columns: 1fr; }
+      .profile-top { grid-template-columns: 1fr; }
+      .profile-avatar { width: 120px; height: 120px; }
     }
 
-    @media (max-width: 560px){
-      .nav{
-        min-height:72px;
-      }
-
-      .hero{
-        padding-top:44px;
-      }
-
-      .container{
-        width:min(100% - 22px,var(--max));
-      }
-
-      .hero-copy,
-      .feature-panel,
-      .profile-main,
-      .id-card,
-      .media-card,
-      .cta-panel,
-      .footer-card{
-        padding:18px;
-      }
-
-      .hero h1{
-        max-width:100%;
-      }
-
-      .floating-chat-btn{
-        width:58px;
-        height:58px;
-      }
+    @media (max-width:560px) {
+      .container { width: min(100% - 22px, var(--max)); }
+      .hero h1 { max-width: 100%; }
+      .floating-chat-btn { width: 58px; height: 58px; }
     }
   </style>
 </head>
 <body>
-
   <header class="topbar">
     <div class="container">
       <div class="nav">
@@ -1310,9 +885,7 @@
           <div class="hero-copy glass">
             <div class="eyebrow" data-i18n="eyebrow">Identity card • Artist profile • Audio • Video • Global discovery</div>
             <h1 data-i18n="hero_title">Build your voice identity and turn your talent into a global artist profile.</h1>
-            <p data-i18n="hero_text">
-              VoxWorldApp gives artists a beautiful profile page, verified creator identity, media showcase, discovery gallery, audio and video buttons, and a modern home page made to attract creators fast.
-            </p>
+            <p data-i18n="hero_text">VoxWorldApp gives artists a beautiful profile page, verified creator identity, media showcase, discovery gallery, audio and video buttons, and a modern home page made to attract creators fast.</p>
 
             <div class="hero-actions">
               <button class="btn btn-primary" data-signup data-i18n="hero_btn_profile">Start Your Profile</button>
@@ -1321,29 +894,19 @@
             </div>
 
             <div class="hero-stats">
-              <div class="stat">
-                <strong>120+</strong>
-                <span data-i18n="stat_1">countries ready for discovery</span>
-              </div>
-              <div class="stat">
-                <strong>1 ID</strong>
-                <span data-i18n="stat_2">artist identity card system</span>
-              </div>
-              <div class="stat">
-                <strong>24/7</strong>
-                <span data-i18n="stat_3">instant profile visibility</span>
-              </div>
+              <div class="stat"><strong>120+</strong><span data-i18n="stat_1">countries ready for discovery</span></div>
+              <div class="stat"><strong>1 ID</strong><span data-i18n="stat_2">artist identity card system</span></div>
+              <div class="stat"><strong>24/7</strong><span data-i18n="stat_3">instant profile visibility</span></div>
             </div>
           </div>
 
           <div class="hero-side">
             <div class="feature-panel glass">
-              <div class="panel-top">
+              <div class="section-head" style="margin-bottom:14px;">
                 <div>
-                  <h3 style="margin:0 0 8px;" data-i18n="spot_title">Artist Spotlight</h3>
-                  <p style="margin:0;color:var(--muted);line-height:1.7;" data-i18n="spot_text">A premium artist profile inspired by streaming platforms, rebuilt for visibility, identity, and discovery.</p>
+                  <h2 style="font-size:1.35rem;" data-i18n="spot_title">Artist Spotlight</h2>
+                  <p data-i18n="spot_text">A premium artist profile inspired by streaming platforms, rebuilt for visibility, identity, and discovery.</p>
                 </div>
-                <div class="panel-chip" data-i18n="spot_chip">Featured</div>
               </div>
 
               <div class="artist-spotlight">
@@ -1351,11 +914,10 @@
                 <div>
                   <strong style="font-size:1.2rem;">Ansy777_DDC</strong>
                   <div style="color:var(--muted);margin-top:4px;" data-i18n="spot_meta">Digital Caribbean Architect • Future Kompa • Global Creator</div>
-                  <div class="spot-tags">
-                    <span class="tag">Kompa</span>
-                    <span class="tag">Zouk</span>
-                    <span class="tag">Afro</span>
-                    <span class="tag" data-i18n="verified_text">Verified Artist</span>
+                  <div class="spot-tags" style="margin-top:10px;">
+                    <span class="tiny-btn">Kompa</span>
+                    <span class="tiny-btn">Zouk</span>
+                    <span class="tiny-btn">Afro</span>
                   </div>
                 </div>
               </div>
@@ -1363,22 +925,10 @@
 
             <div class="feature-panel glass">
               <div class="mini-grid">
-                <div class="mini-card">
-                  <strong data-i18n="mini_1_t">Identity ID Card</strong>
-                  <span data-i18n="mini_1_d">A beautiful visual identity card for each artist to inspire trust and recognition.</span>
-                </div>
-                <div class="mini-card">
-                  <strong data-i18n="mini_2_t">Audio Showcase</strong>
-                  <span data-i18n="mini_2_d">Play songs, demos, snippets, and artist previews directly from the profile page.</span>
-                </div>
-                <div class="mini-card">
-                  <strong data-i18n="mini_3_t">Video Showcase</strong>
-                  <span data-i18n="mini_3_d">Display clips, performances, interviews, reels, trailers, and visual storytelling.</span>
-                </div>
-                <div class="mini-card">
-                  <strong data-i18n="mini_4_t">Global Discovery</strong>
-                  <span data-i18n="mini_4_d">Let artists appear in a modern gallery designed to attract fans, clients, and collaborators.</span>
-                </div>
+                <div class="mini-card"><strong data-i18n="mini_1_t">Identity ID Card</strong><span data-i18n="mini_1_d">A beautiful visual identity card for each artist to inspire trust and recognition.</span></div>
+                <div class="mini-card"><strong data-i18n="mini_2_t">Audio Showcase</strong><span data-i18n="mini_2_d">Play songs, demos, snippets, and artist previews directly from the profile page.</span></div>
+                <div class="mini-card"><strong data-i18n="mini_3_t">Video Showcase</strong><span data-i18n="mini_3_d">Display clips, performances, interviews, reels, trailers, and visual storytelling.</span></div>
+                <div class="mini-card"><strong data-i18n="mini_4_t">Global Discovery</strong><span data-i18n="mini_4_d">Let artists appear in a modern gallery designed to attract fans, clients, and collaborators.</span></div>
               </div>
             </div>
           </div>
@@ -1388,183 +938,66 @@
 
     <section id="features">
       <div class="container">
-        <div class="section-head">
-          <div>
-            <h2 data-i18n="features_title">A beautiful platform made to push artists to join quickly</h2>
-            <p data-i18n="features_text">
-              Modern design, strong profile identity, premium gallery presentation, and built-in media sections make the platform feel more complete and more attractive for creators from day one.
-            </p>
-          </div>
-        </div>
-
+        <div class="section-head"><div><h2 data-i18n="features_title">A beautiful platform made to push artists to join quickly</h2><p data-i18n="features_text">Modern design, strong profile identity, premium gallery presentation, and built-in media sections make the platform feel more complete and more attractive for creators from day one.</p></div></div>
         <div class="cards-3">
-          <div class="feature-card glass">
-            <div class="icon">🎤</div>
-            <h3 data-i18n="f1_t">Artist-first home page</h3>
-            <p data-i18n="f1_d">A clear landing page that immediately shows value: build a profile, upload content, and get discovered worldwide.</p>
-          </div>
-
-          <div class="feature-card glass">
-            <div class="icon">🪪</div>
-            <h3 data-i18n="f2_t">Identity card inside profile</h3>
-            <p data-i18n="f2_d">Each artist can display a premium visual creator ID card to strengthen trust, branding, and uniqueness.</p>
-          </div>
-
-          <div class="feature-card glass">
-            <div class="icon">🖼️</div>
-            <h3 data-i18n="f3_t">Gallery made for discovery</h3>
-            <p data-i18n="f3_d">A modern artist gallery gives a stronger visual experience and encourages visitors to explore more creators.</p>
-          </div>
-
-          <div class="feature-card glass">
-            <div class="icon">🎧</div>
-            <h3 data-i18n="f4_t">Audio buttons</h3>
-            <p data-i18n="f4_d">Dedicated play buttons let visitors sample songs, demos, hooks, and voice identity quickly.</p>
-          </div>
-
-          <div class="feature-card glass">
-            <div class="icon">🎬</div>
-            <h3 data-i18n="f5_t">Video buttons</h3>
-            <p data-i18n="f5_d">Let artists present music videos, trailers, performances, interviews, or promo visuals from the same page.</p>
-          </div>
-
-          <div class="feature-card glass">
-            <div class="icon">🌍</div>
-            <h3 data-i18n="f6_t">Worldwide artist appeal</h3>
-            <p data-i18n="f6_d">The layout is built to attract singers, creators, producers, and talent from multiple countries and languages.</p>
-          </div>
+          <div class="feature-card glass"><div class="icon">🎤</div><h3 data-i18n="f1_t">Artist-first home page</h3><p data-i18n="f1_d">A clear landing page that immediately shows value: build a profile, upload content, and get discovered worldwide.</p></div>
+          <div class="feature-card glass"><div class="icon">🪪</div><h3 data-i18n="f2_t">Identity card inside profile</h3><p data-i18n="f2_d">Each artist can display a premium visual creator ID card to strengthen trust, branding, and uniqueness.</p></div>
+          <div class="feature-card glass"><div class="icon">🖼️</div><h3 data-i18n="f3_t">Gallery made for discovery</h3><p data-i18n="f3_d">A modern artist gallery gives a stronger visual experience and encourages visitors to explore more creators.</p></div>
+          <div class="feature-card glass"><div class="icon">🎧</div><h3 data-i18n="f4_t">Audio buttons</h3><p data-i18n="f4_d">Dedicated play buttons let visitors sample songs, demos, hooks, and voice identity quickly.</p></div>
+          <div class="feature-card glass"><div class="icon">🎬</div><h3 data-i18n="f5_t">Video buttons</h3><p data-i18n="f5_d">Let artists present music videos, trailers, performances, interviews, or promo visuals from the same page.</p></div>
+          <div class="feature-card glass"><div class="icon">🌍</div><h3 data-i18n="f6_t">Worldwide artist appeal</h3><p data-i18n="f6_d">The layout is built to attract singers, creators, producers, and talent from multiple countries and languages.</p></div>
         </div>
       </div>
     </section>
 
     <section id="profile">
       <div class="container">
-        <div class="section-head">
-          <div>
-            <h2 data-i18n="profile_title">Premium artist profile</h2>
-            <p data-i18n="profile_text">A streaming-inspired profile page with better identity, stronger aesthetics, media access, and creator trust.</p>
-          </div>
-        </div>
-
+        <div class="section-head"><div><h2 data-i18n="profile_title">Premium artist profile</h2><p data-i18n="profile_text">A streaming-inspired profile page with better identity, stronger aesthetics, media access, and creator trust.</p></div></div>
         <div class="profile-wrap">
           <div class="profile-main glass">
             <div class="profile-top">
               <div class="profile-avatar">A7</div>
-
               <div>
                 <div class="verified-badge">✔ <span data-i18n="verified_text">Verified Artist</span></div>
                 <h3 class="profile-name">Ansy777_DDC</h3>
-                <div class="profile-meta" data-i18n="profile_meta">
-                  Digital Caribbean Architect • Future Kompa • AI Artist • Global Creator Profile
-                </div>
+                <div class="profile-meta" data-i18n="profile_meta">Digital Caribbean Architect • Future Kompa • AI Artist • Global Creator Profile</div>
                 <div class="pill-row">
-                  <span class="pill">Kompa</span>
-                  <span class="pill">Zouk Love</span>
-                  <span class="pill">Afro Fusion</span>
-                  <span class="pill" data-i18n="pill_remote">Remote Collaboration</span>
-                  <span class="pill" data-i18n="pill_brand">Identity Branding</span>
+                  <span class="tiny-btn">Kompa</span>
+                  <span class="tiny-btn">Zouk Love</span>
+                  <span class="tiny-btn">Afro Fusion</span>
+                  <span class="tiny-btn" data-i18n="pill_remote">Remote Collaboration</span>
                 </div>
               </div>
-
               <div class="profile-cta">
                 <button class="btn btn-primary" data-signup data-i18n="profile_btn_join">Create My Profile</button>
                 <button class="btn btn-secondary" id="followBtn" data-i18n="profile_btn_follow">Follow Artist</button>
                 <button class="btn btn-secondary" id="messageBtn" data-i18n="profile_btn_message">Message</button>
               </div>
             </div>
-
-            <p class="profile-bio" data-i18n="profile_bio">
-              This profile section shows how an artist can present identity, style, music direction, collaboration value, and media content in one elegant space. It is built to impress visitors fast and make artists want to join.
-            </p>
-
+            <p class="profile-bio" data-i18n="profile_bio">This profile section shows how an artist can present identity, style, music direction, collaboration value, and media content in one elegant space. It is built to impress visitors fast and make artists want to join.</p>
             <div class="profile-sections">
-              <div class="sub-card">
-                <h4 data-i18n="sub_about_t">About the artist</h4>
-                <p data-i18n="sub_about_d">
-                  Present your creative mission, your sound, your influence, and your artistic story in a premium way. This section can hold biography, press lines, and creator positioning.
-                </p>
-              </div>
-
-              <div class="sub-card">
-                <h4 data-i18n="sub_offer_t">What this artist offers</h4>
-                <ul>
-                  <li data-i18n="offer_1">Voice collaborations and features</li>
-                  <li data-i18n="offer_2">Original songs and hooks</li>
-                  <li data-i18n="offer_3">Artist branding and profile identity</li>
-                  <li data-i18n="offer_4">Global creative partnerships</li>
-                </ul>
-              </div>
-
-              <div class="sub-card">
-                <h4 data-i18n="sub_style_t">Style and genres</h4>
-                <p data-i18n="sub_style_d">
-                  Kompa, zouk love, Afro-Caribbean fusion, sensual grooves, futuristic political Kompa, emotional hooks, AI-enhanced creative identity.
-                </p>
-              </div>
-
-              <div class="sub-card">
-                <h4 data-i18n="sub_social_t">Profile power</h4>
-                <p data-i18n="sub_social_d">
-                  Add follower count, visual badges, tags, media previews, and booking buttons to transform the profile into a strong creator destination.
-                </p>
-              </div>
+              <div class="sub-card"><h4 data-i18n="sub_about_t">About the artist</h4><p data-i18n="sub_about_d">Present your creative mission, your sound, your influence, and your artistic story in a premium way. This section can hold biography, press lines, and creator positioning.</p></div>
+              <div class="sub-card"><h4 data-i18n="sub_offer_t">What this artist offers</h4><ul><li data-i18n="offer_1">Voice collaborations and features</li><li data-i18n="offer_2">Original songs and hooks</li><li data-i18n="offer_3">Artist branding and profile identity</li><li data-i18n="offer_4">Global creative partnerships</li></ul></div>
+              <div class="sub-card"><h4 data-i18n="sub_style_t">Style and genres</h4><p data-i18n="sub_style_d">Kompa, zouk love, Afro-Caribbean fusion, sensual grooves, futuristic political Kompa, emotional hooks, AI-enhanced creative identity.</p></div>
+              <div class="sub-card"><h4 data-i18n="sub_social_t">Profile power</h4><p data-i18n="sub_social_d">Add follower count, visual badges, tags, media previews, and booking buttons to transform the profile into a strong creator destination.</p></div>
             </div>
           </div>
 
           <aside class="id-card glass">
             <div class="id-top">
-              <div class="id-title">
-                <div class="id-logo">V</div>
-                <div>
-                  <strong data-i18n="id_title">VoxWorld Identity Card</strong><br>
-                  <span style="color:var(--muted);font-size:.9rem;" data-i18n="id_sub">Official creator profile ID</span>
-                </div>
-              </div>
+              <div class="id-title"><div class="id-logo">V</div><div><strong data-i18n="id_title">VoxWorld Identity Card</strong><br><span style="color:var(--muted);font-size:.9rem;" data-i18n="id_sub">Official creator profile ID</span></div></div>
               <div class="verified-badge">ID</div>
             </div>
-
-            <div class="id-body">
-              <div class="id-avatar">A7</div>
-              <div>
-                <strong style="font-size:1.15rem;">Ansy777_DDC</strong>
-                <div style="color:var(--muted);margin-top:6px;" data-i18n="id_role">Global Music Creator</div>
-                <div style="margin-top:10px;" class="pill-row">
-                  <span class="pill">Creator</span>
-                  <span class="pill">Verified</span>
-                </div>
-              </div>
-            </div>
-
+            <div class="id-body"><div class="id-avatar">A7</div><div><strong style="font-size:1.15rem;">Ansy777_DDC</strong><div style="color:var(--muted);margin-top:6px;" data-i18n="id_role">Global Music Creator</div></div></div>
             <div class="id-grid">
-              <div class="id-field">
-                <small data-i18n="id_field_1">Creator ID</small>
-                <strong>VW-ART-777-2026</strong>
-              </div>
-              <div class="id-field">
-                <small data-i18n="id_field_2">Category</small>
-                <strong data-i18n="id_cat">Singer / AI Artist</strong>
-              </div>
-              <div class="id-field">
-                <small data-i18n="id_field_3">Primary genre</small>
-                <strong>Kompa Fusion</strong>
-              </div>
-              <div class="id-field">
-                <small data-i18n="id_field_4">Status</small>
-                <strong data-i18n="id_status">Active Worldwide</strong>
-              </div>
-              <div class="id-field">
-                <small data-i18n="id_field_5">Languages</small>
-                <strong>EN / FR / ES / HT</strong>
-              </div>
-              <div class="id-field">
-                <small data-i18n="id_field_6">Profile type</small>
-                <strong data-i18n="id_type">Premium Creator</strong>
-              </div>
+              <div class="id-field"><small data-i18n="id_field_1">Creator ID</small><strong>VW-ART-777-2026</strong></div>
+              <div class="id-field"><small data-i18n="id_field_2">Category</small><strong data-i18n="id_cat">Singer / AI Artist</strong></div>
+              <div class="id-field"><small data-i18n="id_field_3">Primary genre</small><strong>Kompa Fusion</strong></div>
+              <div class="id-field"><small data-i18n="id_field_4">Status</small><strong data-i18n="id_status">Active Worldwide</strong></div>
+              <div class="id-field"><small data-i18n="id_field_5">Languages</small><strong>EN / FR / ES / HT</strong></div>
+              <div class="id-field"><small data-i18n="id_field_6">Profile type</small><strong data-i18n="id_type">Premium Creator</strong></div>
             </div>
-
-            <div style="margin-top:16px;">
-              <button class="btn btn-primary" style="width:100%;" data-signup data-i18n="id_btn">Get My Identity Card</button>
-            </div>
+            <div style="margin-top:16px;"><button class="btn btn-primary" style="width:100%;" data-signup data-i18n="id_btn">Get My Identity Card</button></div>
           </aside>
         </div>
       </div>
@@ -1572,13 +1005,7 @@
 
     <section id="gallery">
       <div class="container">
-        <div class="section-head">
-          <div>
-            <h2 data-i18n="gallery_title">Artist gallery</h2>
-            <p data-i18n="gallery_text">A modern gallery to showcase artists, pictures, media identity, and discovery cards in a stronger way.</p>
-          </div>
-        </div>
-
+        <div class="section-head"><div><h2 data-i18n="gallery_title">Artist gallery</h2><p data-i18n="gallery_text">A modern gallery to showcase artists, pictures, media identity, and discovery cards in a stronger way.</p></div></div>
         <div class="gallery-controls">
           <button class="filter-btn active" data-filter="all" data-i18n="filter_all">All</button>
           <button class="filter-btn" data-filter="singer" data-i18n="filter_singer">Singers</button>
@@ -1586,187 +1013,34 @@
           <button class="filter-btn" data-filter="creator" data-i18n="filter_creator">Creators</button>
           <button class="filter-btn" data-filter="ai" data-i18n="filter_ai">AI Artists</button>
         </div>
-
         <div class="gallery-grid" id="galleryGrid">
-          <article class="gallery-card artist-card" data-category="singer ai">
-            <div class="gallery-cover cover-1">A7</div>
-            <div class="gallery-info">
-              <h3>Ansy777_DDC</h3>
-              <p data-i18n="g1_d">Future Kompa • AI creator • Global voice identity</p>
-              <div class="gallery-actions">
-                <button class="tiny-btn card-follow" data-i18n="tiny_follow">Follow</button>
-                <button class="tiny-btn card-view" data-i18n="tiny_view">View Profile</button>
-              </div>
-            </div>
-          </article>
-
-          <article class="gallery-card artist-card" data-category="singer">
-            <div class="gallery-cover cover-2">LM</div>
-            <div class="gallery-info">
-              <h3>Luna Miro</h3>
-              <p data-i18n="g2_d">Pop soul • Visual voice artist • International hooks</p>
-              <div class="gallery-actions">
-                <button class="tiny-btn card-follow" data-i18n="tiny_follow">Follow</button>
-                <button class="tiny-btn card-view" data-i18n="tiny_view">View Profile</button>
-              </div>
-            </div>
-          </article>
-
-          <article class="gallery-card artist-card" data-category="producer creator">
-            <div class="gallery-cover cover-3">TK</div>
-            <div class="gallery-info">
-              <h3>Timo Keys</h3>
-              <p data-i18n="g3_d">Producer • Melody architect • Audio identity maker</p>
-              <div class="gallery-actions">
-                <button class="tiny-btn card-follow" data-i18n="tiny_follow">Follow</button>
-                <button class="tiny-btn card-view" data-i18n="tiny_view">View Profile</button>
-              </div>
-            </div>
-          </article>
-
-          <article class="gallery-card artist-card" data-category="creator ai">
-            <div class="gallery-cover cover-4">ZX</div>
-            <div class="gallery-info">
-              <h3>Zara X</h3>
-              <p data-i18n="g4_d">AI performer • Voice identity brand • Digital visuals</p>
-              <div class="gallery-actions">
-                <button class="tiny-btn card-follow" data-i18n="tiny_follow">Follow</button>
-                <button class="tiny-btn card-view" data-i18n="tiny_view">View Profile</button>
-              </div>
-            </div>
-          </article>
-
-          <article class="gallery-card artist-card" data-category="producer">
-            <div class="gallery-cover cover-5">NV</div>
-            <div class="gallery-info">
-              <h3>Nova Vibe</h3>
-              <p data-i18n="g5_d">Producer • Mix designer • Label-ready sounds</p>
-              <div class="gallery-actions">
-                <button class="tiny-btn card-follow" data-i18n="tiny_follow">Follow</button>
-                <button class="tiny-btn card-view" data-i18n="tiny_view">View Profile</button>
-              </div>
-            </div>
-          </article>
-
-          <article class="gallery-card artist-card" data-category="singer creator">
-            <div class="gallery-cover cover-6">ER</div>
-            <div class="gallery-info">
-              <h3>Elena Ray</h3>
-              <p data-i18n="g6_d">Singer • Story-driven performer • Premium presence</p>
-              <div class="gallery-actions">
-                <button class="tiny-btn card-follow" data-i18n="tiny_follow">Follow</button>
-                <button class="tiny-btn card-view" data-i18n="tiny_view">View Profile</button>
-              </div>
-            </div>
-          </article>
-
-          <article class="gallery-card artist-card" data-category="ai producer">
-            <div class="gallery-cover cover-7">QB</div>
-            <div class="gallery-info">
-              <h3>Quantum Beat</h3>
-              <p data-i18n="g7_d">AI beat creator • Sonic branding • Modern rhythm</p>
-              <div class="gallery-actions">
-                <button class="tiny-btn card-follow" data-i18n="tiny_follow">Follow</button>
-                <button class="tiny-btn card-view" data-i18n="tiny_view">View Profile</button>
-              </div>
-            </div>
-          </article>
-
-          <article class="gallery-card artist-card" data-category="creator singer">
-            <div class="gallery-cover cover-8">SA</div>
-            <div class="gallery-info">
-              <h3>Sol Aura</h3>
-              <p data-i18n="g8_d">Singer creator • Elegant vocal image • Fan appeal</p>
-              <div class="gallery-actions">
-                <button class="tiny-btn card-follow" data-i18n="tiny_follow">Follow</button>
-                <button class="tiny-btn card-view" data-i18n="tiny_view">View Profile</button>
-              </div>
-            </div>
-          </article>
+          <article class="gallery-card artist-card" data-category="singer ai"><div class="gallery-cover cover-1">A7</div><div class="gallery-info"><h3>Ansy777_DDC</h3><p data-i18n="g1_d">Future Kompa • AI creator • Global voice identity</p><div class="gallery-actions"><button class="tiny-btn card-follow" data-i18n="tiny_follow">Follow</button><button class="tiny-btn card-view" data-i18n="tiny_view">View Profile</button></div></div></article>
+          <article class="gallery-card artist-card" data-category="singer"><div class="gallery-cover cover-2">LM</div><div class="gallery-info"><h3>Luna Miro</h3><p data-i18n="g2_d">Pop soul • Visual voice artist • International hooks</p><div class="gallery-actions"><button class="tiny-btn card-follow" data-i18n="tiny_follow">Follow</button><button class="tiny-btn card-view" data-i18n="tiny_view">View Profile</button></div></div></article>
+          <article class="gallery-card artist-card" data-category="producer creator"><div class="gallery-cover cover-3">TK</div><div class="gallery-info"><h3>Timo Keys</h3><p data-i18n="g3_d">Producer • Melody architect • Audio identity maker</p><div class="gallery-actions"><button class="tiny-btn card-follow" data-i18n="tiny_follow">Follow</button><button class="tiny-btn card-view" data-i18n="tiny_view">View Profile</button></div></div></article>
+          <article class="gallery-card artist-card" data-category="creator ai"><div class="gallery-cover cover-4">ZX</div><div class="gallery-info"><h3>Zara X</h3><p data-i18n="g4_d">AI performer • Voice identity brand • Digital visuals</p><div class="gallery-actions"><button class="tiny-btn card-follow" data-i18n="tiny_follow">Follow</button><button class="tiny-btn card-view" data-i18n="tiny_view">View Profile</button></div></div></article>
+          <article class="gallery-card artist-card" data-category="producer"><div class="gallery-cover cover-5">NV</div><div class="gallery-info"><h3>Nova Vibe</h3><p data-i18n="g5_d">Producer • Mix designer • Label-ready sounds</p><div class="gallery-actions"><button class="tiny-btn card-follow" data-i18n="tiny_follow">Follow</button><button class="tiny-btn card-view" data-i18n="tiny_view">View Profile</button></div></div></article>
+          <article class="gallery-card artist-card" data-category="singer creator"><div class="gallery-cover cover-6">ER</div><div class="gallery-info"><h3>Elena Ray</h3><p data-i18n="g6_d">Singer • Story-driven performer • Premium presence</p><div class="gallery-actions"><button class="tiny-btn card-follow" data-i18n="tiny_follow">Follow</button><button class="tiny-btn card-view" data-i18n="tiny_view">View Profile</button></div></div></article>
+          <article class="gallery-card artist-card" data-category="ai producer"><div class="gallery-cover cover-7">QB</div><div class="gallery-info"><h3>Quantum Beat</h3><p data-i18n="g7_d">AI beat creator • Sonic branding • Modern rhythm</p><div class="gallery-actions"><button class="tiny-btn card-follow" data-i18n="tiny_follow">Follow</button><button class="tiny-btn card-view" data-i18n="tiny_view">View Profile</button></div></div></article>
+          <article class="gallery-card artist-card" data-category="creator singer"><div class="gallery-cover cover-8">SA</div><div class="gallery-info"><h3>Sol Aura</h3><p data-i18n="g8_d">Singer creator • Elegant vocal image • Fan appeal</p><div class="gallery-actions"><button class="tiny-btn card-follow" data-i18n="tiny_follow">Follow</button><button class="tiny-btn card-view" data-i18n="tiny_view">View Profile</button></div></div></article>
         </div>
       </div>
     </section>
 
     <section id="media">
       <div class="container">
-        <div class="section-head">
-          <div>
-            <h2 data-i18n="media_title">Audio and video</h2>
-            <p data-i18n="media_text">A beautiful media section lets every artist present tracks, snippets, visuals, trailers, and promo content from one page.</p>
-          </div>
-        </div>
-
+        <div class="section-head"><div><h2 data-i18n="media_title">Audio and video</h2><p data-i18n="media_text">A beautiful media section lets every artist present tracks, snippets, visuals, trailers, and promo content from one page.</p></div></div>
         <div class="media-grid">
           <div class="media-card glass">
-            <div class="section-head" style="margin-bottom:14px;">
-              <div>
-                <h2 style="font-size:1.45rem;" data-i18n="audio_title">Audio Showcase</h2>
-                <p data-i18n="audio_text">Play songs and previews from artist profiles.</p>
-              </div>
-            </div>
-
-            <div class="track">
-              <div class="track-index">01</div>
-              <div>
-                <div class="track-title">Closer Every Night</div>
-                <div class="track-sub">105 BPM • F# minor • Kompa Love</div>
-              </div>
-              <button class="play-btn audio-btn" data-track="Closer Every Night">▶</button>
-            </div>
-
-            <div class="track">
-              <div class="track-index">02</div>
-              <div>
-                <div class="track-title">Secret Lanmou</div>
-                <div class="track-sub">Zouk Secret • Romantic groove</div>
-              </div>
-              <button class="play-btn audio-btn" data-track="Secret Lanmou">▶</button>
-            </div>
-
-            <div class="track">
-              <div class="track-index">03</div>
-              <div>
-                <div class="track-title">Future Kompa Motion</div>
-                <div class="track-sub">AI fusion • Caribbean energy</div>
-              </div>
-              <button class="play-btn audio-btn" data-track="Future Kompa Motion">▶</button>
-            </div>
-
-            <div class="track">
-              <div class="track-index">04</div>
-              <div>
-                <div class="track-title">Global Voice Identity</div>
-                <div class="track-sub">Profile anthem • Modern creator vibe</div>
-              </div>
-              <button class="play-btn audio-btn" data-track="Global Voice Identity">▶</button>
-            </div>
+            <div class="section-head" style="margin-bottom:14px;"><div><h2 style="font-size:1.45rem;" data-i18n="audio_title">Audio Showcase</h2><p data-i18n="audio_text">Play songs and previews from artist profiles.</p></div></div>
+            <div class="track"><div class="track-index">01</div><div><div class="track-title">Closer Every Night</div><div class="track-sub">105 BPM • F# minor • Kompa Love</div></div><button class="play-btn audio-btn" data-track="Closer Every Night">▶</button></div>
+            <div class="track"><div class="track-index">02</div><div><div class="track-title">Secret Lanmou</div><div class="track-sub">Zouk Secret • Romantic groove</div></div><button class="play-btn audio-btn" data-track="Secret Lanmou">▶</button></div>
+            <div class="track"><div class="track-index">03</div><div><div class="track-title">Future Kompa Motion</div><div class="track-sub">AI fusion • Caribbean energy</div></div><button class="play-btn audio-btn" data-track="Future Kompa Motion">▶</button></div>
+            <div class="track"><div class="track-index">04</div><div><div class="track-title">Global Voice Identity</div><div class="track-sub">Profile anthem • Modern creator vibe</div></div><button class="play-btn audio-btn" data-track="Global Voice Identity">▶</button></div>
           </div>
-
           <div class="media-card glass">
-            <div class="section-head" style="margin-bottom:14px;">
-              <div>
-                <h2 style="font-size:1.45rem;" data-i18n="video_title">Video Showcase</h2>
-                <p data-i18n="video_text">Open videos, visual reels, interviews, and performance clips.</p>
-              </div>
-            </div>
-
-            <div class="video-card">
-              <div class="video-thumb">LIVE</div>
-              <div>
-                <strong data-i18n="v1_t">Performance clip</strong>
-                <div style="color:var(--muted);margin-top:6px;" data-i18n="v1_d">Stage-ready visual presentation for artist discovery.</div>
-              </div>
-              <button class="btn btn-secondary video-btn" data-video="Performance clip" data-i18n="video_btn">Open Video</button>
-            </div>
-
-            <div class="video-card">
-              <div class="video-thumb" style="background:linear-gradient(135deg,#3d1638,#ff4f9b,#7c5cff);">MV</div>
-              <div>
-                <strong data-i18n="v2_t">Music video preview</strong>
-                <div style="color:var(--muted);margin-top:6px;" data-i18n="v2_d">A home for trailers, official releases, or short vertical clips.</div>
-              </div>
-              <button class="btn btn-secondary video-btn" data-video="Music video preview" data-i18n="video_btn">Open Video</button>
-            </div>
+            <div class="section-head" style="margin-bottom:14px;"><div><h2 style="font-size:1.45rem;" data-i18n="video_title">Video Showcase</h2><p data-i18n="video_text">Open videos, visual reels, interviews, and performance clips.</p></div></div>
+            <div class="video-card"><div class="video-thumb">LIVE</div><div><strong data-i18n="v1_t">Performance clip</strong><div style="color:var(--muted);margin-top:6px;" data-i18n="v1_d">Stage-ready visual presentation for artist discovery.</div></div><button class="btn btn-secondary video-btn" data-video="Performance clip" data-i18n="video_btn">Open Video</button></div>
+            <div class="video-card"><div class="video-thumb" style="background:linear-gradient(135deg,#3d1638,#ff4f9b,#7c5cff);">MV</div><div><strong data-i18n="v2_t">Music video preview</strong><div style="color:var(--muted);margin-top:6px;" data-i18n="v2_d">A home for trailers, official releases, or short vertical clips.</div></div><button class="btn btn-secondary video-btn" data-video="Music video preview" data-i18n="video_btn">Open Video</button></div>
           </div>
         </div>
       </div>
@@ -1774,34 +1048,12 @@
 
     <section id="how">
       <div class="container">
-        <div class="section-head">
-          <div>
-            <h2 data-i18n="how_title">How it works</h2>
-            <p data-i18n="how_text">A clear path for creators to join, build identity, upload media, and grow fast.</p>
-          </div>
-        </div>
-
+        <div class="section-head"><div><h2 data-i18n="how_title">How it works</h2><p data-i18n="how_text">A clear path for creators to join, build identity, upload media, and grow fast.</p></div></div>
         <div class="steps">
-          <div class="step glass">
-            <div class="step-num">1</div>
-            <h3 data-i18n="step1_t">Create profile</h3>
-            <p data-i18n="step1_d">Join the platform and set up your artist image, identity, genre, and profile information.</p>
-          </div>
-          <div class="step glass">
-            <div class="step-num">2</div>
-            <h3 data-i18n="step2_t">Get your ID card</h3>
-            <p data-i18n="step2_d">Display a strong creator identity card inside your profile to build recognition and trust.</p>
-          </div>
-          <div class="step glass">
-            <div class="step-num">3</div>
-            <h3 data-i18n="step3_t">Upload audio and video</h3>
-            <p data-i18n="step3_d">Share tracks, snippets, video previews, and artist visuals from one elegant page.</p>
-          </div>
-          <div class="step glass">
-            <div class="step-num">4</div>
-            <h3 data-i18n="step4_t">Get discovered</h3>
-            <p data-i18n="step4_d">Appear in the discovery gallery and attract fans, collaborators, labels, and opportunities.</p>
-          </div>
+          <div class="step glass"><div class="step-num">1</div><h3 data-i18n="step1_t">Create profile</h3><p data-i18n="step1_d">Join the platform and set up your artist image, identity, genre, and profile information.</p></div>
+          <div class="step glass"><div class="step-num">2</div><h3 data-i18n="step2_t">Get your ID card</h3><p data-i18n="step2_d">Display a strong creator identity card inside your profile to build recognition and trust.</p></div>
+          <div class="step glass"><div class="step-num">3</div><h3 data-i18n="step3_t">Upload audio and video</h3><p data-i18n="step3_d">Share tracks, snippets, video previews, and artist visuals from one elegant page.</p></div>
+          <div class="step glass"><div class="step-num">4</div><h3 data-i18n="step4_t">Get discovered</h3><p data-i18n="step4_d">Appear in the discovery gallery and attract fans, collaborators, labels, and opportunities.</p></div>
         </div>
       </div>
     </section>
@@ -1811,32 +1063,14 @@
         <div class="cta-panel glass">
           <div>
             <h2 data-i18n="cta_title">Give artists a page they want to join immediately</h2>
-            <p data-i18n="cta_text">
-              This design combines a powerful homepage, profile page, gallery, ID card system, and media section in one elegant experience. It is built to feel premium, modern, and attractive from the first second.
-            </p>
-            <div class="hero-actions" style="margin-top:20px;">
-              <button class="btn btn-primary" data-signup data-i18n="cta_btn_1">Create Artist Account</button>
-              <a href="#profile" class="btn btn-secondary" data-i18n="cta_btn_2">View Premium Profile</a>
-            </div>
+            <p data-i18n="cta_text">This design combines a powerful homepage, profile page, gallery, ID card system, and media section in one elegant experience. It is built to feel premium, modern, and attractive from the first second.</p>
+            <div class="hero-actions" style="margin-top:20px;"><button class="btn btn-primary" data-signup data-i18n="cta_btn_1">Create Artist Account</button><a href="#profile" class="btn btn-secondary" data-i18n="cta_btn_2">View Premium Profile</a></div>
           </div>
-
           <div class="cta-boxes">
-            <div class="cta-mini">
-              <strong data-i18n="cta_m1_t">Profile power</strong>
-              <p style="margin:8px 0 0;color:var(--muted);line-height:1.7;" data-i18n="cta_m1_d">Stronger visual identity, premium positioning, better creator trust.</p>
-            </div>
-            <div class="cta-mini">
-              <strong data-i18n="cta_m2_t">Media power</strong>
-              <p style="margin:8px 0 0;color:var(--muted);line-height:1.7;" data-i18n="cta_m2_d">Audio and video buttons make the platform feel alive and ready for artists.</p>
-            </div>
-            <div class="cta-mini">
-              <strong data-i18n="cta_m3_t">Gallery power</strong>
-              <p style="margin:8px 0 0;color:var(--muted);line-height:1.7;" data-i18n="cta_m3_d">A discovery gallery increases excitement and exploration across the site.</p>
-            </div>
-            <div class="cta-mini">
-              <strong data-i18n="cta_m4_t">Brand power</strong>
-              <p style="margin:8px 0 0;color:var(--muted);line-height:1.7;" data-i18n="cta_m4_d">The whole experience is built to push artist signups and fast emotional appeal.</p>
-            </div>
+            <div class="cta-mini"><strong data-i18n="cta_m1_t">Profile power</strong><p style="margin:8px 0 0;color:var(--muted);" data-i18n="cta_m1_d">Stronger visual identity, premium positioning, better creator trust.</p></div>
+            <div class="cta-mini"><strong data-i18n="cta_m2_t">Media power</strong><p style="margin:8px 0 0;color:var(--muted);" data-i18n="cta_m2_d">Audio and video buttons make the platform feel alive and ready for artists.</p></div>
+            <div class="cta-mini"><strong data-i18n="cta_m3_t">Gallery power</strong><p style="margin:8px 0 0;color:var(--muted);" data-i18n="cta_m3_d">A discovery gallery increases excitement and exploration across the site.</p></div>
+            <div class="cta-mini"><strong data-i18n="cta_m4_t">Brand power</strong><p style="margin:8px 0 0;color:var(--muted);" data-i18n="cta_m4_d">The whole experience is built to push artist signups and fast emotional appeal.</p></div>
           </div>
         </div>
       </div>
@@ -1844,1362 +1078,298 @@
 
     <section id="contact">
       <div class="container">
-        <div class="section-head">
-          <div>
-            <h2 data-i18n="contact_title">Contact</h2>
-            <p data-i18n="contact_text">Ready to shape the next generation of artist identity and discovery.</p>
-          </div>
-        </div>
-
+        <div class="section-head"><div><h2 data-i18n="contact_title">Contact</h2><p data-i18n="contact_text">Ready to shape the next generation of artist identity and discovery.</p></div></div>
         <div class="footer-grid">
-          <div class="footer-card glass">
-            <h4>VoxWorldApp</h4>
-            <p style="line-height:1.8;margin:0;" data-i18n="footer_about">
-              A global artist platform designed for premium identity, profile beauty, creator trust, discovery, and media presentation.
-            </p>
-          </div>
-
-          <div class="footer-card glass">
-            <h4 data-i18n="footer_links">Links</h4>
-            <div class="footer-links">
-              <a href="#home" data-i18n="nav_home">Home</a>
-              <a href="#profile" data-i18n="nav_profile">Profile</a>
-              <a href="#gallery" data-i18n="nav_gallery">Gallery</a>
-              <a href="#media" data-i18n="nav_media">Media</a>
-            </div>
-          </div>
-
-          <div class="footer-card glass">
-            <h4 data-i18n="footer_contact">Contact</h4>
-            <div class="footer-links">
-              <a href="mailto:iit-llco@outlook.com">iit-llco@outlook.com</a>
-              <a href="#how" data-i18n="footer_join">How to join</a>
-              <a href="#features" data-i18n="footer_platform">Platform features</a>
-            </div>
-          </div>
+          <div class="footer-card glass"><h4>VoxWorldApp</h4><p style="line-height:1.8;margin:0;" data-i18n="footer_about">A global artist platform designed for premium identity, profile beauty, creator trust, discovery, and media presentation.</p></div>
+          <div class="footer-card glass"><h4 data-i18n="footer_links">Links</h4><div class="footer-links"><a href="#home" data-i18n="nav_home">Home</a><a href="#profile" data-i18n="nav_profile">Profile</a><a href="#gallery" data-i18n="nav_gallery">Gallery</a><a href="#media" data-i18n="nav_media">Media</a></div></div>
+          <div class="footer-card glass"><h4 data-i18n="footer_contact">Contact</h4><div class="footer-links"><a href="mailto:iit-llco@outlook.com">iit-llco@outlook.com</a><a href="#how" data-i18n="footer_join">How to join</a><a href="#features" data-i18n="footer_platform">Platform features</a></div></div>
         </div>
       </div>
     </section>
   </main>
 
-  <footer class="footer">
-    <div class="container">
-      <div style="text-align:center;">
-        <span data-i18n="footer_copy">© 2026 VoxWorldApp. Built for artist identity, beauty, and global discovery.</span>
-      </div>
-    </div>
-  </footer>
+  <footer class="footer"><div class="container"><div style="text-align:center;"><span data-i18n="footer_copy">© 2026 VoxWorldApp. Built for artist identity, beauty, and global discovery.</span></div></div></footer>
 
   <button class="floating-chat-btn" id="chatToggle" aria-label="Open chat">💬</button>
-
   <div class="chatbox glass" id="chatbox">
-    <div class="chat-head">
-      <div class="chat-head-title">
-        <div class="chat-head-logo">V</div>
-        <div>
-          <strong data-i18n="chat_title">VoxWorld Assistant</strong><br>
-          <span style="color:var(--muted);font-size:.88rem;" data-i18n="chat_sub">Ask about profile, gallery, media, or identity card</span>
-        </div>
-      </div>
-      <button class="chat-close" id="chatClose">✕</button>
-    </div>
-
+    <div class="chat-head"><div class="chat-head-title"><div class="chat-head-logo">V</div><div><strong data-i18n="chat_title">VoxWorld Assistant</strong><br><span style="color:var(--muted);font-size:.88rem;" data-i18n="chat_sub">Ask about profile, gallery, media, or identity card</span></div></div><button class="chat-close" id="chatClose">✕</button></div>
     <div class="chat-messages" id="chatMessages"></div>
-
     <div class="chat-quick" id="chatQuick"></div>
-
-    <form class="chat-form" id="chatForm">
-      <input id="chatInput" type="text" placeholder="Ask a question..." />
-      <button type="submit" class="send-btn" data-i18n="chat_send">Send</button>
-    </form>
+    <form class="chat-form" id="chatForm"><input id="chatInput" type="text" placeholder="Ask a question..." /><button type="submit" class="send-btn" data-i18n="chat_send">Send</button></form>
   </div>
 
   <script>
-    document.addEventListener("DOMContentLoaded", () => {
+    document.addEventListener('DOMContentLoaded', () => {
       const $ = (s, root = document) => root.querySelector(s);
       const $$ = (s, root = document) => [...root.querySelectorAll(s)];
+      const DB_KEY = 'voxworld_final_db';
 
-      const translations = {
-        en: {
-          brand_sub: "Global voice identity • discovery • collaboration",
-          nav_home: "Home",
-          nav_features: "Features",
-          nav_profile: "Profile",
-          nav_gallery: "Gallery",
-          nav_media: "Media",
-          nav_how: "How it works",
-          nav_contact: "Contact",
-          nav_join: "Join Now",
-          eyebrow: "Identity card • Artist profile • Audio • Video • Global discovery",
-          hero_title: "Build your voice identity and turn your talent into a global artist profile.",
-          hero_text: "VoxWorldApp gives artists a beautiful profile page, verified creator identity, media showcase, discovery gallery, audio and video buttons, and a modern home page made to attract creators fast.",
-          hero_btn_profile: "Start Your Profile",
-          hero_btn_gallery: "Explore Artist Gallery",
-          hero_btn_media: "Open Audio & Video",
-          stat_1: "countries ready for discovery",
-          stat_2: "artist identity card system",
-          stat_3: "instant profile visibility",
-          spot_title: "Artist Spotlight",
-          spot_text: "A premium artist profile inspired by streaming platforms, rebuilt for visibility, identity, and discovery.",
-          spot_chip: "Featured",
-          spot_meta: "Digital Caribbean Architect • Future Kompa • Global Creator",
-          verified_text: "Verified Artist",
-          mini_1_t: "Identity ID Card",
-          mini_1_d: "A beautiful visual identity card for each artist to inspire trust and recognition.",
-          mini_2_t: "Audio Showcase",
-          mini_2_d: "Play songs, demos, snippets, and artist previews directly from the profile page.",
-          mini_3_t: "Video Showcase",
-          mini_3_d: "Display clips, performances, interviews, reels, trailers, and visual storytelling.",
-          mini_4_t: "Global Discovery",
-          mini_4_d: "Let artists appear in a modern gallery designed to attract fans, clients, and collaborators.",
-          features_title: "A beautiful platform made to push artists to join quickly",
-          features_text: "Modern design, strong profile identity, premium gallery presentation, and built-in media sections make the platform feel more complete and more attractive for creators from day one.",
-          f1_t: "Artist-first home page",
-          f1_d: "A clear landing page that immediately shows value: build a profile, upload content, and get discovered worldwide.",
-          f2_t: "Identity card inside profile",
-          f2_d: "Each artist can display a premium visual creator ID card to strengthen trust, branding, and uniqueness.",
-          f3_t: "Gallery made for discovery",
-          f3_d: "A modern artist gallery gives a stronger visual experience and encourages visitors to explore more creators.",
-          f4_t: "Audio buttons",
-          f4_d: "Dedicated play buttons let visitors sample songs, demos, hooks, and voice identity quickly.",
-          f5_t: "Video buttons",
-          f5_d: "Let artists present music videos, trailers, performances, interviews, or promo visuals from the same page.",
-          f6_t: "Worldwide artist appeal",
-          f6_d: "The layout is built to attract singers, creators, producers, and talent from multiple countries and languages.",
-          profile_title: "Premium artist profile",
-          profile_text: "A streaming-inspired profile page with better identity, stronger aesthetics, media access, and creator trust.",
-          profile_meta: "Digital Caribbean Architect • Future Kompa • AI Artist • Global Creator Profile",
-          pill_remote: "Remote Collaboration",
-          pill_brand: "Identity Branding",
-          profile_btn_join: "Create My Profile",
-          profile_btn_follow: "Follow Artist",
-          profile_btn_message: "Message",
-          profile_bio: "This profile section shows how an artist can present identity, style, music direction, collaboration value, and media content in one elegant space. It is built to impress visitors fast and make artists want to join.",
-          sub_about_t: "About the artist",
-          sub_about_d: "Present your creative mission, your sound, your influence, and your artistic story in a premium way. This section can hold biography, press lines, and creator positioning.",
-          sub_offer_t: "What this artist offers",
-          offer_1: "Voice collaborations and features",
-          offer_2: "Original songs and hooks",
-          offer_3: "Artist branding and profile identity",
-          offer_4: "Global creative partnerships",
-          sub_style_t: "Style and genres",
-          sub_style_d: "Kompa, zouk love, Afro-Caribbean fusion, sensual grooves, futuristic political Kompa, emotional hooks, AI-enhanced creative identity.",
-          sub_social_t: "Profile power",
-          sub_social_d: "Add follower count, visual badges, tags, media previews, and booking buttons to transform the profile into a strong creator destination.",
-          id_title: "VoxWorld Identity Card",
-          id_sub: "Official creator profile ID",
-          id_role: "Global Music Creator",
-          id_field_1: "Creator ID",
-          id_field_2: "Category",
-          id_field_3: "Primary genre",
-          id_field_4: "Status",
-          id_field_5: "Languages",
-          id_field_6: "Profile type",
-          id_cat: "Singer / AI Artist",
-          id_status: "Active Worldwide",
-          id_type: "Premium Creator",
-          id_btn: "Get My Identity Card",
-          gallery_title: "Artist gallery",
-          gallery_text: "A modern gallery to showcase artists, pictures, media identity, and discovery cards in a stronger way.",
-          filter_all: "All",
-          filter_singer: "Singers",
-          filter_producer: "Producers",
-          filter_creator: "Creators",
-          filter_ai: "AI Artists",
-          g1_d: "Future Kompa • AI creator • Global voice identity",
-          g2_d: "Pop soul • Visual voice artist • International hooks",
-          g3_d: "Producer • Melody architect • Audio identity maker",
-          g4_d: "AI performer • Voice identity brand • Digital visuals",
-          g5_d: "Producer • Mix designer • Label-ready sounds",
-          g6_d: "Singer • Story-driven performer • Premium presence",
-          g7_d: "AI beat creator • Sonic branding • Modern rhythm",
-          g8_d: "Singer creator • Elegant vocal image • Fan appeal",
-          tiny_follow: "Follow",
-          tiny_view: "View Profile",
-          media_title: "Audio and video",
-          media_text: "A beautiful media section lets every artist present tracks, snippets, visuals, trailers, and promo content from one page.",
-          audio_title: "Audio Showcase",
-          audio_text: "Play songs and previews from artist profiles.",
-          video_title: "Video Showcase",
-          video_text: "Open videos, visual reels, interviews, and performance clips.",
-          v1_t: "Performance clip",
-          v1_d: "Stage-ready visual presentation for artist discovery.",
-          v2_t: "Music video preview",
-          v2_d: "A home for trailers, official releases, or short vertical clips.",
-          video_btn: "Open Video",
-          how_title: "How it works",
-          how_text: "A clear path for creators to join, build identity, upload media, and grow fast.",
-          step1_t: "Create profile",
-          step1_d: "Join the platform and set up your artist image, identity, genre, and profile information.",
-          step2_t: "Get your ID card",
-          step2_d: "Display a strong creator identity card inside your profile to build recognition and trust.",
-          step3_t: "Upload audio and video",
-          step3_d: "Share tracks, snippets, video previews, and artist visuals from one elegant page.",
-          step4_t: "Get discovered",
-          step4_d: "Appear in the discovery gallery and attract fans, collaborators, labels, and opportunities.",
-          cta_title: "Give artists a page they want to join immediately",
-          cta_text: "This design combines a powerful homepage, profile page, gallery, ID card system, and media section in one elegant experience. It is built to feel premium, modern, and attractive from the first second.",
-          cta_btn_1: "Create Artist Account",
-          cta_btn_2: "View Premium Profile",
-          cta_m1_t: "Profile power",
-          cta_m1_d: "Stronger visual identity, premium positioning, better creator trust.",
-          cta_m2_t: "Media power",
-          cta_m2_d: "Audio and video buttons make the platform feel alive and ready for artists.",
-          cta_m3_t: "Gallery power",
-          cta_m3_d: "A discovery gallery increases excitement and exploration across the site.",
-          cta_m4_t: "Brand power",
-          cta_m4_d: "The whole experience is built to push artist signups and fast emotional appeal.",
-          contact_title: "Contact",
-          contact_text: "Ready to shape the next generation of artist identity and discovery.",
-          footer_about: "A global artist platform designed for premium identity, profile beauty, creator trust, discovery, and media presentation.",
-          footer_links: "Links",
-          footer_contact: "Contact",
-          footer_join: "How to join",
-          footer_platform: "Platform features",
-          footer_copy: "© 2026 VoxWorldApp. Built for artist identity, beauty, and global discovery.",
-          chat_title: "VoxWorld Assistant",
-          chat_sub: "Ask about profile, gallery, media, or identity card",
-          chat_send: "Send",
-          chat_placeholder: "Ask a question...",
-          quick_1: "How do I create my profile?",
-          quick_2: "How do I get my ID card?",
-          quick_3: "How do audio buttons work?",
-          quick_4: "How do artists appear in gallery?",
-          ai_welcome: "Welcome to VoxWorldApp. Ask me about artist profiles, identity cards, gallery visibility, audio buttons, or video sections.",
-          ai_profile: "To create your profile, click Join Now or Create My Profile. You can build your artist image, genres, biography, and premium identity from there.",
-          ai_id: "The identity card gives artists a stronger verified visual presence. It can include creator ID, genre, status, languages, and premium profile type.",
-          ai_audio: "Audio buttons let visitors sample tracks, demos, and hooks directly from the profile. They are built to make music discovery faster.",
-          ai_gallery: "Artists appear in the gallery as discovery cards with cover image, short description, follow button, and profile access."
-        },
-
-        fr: {
-          brand_sub: "Identité vocale mondiale • découverte • collaboration",
-          nav_home: "Accueil",
-          nav_features: "Fonctionnalités",
-          nav_profile: "Profil",
-          nav_gallery: "Galerie",
-          nav_media: "Médias",
-          nav_how: "Comment ça marche",
-          nav_contact: "Contact",
-          nav_join: "Rejoindre",
-          eyebrow: "Carte d'identité • Profil artiste • Audio • Vidéo • Découverte mondiale",
-          hero_title: "Construisez votre identité vocale et transformez votre talent en profil artiste mondial.",
-          hero_text: "VoxWorldApp offre aux artistes une belle page profil, une identité créateur vérifiée, une galerie de découverte, des boutons audio et vidéo, et une page d’accueil moderne conçue pour attirer rapidement les créateurs.",
-          hero_btn_profile: "Créer votre profil",
-          hero_btn_gallery: "Explorer la galerie",
-          hero_btn_media: "Ouvrir audio et vidéo",
-          stat_1: "pays prêts pour la découverte",
-          stat_2: "système de carte d’identité artiste",
-          stat_3: "visibilité instantanée du profil",
-          spot_title: "Artiste en vedette",
-          spot_text: "Un profil artiste premium inspiré des plateformes de streaming, reconstruit pour la visibilité, l’identité et la découverte.",
-          spot_chip: "Vedette",
-          spot_meta: "Architecte caribéen digital • Future Kompa • Créateur mondial",
-          verified_text: "Artiste vérifié",
-          mini_1_t: "Carte d’identité ID",
-          mini_1_d: "Une belle carte d’identité visuelle pour inspirer confiance et reconnaissance.",
-          mini_2_t: "Vitrine audio",
-          mini_2_d: "Lisez chansons, démos, extraits et aperçus d’artiste directement depuis le profil.",
-          mini_3_t: "Vitrine vidéo",
-          mini_3_d: "Affichez clips, performances, interviews, reels, bandes-annonces et storytelling visuel.",
-          mini_4_t: "Découverte mondiale",
-          mini_4_d: "Permettez aux artistes d’apparaître dans une galerie moderne pour attirer fans, clients et collaborateurs.",
-          features_title: "Une belle plateforme pensée pour pousser les artistes à s’inscrire vite",
-          features_text: "Le design moderne, l’identité forte du profil, la galerie premium et les sections médias intégrées rendent la plateforme plus complète et plus attirante dès le premier jour.",
-          f1_t: "Page d’accueil orientée artiste",
-          f1_d: "Une landing page claire qui montre immédiatement la valeur : créer un profil, publier du contenu et être découvert mondialement.",
-          f2_t: "Carte d’identité dans le profil",
-          f2_d: "Chaque artiste peut afficher une carte créateur premium pour renforcer confiance, branding et singularité.",
-          f3_t: "Galerie pensée pour la découverte",
-          f3_d: "Une galerie artiste moderne donne une expérience visuelle plus forte et encourage l’exploration.",
-          f4_t: "Boutons audio",
-          f4_d: "Des boutons dédiés permettent d’écouter rapidement chansons, démos, hooks et identité vocale.",
-          f5_t: "Boutons vidéo",
-          f5_d: "Permettez aux artistes de montrer clips, bandes-annonces, performances, interviews ou visuels promo depuis la même page.",
-          f6_t: "Attraction mondiale",
-          f6_d: "La mise en page est conçue pour attirer chanteurs, créateurs, producteurs et talents de plusieurs pays et langues.",
-          profile_title: "Profil artiste premium",
-          profile_text: "Un profil inspiré du streaming avec meilleure identité, meilleure esthétique, accès médias et confiance créateur.",
-          profile_meta: "Architecte caribéen digital • Future Kompa • Artiste IA • Profil créateur mondial",
-          pill_remote: "Collaboration à distance",
-          pill_brand: "Branding d’identité",
-          profile_btn_join: "Créer mon profil",
-          profile_btn_follow: "Suivre l’artiste",
-          profile_btn_message: "Message",
-          profile_bio: "Cette section montre comment un artiste peut présenter son identité, son style, sa direction musicale, sa valeur de collaboration et son contenu média dans un espace élégant. Elle est conçue pour impressionner vite.",
-          sub_about_t: "À propos de l’artiste",
-          sub_about_d: "Présentez votre mission créative, votre son, vos influences et votre histoire artistique de façon premium.",
-          sub_offer_t: "Ce que cet artiste propose",
-          offer_1: "Collaborations vocales et feats",
-          offer_2: "Chansons originales et hooks",
-          offer_3: "Branding artiste et identité de profil",
-          offer_4: "Partenariats créatifs mondiaux",
-          sub_style_t: "Style et genres",
-          sub_style_d: "Kompa, zouk love, fusion afro-caribéenne, grooves sensuels, Kompa politique futuriste, hooks émotionnels, identité créative améliorée par IA.",
-          sub_social_t: "Puissance du profil",
-          sub_social_d: "Ajoutez nombre d’abonnés, badges visuels, tags, aperçus médias et boutons de réservation pour transformer le profil.",
-          id_title: "Carte d’identité VoxWorld",
-          id_sub: "ID officiel du profil créateur",
-          id_role: "Créateur musical mondial",
-          id_field_1: "ID créateur",
-          id_field_2: "Catégorie",
-          id_field_3: "Genre principal",
-          id_field_4: "Statut",
-          id_field_5: "Langues",
-          id_field_6: "Type de profil",
-          id_cat: "Chanteur / Artiste IA",
-          id_status: "Actif mondialement",
-          id_type: "Créateur premium",
-          id_btn: "Obtenir ma carte d’identité",
-          gallery_title: "Galerie d’artistes",
-          gallery_text: "Une galerie moderne pour présenter artistes, images, identité média et cartes de découverte.",
-          filter_all: "Tous",
-          filter_singer: "Chanteurs",
-          filter_producer: "Producteurs",
-          filter_creator: "Créateurs",
-          filter_ai: "Artistes IA",
-          g1_d: "Future Kompa • Créateur IA • Identité vocale mondiale",
-          g2_d: "Pop soul • Artiste vocal visuel • Hooks internationaux",
-          g3_d: "Producteur • Architecte mélodique • Créateur d’identité audio",
-          g4_d: "Performeuse IA • Marque d’identité vocale • Visuels digitaux",
-          g5_d: "Producteur • Designer de mix • Sons prêts pour label",
-          g6_d: "Chanteuse • Performance narrative • Présence premium",
-          g7_d: "Créateur de beats IA • Branding sonore • Rythme moderne",
-          g8_d: "Créatrice chanteuse • Image vocale élégante • Attrait fan",
-          tiny_follow: "Suivre",
-          tiny_view: "Voir profil",
-          media_title: "Audio et vidéo",
-          media_text: "Une belle section média permet à chaque artiste de présenter titres, extraits, visuels, bandes-annonces et contenu promo.",
-          audio_title: "Vitrine audio",
-          audio_text: "Lisez chansons et aperçus depuis les profils artistes.",
-          video_title: "Vitrine vidéo",
-          video_text: "Ouvrez vidéos, reels visuels, interviews et clips de performance.",
-          v1_t: "Clip de performance",
-          v1_d: "Présentation visuelle prête pour la découverte d’artiste.",
-          v2_t: "Aperçu clip musical",
-          v2_d: "Un espace pour bandes-annonces, sorties officielles ou clips courts verticaux.",
-          video_btn: "Ouvrir vidéo",
-          how_title: "Comment ça marche",
-          how_text: "Un parcours clair pour rejoindre, construire son identité, publier ses médias et grandir vite.",
-          step1_t: "Créer le profil",
-          step1_d: "Rejoignez la plateforme et configurez image artiste, identité, genre et informations de profil.",
-          step2_t: "Obtenir la carte ID",
-          step2_d: "Affichez une forte carte d’identité créateur pour renforcer reconnaissance et confiance.",
-          step3_t: "Téléverser audio et vidéo",
-          step3_d: "Partagez titres, extraits, aperçus vidéo et visuels depuis une seule page élégante.",
-          step4_t: "Être découvert",
-          step4_d: "Apparaissez dans la galerie et attirez fans, collaborateurs, labels et opportunités.",
-          cta_title: "Donnez aux artistes une page qu’ils veulent rejoindre immédiatement",
-          cta_text: "Ce design combine une page d’accueil puissante, un profil, une galerie, un système de carte ID et une section média dans une seule expérience élégante.",
-          cta_btn_1: "Créer un compte artiste",
-          cta_btn_2: "Voir le profil premium",
-          cta_m1_t: "Puissance du profil",
-          cta_m1_d: "Identité visuelle plus forte, positionnement premium, meilleure confiance créateur.",
-          cta_m2_t: "Puissance média",
-          cta_m2_d: "Les boutons audio et vidéo rendent la plateforme plus vivante et prête pour les artistes.",
-          cta_m3_t: "Puissance galerie",
-          cta_m3_d: "Une galerie de découverte augmente l’excitation et l’exploration.",
-          cta_m4_t: "Puissance de marque",
-          cta_m4_d: "Toute l’expérience est pensée pour pousser l’inscription rapide des artistes.",
-          contact_title: "Contact",
-          contact_text: "Prêt à façonner la nouvelle génération d’identité et de découverte des artistes.",
-          footer_about: "Une plateforme mondiale conçue pour l’identité premium, la beauté du profil, la confiance créateur, la découverte et la présentation média.",
-          footer_links: "Liens",
-          footer_contact: "Contact",
-          footer_join: "Comment rejoindre",
-          footer_platform: "Fonctionnalités plateforme",
-          footer_copy: "© 2026 VoxWorldApp. Construit pour l’identité artiste, la beauté et la découverte mondiale.",
-          chat_title: "Assistant VoxWorld",
-          chat_sub: "Posez une question sur le profil, la galerie, les médias ou la carte d’identité",
-          chat_send: "Envoyer",
-          chat_placeholder: "Posez une question...",
-          quick_1: "Comment créer mon profil ?",
-          quick_2: "Comment avoir ma carte ID ?",
-          quick_3: "Comment fonctionnent les boutons audio ?",
-          quick_4: "Comment les artistes apparaissent dans la galerie ?",
-          ai_welcome: "Bienvenue sur VoxWorldApp. Posez-moi vos questions sur les profils artistes, les cartes d’identité, la visibilité de la galerie, les boutons audio ou les sections vidéo.",
-          ai_profile: "Pour créer votre profil, cliquez sur Rejoindre ou Créer mon profil. Vous pourrez construire votre image artiste, vos genres, votre biographie et votre identité premium.",
-          ai_id: "La carte d’identité donne aux artistes une présence visuelle vérifiée plus forte. Elle peut inclure ID créateur, genre, statut, langues et type de profil premium.",
-          ai_audio: "Les boutons audio permettent aux visiteurs d’écouter titres, démos et hooks directement depuis le profil. Ils accélèrent la découverte musicale.",
-          ai_gallery: "Les artistes apparaissent dans la galerie sous forme de cartes de découverte avec image, courte description, bouton suivre et accès profil."
-        },
-
-        es: {
-          brand_sub: "Identidad vocal global • descubrimiento • colaboración",
-          nav_home: "Inicio",
-          nav_features: "Funciones",
-          nav_profile: "Perfil",
-          nav_gallery: "Galería",
-          nav_media: "Medios",
-          nav_how: "Cómo funciona",
-          nav_contact: "Contacto",
-          nav_join: "Únete",
-          eyebrow: "Tarjeta de identidad • Perfil artista • Audio • Video • Descubrimiento global",
-          hero_title: "Construye tu identidad vocal y convierte tu talento en un perfil artístico global.",
-          hero_text: "VoxWorldApp ofrece a los artistas una hermosa página de perfil, identidad verificada, galería de descubrimiento, botones de audio y video, y una página principal moderna hecha para atraer creadores rápidamente.",
-          hero_btn_profile: "Crear tu perfil",
-          hero_btn_gallery: "Explorar galería",
-          hero_btn_media: "Abrir audio y video",
-          stat_1: "países listos para descubrir",
-          stat_2: "sistema de tarjeta de identidad artística",
-          stat_3: "visibilidad instantánea del perfil",
-          spot_title: "Artista destacado",
-          spot_text: "Un perfil premium inspirado en plataformas de streaming, reconstruido para visibilidad, identidad y descubrimiento.",
-          spot_chip: "Destacado",
-          spot_meta: "Arquitecto digital caribeño • Future Kompa • Creador global",
-          verified_text: "Artista verificado",
-          mini_1_t: "Tarjeta de identidad",
-          mini_1_d: "Una hermosa tarjeta visual para inspirar confianza y reconocimiento.",
-          mini_2_t: "Vitrina de audio",
-          mini_2_d: "Reproduce canciones, demos, fragmentos y avances del artista directamente desde el perfil.",
-          mini_3_t: "Vitrina de video",
-          mini_3_d: "Muestra clips, actuaciones, entrevistas, reels, trailers e historias visuales.",
-          mini_4_t: "Descubrimiento global",
-          mini_4_d: "Permite que los artistas aparezcan en una galería moderna para atraer fans, clientes y colaboradores.",
-          features_title: "Una plataforma hermosa hecha para que los artistas quieran entrar rápido",
-          features_text: "Diseño moderno, identidad fuerte, galería premium y secciones multimedia integradas hacen que la plataforma se sienta más completa y atractiva desde el primer día.",
-          f1_t: "Página principal centrada en artistas",
-          f1_d: "Una landing page clara que muestra valor de inmediato: crear perfil, subir contenido y ser descubierto mundialmente.",
-          f2_t: "Tarjeta de identidad dentro del perfil",
-          f2_d: "Cada artista puede mostrar una tarjeta premium para reforzar confianza, marca y singularidad.",
-          f3_t: "Galería hecha para descubrir",
-          f3_d: "Una galería moderna ofrece una experiencia visual más fuerte y anima a explorar más creadores.",
-          f4_t: "Botones de audio",
-          f4_d: "Botones dedicados permiten escuchar canciones, demos, hooks e identidad vocal rápidamente.",
-          f5_t: "Botones de video",
-          f5_d: "Permite a los artistas mostrar videos musicales, trailers, actuaciones, entrevistas o visuales promocionales.",
-          f6_t: "Atractivo mundial",
-          f6_d: "El diseño está hecho para atraer cantantes, creadores, productores y talento de muchos países e idiomas.",
-          profile_title: "Perfil artístico premium",
-          profile_text: "Un perfil inspirado en streaming con mejor identidad, mejor estética, acceso a medios y mayor confianza.",
-          profile_meta: "Arquitecto digital caribeño • Future Kompa • Artista IA • Perfil global",
-          pill_remote: "Colaboración remota",
-          pill_brand: "Branding de identidad",
-          profile_btn_join: "Crear mi perfil",
-          profile_btn_follow: "Seguir artista",
-          profile_btn_message: "Mensaje",
-          profile_bio: "Esta sección muestra cómo un artista puede presentar identidad, estilo, dirección musical, valor de colaboración y contenido multimedia en un espacio elegante. Está diseñada para impresionar rápido.",
-          sub_about_t: "Sobre el artista",
-          sub_about_d: "Presenta tu misión creativa, tu sonido, tus influencias y tu historia artística de manera premium.",
-          sub_offer_t: "Lo que ofrece este artista",
-          offer_1: "Colaboraciones vocales y features",
-          offer_2: "Canciones originales y hooks",
-          offer_3: "Branding artístico e identidad de perfil",
-          offer_4: "Alianzas creativas globales",
-          sub_style_t: "Estilo y géneros",
-          sub_style_d: "Kompa, zouk love, fusión afrocaribeña, grooves sensuales, Kompa político futurista, hooks emocionales e identidad creativa mejorada por IA.",
-          sub_social_t: "Poder del perfil",
-          sub_social_d: "Añade número de seguidores, badges visuales, etiquetas, avances multimedia y botones de reserva para transformar el perfil.",
-          id_title: "Tarjeta VoxWorld",
-          id_sub: "ID oficial del perfil creador",
-          id_role: "Creador musical global",
-          id_field_1: "ID creador",
-          id_field_2: "Categoría",
-          id_field_3: "Género principal",
-          id_field_4: "Estado",
-          id_field_5: "Idiomas",
-          id_field_6: "Tipo de perfil",
-          id_cat: "Cantante / Artista IA",
-          id_status: "Activo mundialmente",
-          id_type: "Creador premium",
-          id_btn: "Obtener mi tarjeta",
-          gallery_title: "Galería de artistas",
-          gallery_text: "Una galería moderna para mostrar artistas, fotos, identidad multimedia y tarjetas de descubrimiento.",
-          filter_all: "Todos",
-          filter_singer: "Cantantes",
-          filter_producer: "Productores",
-          filter_creator: "Creadores",
-          filter_ai: "Artistas IA",
-          g1_d: "Future Kompa • Creador IA • Identidad vocal global",
-          g2_d: "Pop soul • Artista vocal visual • Hooks internacionales",
-          g3_d: "Productor • Arquitecto melódico • Creador de identidad de audio",
-          g4_d: "Intérprete IA • Marca de voz • Visuales digitales",
-          g5_d: "Productor • Diseñador de mezcla • Sonidos listos para sello",
-          g6_d: "Cantante • Actuación narrativa • Presencia premium",
-          g7_d: "Creador IA de beats • Branding sonoro • Ritmo moderno",
-          g8_d: "Cantante creadora • Imagen vocal elegante • Atractivo para fans",
-          tiny_follow: "Seguir",
-          tiny_view: "Ver perfil",
-          media_title: "Audio y video",
-          media_text: "Una hermosa sección multimedia permite a cada artista presentar pistas, fragmentos, visuales, trailers y contenido promocional.",
-          audio_title: "Vitrina de audio",
-          audio_text: "Reproduce canciones y avances desde perfiles de artistas.",
-          video_title: "Vitrina de video",
-          video_text: "Abre videos, reels visuales, entrevistas y clips de actuación.",
-          v1_t: "Clip de actuación",
-          v1_d: "Presentación visual lista para descubrimiento artístico.",
-          v2_t: "Avance de video musical",
-          v2_d: "Un lugar para trailers, lanzamientos oficiales o clips verticales cortos.",
-          video_btn: "Abrir video",
-          how_title: "Cómo funciona",
-          how_text: "Un camino claro para unirse, construir identidad, subir medios y crecer rápido.",
-          step1_t: "Crear perfil",
-          step1_d: "Únete a la plataforma y configura tu imagen artística, identidad, género e información del perfil.",
-          step2_t: "Obtén tu tarjeta",
-          step2_d: "Muestra una fuerte tarjeta de identidad creadora dentro del perfil para generar reconocimiento y confianza.",
-          step3_t: "Sube audio y video",
-          step3_d: "Comparte canciones, fragmentos, avances de video y visuales desde una sola página elegante.",
-          step4_t: "Sé descubierto",
-          step4_d: "Aparece en la galería y atrae fans, colaboradores, sellos y oportunidades.",
-          cta_title: "Dales a los artistas una página a la que quieran unirse de inmediato",
-          cta_text: "Este diseño combina una página principal poderosa, perfil, galería, sistema de tarjeta ID y sección multimedia en una sola experiencia elegante.",
-          cta_btn_1: "Crear cuenta de artista",
-          cta_btn_2: "Ver perfil premium",
-          cta_m1_t: "Poder del perfil",
-          cta_m1_d: "Identidad visual más fuerte, posicionamiento premium y mayor confianza.",
-          cta_m2_t: "Poder multimedia",
-          cta_m2_d: "Los botones de audio y video hacen que la plataforma se sienta viva y lista para artistas.",
-          cta_m3_t: "Poder de galería",
-          cta_m3_d: "Una galería de descubrimiento aumenta emoción y exploración en todo el sitio.",
-          cta_m4_t: "Poder de marca",
-          cta_m4_d: "Toda la experiencia está hecha para impulsar registros rápidos de artistas.",
-          contact_title: "Contacto",
-          contact_text: "Listo para dar forma a la nueva generación de identidad y descubrimiento artístico.",
-          footer_about: "Una plataforma global diseñada para identidad premium, belleza del perfil, confianza creadora, descubrimiento y presentación multimedia.",
-          footer_links: "Enlaces",
-          footer_contact: "Contacto",
-          footer_join: "Cómo unirse",
-          footer_platform: "Funciones de la plataforma",
-          footer_copy: "© 2026 VoxWorldApp. Construido para identidad artística, belleza y descubrimiento global.",
-          chat_title: "Asistente VoxWorld",
-          chat_sub: "Pregunta sobre perfil, galería, medios o tarjeta de identidad",
-          chat_send: "Enviar",
-          chat_placeholder: "Haz una pregunta...",
-          quick_1: "¿Cómo creo mi perfil?",
-          quick_2: "¿Cómo obtengo mi tarjeta ID?",
-          quick_3: "¿Cómo funcionan los botones de audio?",
-          quick_4: "¿Cómo aparecen los artistas en la galería?",
-          ai_welcome: "Bienvenido a VoxWorldApp. Pregúntame sobre perfiles de artistas, tarjetas de identidad, visibilidad de galería, botones de audio o secciones de video.",
-          ai_profile: "Para crear tu perfil, haz clic en Únete o Crear mi perfil. Desde allí puedes construir tu imagen artística, géneros, biografía e identidad premium.",
-          ai_id: "La tarjeta de identidad da a los artistas una presencia visual verificada más fuerte. Puede incluir ID creador, género, estado, idiomas y tipo premium.",
-          ai_audio: "Los botones de audio permiten que los visitantes escuchen pistas, demos y hooks directamente desde el perfil. Hacen más rápido el descubrimiento musical.",
-          ai_gallery: "Los artistas aparecen en la galería como tarjetas de descubrimiento con imagen, breve descripción, botón seguir y acceso al perfil."
+      const defaultDB = {
+        follows: [],
+        artists: [],
+        media: {
+          audio: {
+            'Closer Every Night': 'media/closer-every-night.mp3',
+            'Secret Lanmou': 'media/secret-lanmou.mp3',
+            'Future Kompa Motion': 'media/future-kompa-motion.mp3',
+            'Global Voice Identity': 'media/global-voice-identity.mp3'
+          },
+          video: {
+            'Performance clip': 'https://www.youtube.com/',
+            'Music video preview': 'https://www.youtube.com/'
+          }
         }
       };
 
-      let currentLang = localStorage.getItem("voxworld_lang") || "en";
+      const translations = window.__VOX_TRANSLATIONS__ || {};
+      let db = JSON.parse(localStorage.getItem(DB_KEY)) || defaultDB;
+      let currentLang = localStorage.getItem('voxworld_lang') || 'en';
+      let currentAudio = null;
+      let currentAudioBtn = null;
 
-      function t(key){
-        return translations[currentLang]?.[key] ?? translations.en[key] ?? key;
+      function saveDB() {
+        localStorage.setItem(DB_KEY, JSON.stringify(db));
       }
 
-      function applyTranslations(){
-        $$("[data-i18n]").forEach(el => {
-          const key = el.getAttribute("data-i18n");
+      function t(key) {
+        const pack = translations[currentLang] || translations.en || {};
+        const fallback = (translations.en || {})[key];
+        return pack[key] ?? fallback ?? key;
+      }
+
+      function applyTranslations() {
+        $$('[data-i18n]').forEach(el => {
+          const key = el.getAttribute('data-i18n');
           if (key) el.textContent = t(key);
         });
-
-        const input = $("#chatInput");
-        if (input) input.placeholder = t("chat_placeholder");
+        const input = $('#chatInput');
+        if (input) input.placeholder = t('chat_placeholder');
+        refreshFollowButtons();
       }
 
-      function updateLangButtons(){
-        $$(".lang-btn").forEach(btn => {
-          btn.classList.toggle("active", btn.dataset.lang === currentLang);
-        });
+      function updateLangButtons() {
+        $$('.lang-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.lang === currentLang));
       }
 
-      function setLanguage(lang){
+      function setLanguage(lang) {
         if (!translations[lang]) return;
         currentLang = lang;
-        localStorage.setItem("voxworld_lang", lang);
+        localStorage.setItem('voxworld_lang', lang);
         applyTranslations();
         updateLangButtons();
         renderQuickButtons();
       }
 
-      $$(".lang-btn").forEach(btn => {
-        btn.addEventListener("click", () => {
-          setLanguage(btn.dataset.lang);
-        });
-      });
+      $$('.lang-btn').forEach(btn => btn.addEventListener('click', () => setLanguage(btn.dataset.lang)));
 
-      const menuBtn = $("#menuBtn");
-      const mobileMenu = $("#mobileMenu");
-
-      if (menuBtn && mobileMenu) {
-        menuBtn.addEventListener("click", () => {
-          mobileMenu.classList.toggle("show");
-        });
-
-        $$("a", mobileMenu).forEach(link => {
-          link.addEventListener("click", () => mobileMenu.classList.remove("show"));
-        });
-      }
+      $('#menuBtn')?.addEventListener('click', () => $('#mobileMenu')?.classList.toggle('show'));
 
       $$('a[href^="#"]').forEach(link => {
-        link.addEventListener("click", (e) => {
-          const target = link.getAttribute("href");
-          if (!target || target === "#") return;
-          const el = $(target);
-          if (!el) return;
+        link.addEventListener('click', e => {
+          const href = link.getAttribute('href');
+          if (!href || href === '#') return;
+          const target = $(href);
+          if (!target) return;
           e.preventDefault();
-          el.scrollIntoView({ behavior: "smooth", block: "start" });
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          $('#mobileMenu')?.classList.remove('show');
         });
       });
 
-      $$("[data-signup]").forEach(btn => {
-        btn.addEventListener("click", () => {
-          window.location.href = "signup.html";
-        });
-      });
+      function isFollowing(name) {
+        return db.follows.includes(name);
+      }
 
-      const followBtn = $("#followBtn");
-      const messageBtn = $("#messageBtn");
+      function toggleFollow(name) {
+        const index = db.follows.indexOf(name);
+        if (index === -1) db.follows.push(name);
+        else db.follows.splice(index, 1);
+        saveDB();
+        refreshFollowButtons();
+      }
 
-      if (followBtn) {
-        let following = false;
-        followBtn.addEventListener("click", () => {
-          following = !following;
-          followBtn.textContent = following
-            ? (currentLang === "fr" ? "Suivi" : currentLang === "es" ? "Siguiendo" : "Following")
-            : t("profile_btn_follow");
+      function refreshFollowButtons() {
+        const main = $('#followBtn');
+        if (main) {
+          main.textContent = isFollowing('Ansy777_DDC')
+            ? (currentLang === 'fr' ? 'Suivi' : currentLang === 'es' ? 'Siguiendo' : 'Following')
+            : t('profile_btn_follow');
+        }
+
+        $$('.artist-card').forEach(card => {
+          const name = card.querySelector('h3')?.textContent?.trim();
+          const btn = card.querySelector('.card-follow');
+          if (!name || !btn) return;
+          btn.textContent = isFollowing(name)
+            ? (currentLang === 'fr' ? 'Suivi' : currentLang === 'es' ? 'Siguiendo' : 'Following')
+            : t('tiny_follow');
         });
       }
 
-      if (messageBtn) {
-        messageBtn.addEventListener("click", () => {
-          openChat();
-          addMessage("user", currentLang === "fr" ? "Je veux contacter un artiste." : currentLang === "es" ? "Quiero contactar a un artista." : "I want to contact an artist.");
-          setTimeout(() => {
-            addMessage("ai", currentLang === "fr"
-              ? "Vous pouvez ajouter ici un système de messagerie ou un bouton de réservation."
-              : currentLang === "es"
-                ? "Aquí puedes agregar un sistema de mensajes o un botón de reserva."
-                : "You can add a messaging system or booking button here.");
-          }, 250);
-        });
-      }
+      $('#followBtn')?.addEventListener('click', () => toggleFollow('Ansy777_DDC'));
 
-      $$(".card-follow").forEach(btn => {
-        btn.addEventListener("click", () => {
-          const isFollowed = btn.dataset.followed === "true";
-          btn.dataset.followed = String(!isFollowed);
-          btn.textContent = !isFollowed
-            ? (currentLang === "fr" ? "Suivi" : currentLang === "es" ? "Siguiendo" : "Following")
-            : t("tiny_follow");
+      $$('.card-follow').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const name = btn.closest('.artist-card')?.querySelector('h3')?.textContent?.trim();
+          if (name) toggleFollow(name);
         });
       });
 
-      $$(".card-view").forEach(btn => {
-        btn.addEventListener("click", () => {
-          document.querySelector("#profile").scrollIntoView({behavior:"smooth"});
-        });
+      $$('.card-view').forEach(btn => {
+        btn.addEventListener('click', () => $('#profile')?.scrollIntoView({ behavior: 'smooth', block: 'start' }));
       });
 
-      $$(".filter-btn").forEach(btn => {
-        btn.addEventListener("click", () => {
-          $$(".filter-btn").forEach(b => b.classList.remove("active"));
-          btn.classList.add("active");
-          const filter = btn.dataset.filter;
-          $$(".artist-card").forEach(card => {
-            const cat = card.dataset.category || "";
-            if (filter === "all" || cat.includes(filter)) {
-              card.classList.remove("hidden");
-            } else {
-              card.classList.add("hidden");
-            }
+      $$('.filter-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          $$('.filter-btn').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          const filter = btn.dataset.filter || 'all';
+          $$('.artist-card').forEach(card => {
+            const category = (card.dataset.category || '').toLowerCase();
+            card.style.display = filter === 'all' || category.includes(filter) ? '' : 'none';
           });
         });
       });
 
-      $$(".audio-btn").forEach(btn => {
-        btn.addEventListener("click", () => {
-          const track = btn.dataset.track || "Track";
-          addMessage("user", currentLang === "fr" ? `Lire : ${track}` : currentLang === "es" ? `Reproducir: ${track}` : `Play: ${track}`);
-          openChat();
-          setTimeout(() => {
-            addMessage("ai", currentLang === "fr"
-              ? `Le bouton audio fonctionne. Vous pourrez connecter ici un vrai lecteur pour "${track}".`
-              : currentLang === "es"
-                ? `El botón de audio funciona. Aquí podrás conectar un reproductor real para "${track}".`
-                : `The audio button works. You can connect a real player here for "${track}".`);
-          }, 250);
+      function stopCurrentAudio() {
+        if (currentAudio) {
+          currentAudio.pause();
+          currentAudio.currentTime = 0;
+          if (currentAudioBtn) currentAudioBtn.textContent = '▶';
+          currentAudio = null;
+          currentAudioBtn = null;
+        }
+      }
+
+      $$('.audio-btn').forEach(btn => {
+        btn.addEventListener('click', async () => {
+          const track = btn.dataset.track;
+          const src = db.media.audio[track];
+          if (!src) {
+            alert('Missing audio source for ' + track);
+            return;
+          }
+
+          if (currentAudio && currentAudioBtn === btn) {
+            stopCurrentAudio();
+            return;
+          }
+
+          stopCurrentAudio();
+          currentAudio = new Audio(src);
+          currentAudioBtn = btn;
+
+          try {
+            await currentAudio.play();
+            btn.textContent = '⏸';
+            currentAudio.addEventListener('ended', stopCurrentAudio, { once: true });
+          } catch (error) {
+            alert('Audio file not found: ' + src + ' . Upload the MP3 file to your media folder.');
+            stopCurrentAudio();
+          }
         });
       });
 
-      $$(".video-btn").forEach(btn => {
-        btn.addEventListener("click", () => {
-          const video = btn.dataset.video || "Video";
-          addMessage("user", currentLang === "fr" ? `Ouvrir : ${video}` : currentLang === "es" ? `Abrir: ${video}` : `Open: ${video}`);
-          openChat();
-          setTimeout(() => {
-            addMessage("ai", currentLang === "fr"
-              ? `Le bouton vidéo fonctionne. Vous pourrez connecter ici une vraie vidéo pour "${video}".`
-              : currentLang === "es"
-                ? `El botón de video funciona. Aquí podrás conectar un video real para "${video}".`
-                : `The video button works. You can connect a real video here for "${video}".`);
-          }, 250);
+      $$('.video-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const label = btn.dataset.video;
+          const url = db.media.video[label];
+          if (!url) {
+            alert('Missing video URL for ' + label);
+            return;
+          }
+          window.open(url, '_blank', 'noopener');
         });
       });
 
-      const chatToggle = $("#chatToggle");
-      const chatbox = $("#chatbox");
-      const chatClose = $("#chatClose");
-      const chatMessages = $("#chatMessages");
-      const chatQuick = $("#chatQuick");
-      const chatForm = $("#chatForm");
-      const chatInput = $("#chatInput");
-
-      function openChat(){
-        if (!chatbox) return;
-        chatbox.classList.add("open");
-      }
-
-      function closeChat(){
-        if (!chatbox) return;
-        chatbox.classList.remove("open");
-      }
-
-      if (chatToggle) chatToggle.addEventListener("click", () => {
-        chatbox.classList.toggle("open");
+      $$('[data-signup]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const name = prompt(currentLang === 'fr' ? 'Nom d\'artiste' : currentLang === 'es' ? 'Nombre artístico' : 'Artist name');
+          if (!name) return;
+          const genre = prompt(currentLang === 'fr' ? 'Genre principal' : currentLang === 'es' ? 'Género principal' : 'Primary genre') || '';
+          db.artists.push({
+            id: Date.now(),
+            name,
+            genre,
+            createdAt: new Date().toISOString()
+          });
+          saveDB();
+          alert(currentLang === 'fr' ? 'Profil créé dans cette démo.' : currentLang === 'es' ? 'Perfil creado en esta demo.' : 'Profile created in this demo.');
+        });
       });
 
-      if (chatClose) chatClose.addEventListener("click", closeChat);
-
-      document.addEventListener("keydown", (e) => {
-        if (e.key === "Escape") closeChat();
+      $('#messageBtn')?.addEventListener('click', () => {
+        window.location.href = 'mailto:iit-llco@outlook.com?subject=' + encodeURIComponent('VoxWorldApp Artist Inquiry');
       });
 
-      function addMessage(type, text){
+      const chatbox = $('#chatbox');
+      const chatMessages = $('#chatMessages');
+      const chatQuick = $('#chatQuick');
+      const chatInput = $('#chatInput');
+
+      function openChat() {
+        chatbox?.classList.add('open');
+      }
+
+      function closeChat() {
+        chatbox?.classList.remove('open');
+      }
+
+      function addMessage(type, text) {
         if (!chatMessages) return;
-        const div = document.createElement("div");
-        div.className = `msg ${type === "user" ? "msg-user" : "msg-ai"}`;
+        const div = document.createElement('div');
+        div.className = `msg ${type === 'user' ? 'msg-user' : 'msg-ai'}`;
         div.textContent = text;
         chatMessages.appendChild(div);
         chatMessages.scrollTop = chatMessages.scrollHeight;
       }
 
-      function answerFor(text){
+      function answerFor(text) {
         const q = text.toLowerCase();
-        if (q.includes("profile") || q.includes("profil") || q.includes("perfil")) return t("ai_profile");
-        if (q.includes("id") || q.includes("identity") || q.includes("identité") || q.includes("identidad") || q.includes("card")) return t("ai_id");
-        if (q.includes("audio") || q.includes("song") || q.includes("track") || q.includes("music")) return t("ai_audio");
-        if (q.includes("gallery") || q.includes("galerie") || q.includes("galería")) return t("ai_gallery");
-        return t("ai_welcome");
+        if (q.includes('profile') || q.includes('profil') || q.includes('perfil')) return t('ai_profile');
+        if (q.includes('id') || q.includes('identity') || q.includes('identité') || q.includes('identidad') || q.includes('card')) return t('ai_id');
+        if (q.includes('audio') || q.includes('song') || q.includes('track') || q.includes('music')) return t('ai_audio');
+        if (q.includes('gallery') || q.includes('galerie') || q.includes('galería')) return t('ai_gallery');
+        if (q.includes('contact') || q.includes('message') || q.includes('email')) return t('ai_contact');
+        return t('ai_welcome');
       }
 
-      function renderQuickButtons(){
+      function renderQuickButtons() {
         if (!chatQuick) return;
-        chatQuick.innerHTML = "";
-        ["quick_1","quick_2","quick_3","quick_4"].forEach(key => {
-          const btn = document.createElement("button");
-          btn.type = "button";
+        chatQuick.innerHTML = '';
+        ['quick_1', 'quick_2', 'quick_3', 'quick_4'].forEach(key => {
+          const btn = document.createElement('button');
+          btn.type = 'button';
           btn.textContent = t(key);
-          btn.addEventListener("click", () => {
+          btn.addEventListener('click', () => {
             openChat();
-            addMessage("user", btn.textContent);
-            setTimeout(() => addMessage("ai", answerFor(btn.textContent)), 250);
+            addMessage('user', btn.textContent);
+            setTimeout(() => addMessage('ai', answerFor(btn.textContent)), 250);
           });
           chatQuick.appendChild(btn);
         });
       }
 
-      if (chatForm) {
-        chatForm.addEventListener("submit", (e) => {
-          e.preventDefault();
-          const value = chatInput.value.trim();
-          if (!value) return;
-          openChat();
-          addMessage("user", value);
-          chatInput.value = "";
-          setTimeout(() => addMessage("ai", answerFor(value)), 250);
-        });
-      }
+      $('#chatToggle')?.addEventListener('click', () => chatbox?.classList.toggle('open'));
+      $('#chatClose')?.addEventListener('click', closeChat);
 
+      $('#chatForm')?.addEventListener('submit', e => {
+        e.preventDefault();
+        const value = chatInput?.value.trim();
+        if (!value) return;
+        openChat();
+        addMessage('user', value);
+        chatInput.value = '';
+        setTimeout(() => addMessage('ai', answerFor(value)), 250);
+      });
+
+      window.__VOX_TRANSLATIONS__ = translations;
       applyTranslations();
       updateLangButtons();
       renderQuickButtons();
-      addMessage("ai", t("ai_welcome"));
+      refreshFollowButtons();
+      addMessage('ai', t('ai_welcome'));
     });
-  <script>
-document.addEventListener("DOMContentLoaded", () => {
-  const $ = (s, root = document) => root.querySelector(s);
-  const $$ = (s, root = document) => [...root.querySelectorAll(s)];
-
-  const DB_KEY = "voxworldapp_db_v1";
-
-  const defaultDB = {
-    artists: [
-      {
-        id: "artist-1",
-        name: "Ansy Michel",
-        stage_name: "Ansy777_DDC",
-        rank: "A",
-        voice_id: "VXW-ANS-2026-000001",
-        country: "USA / Haiti",
-        languages: ["English", "French", "Haitian Creole", "Spanish"],
-        genres: ["Kompa", "Zouk", "Afro Fusion", "Love Music"],
-        collab_level: "Global Open Collaboration",
-        bio: "Future Kompa • Afro Fusion • Digital Creator",
-        image: "",
-        verified: true,
-        audio: [
-          { id: "a1", title: "Closer Every Night", url: "" },
-          { id: "a2", title: "Secret Lanmou", url: "" }
-        ],
-        videos: [
-          { id: "v1", title: "Performance Clip", url: "" },
-          { id: "v2", title: "Music Video Preview", url: "" }
-        ]
-      },
-      {
-        id: "artist-2",
-        name: "Maya Rose",
-        stage_name: "Maya Rose",
-        rank: "B+",
-        voice_id: "VXW-MAY-2026-000002",
-        country: "France",
-        languages: ["French", "English"],
-        genres: ["Soul Pop", "Acoustic", "Voiceover"],
-        collab_level: "Open for Commercial Projects",
-        bio: "Soul Pop • Voiceover • Storytelling",
-        image: "",
-        verified: true,
-        audio: [],
-        videos: []
-      },
-      {
-        id: "artist-3",
-        name: "Carlos Vega",
-        stage_name: "Carlos Vega",
-        rank: "A-",
-        voice_id: "VXW-CAR-2026-000003",
-        country: "Spain",
-        languages: ["Spanish", "English"],
-        genres: ["Latin Urban", "Afrobeat", "Pop"],
-        collab_level: "High Demand Features",
-        bio: "Latin Urban • Afrobeat • Hook Specialist",
-        image: "",
-        verified: true,
-        audio: [],
-        videos: []
-      }
-    ],
-    follows: [],
-    messages: [],
-    lastUpdated: new Date().toISOString()
-  };
-
-  function loadDB() {
-    try {
-      const raw = localStorage.getItem(DB_KEY);
-      if (!raw) {
-        localStorage.setItem(DB_KEY, JSON.stringify(defaultDB));
-        return structuredClone(defaultDB);
-      }
-      return JSON.parse(raw);
-    } catch (err) {
-      console.error("DB load error:", err);
-      localStorage.setItem(DB_KEY, JSON.stringify(defaultDB));
-      return structuredClone(defaultDB);
-    }
-  }
-
-  function saveDB(db) {
-    db.lastUpdated = new Date().toISOString();
-    localStorage.setItem(DB_KEY, JSON.stringify(db));
-  }
-
-  let db = loadDB();
-
-  function findArtistByName(name) {
-    if (!name) return null;
-    return db.artists.find(a =>
-      a.stage_name?.toLowerCase() === name.toLowerCase() ||
-      a.name?.toLowerCase() === name.toLowerCase()
-    ) || null;
-  }
-
-  function setButtonText(el, text) {
-    if (el) el.textContent = text;
-  }
-
-  function safeAlert(text) {
-    if (window.innerWidth < 700) {
-      console.log(text);
-    } else {
-      alert(text);
-    }
-  }
-
-  // Smooth scroll for anchor buttons
-  $$('a[href^="#"]').forEach(link => {
-    link.addEventListener("click", e => {
-      const target = link.getAttribute("href");
-      if (!target || target === "#") return;
-      const section = $(target);
-      if (!section) return;
-      e.preventDefault();
-      section.scrollIntoView({ behavior: "smooth", block: "start" });
-    });
-  });
-
-  // Join / signup buttons
-  $$('a[href="signup.html"], [data-signup], .btn, .tiny-btn').forEach(btn => {
-    const text = (btn.textContent || "").trim().toLowerCase();
-    if (
-      text.includes("join now") ||
-      text.includes("start your profile") ||
-      text.includes("go to sign up") ||
-      text.includes("create my profile") ||
-      text.includes("sign up")
-    ) {
-      btn.addEventListener("click", e => {
-        e.preventDefault();
-        window.location.href = "signup.html";
-      });
-    }
-  });
-
-  // Chat
-  const chatToggle = $("#chatToggle");
-  const chatbox = $("#chatbox");
-  const chatClose = $("#chatClose");
-  const chatForm = $("#chatForm");
-  const chatInput = $("#chatInput");
-  const chatMessages = $("#chatMessages");
-  const quickQuestions = $("#quickQuestions");
-
-  function openChat() {
-    if (chatbox) chatbox.classList.add("open");
-  }
-
-  function closeChat() {
-    if (chatbox) chatbox.classList.remove("open");
-  }
-
-  function addChatMessage(type, text) {
-    if (!chatMessages) return;
-    const div = document.createElement("div");
-    div.className = `msg msg-${type}`;
-    div.style.margin = "8px 0";
-    div.style.padding = "10px 12px";
-    div.style.borderRadius = "14px";
-    div.style.background = type === "user" ? "rgba(62,197,255,.18)" : "rgba(255,255,255,.08)";
-    div.style.color = "#fff";
-    div.textContent = text;
-    chatMessages.appendChild(div);
-    chatMessages.scrollTop = chatMessages.scrollHeight;
-  }
-
-  function answerChat(q) {
-    const text = (q || "").toLowerCase();
-    if (text.includes("profile")) return "To create your profile, use any Join Now or Sign Up button.";
-    if (text.includes("voice id") || text.includes("passport") || text.includes("id")) return "Each artist can have a Voice ID / Passport card stored in the site database.";
-    if (text.includes("gallery")) return "Artists in the local database can be shown in the home page gallery cards.";
-    if (text.includes("audio")) return "Audio buttons can link to artist track URLs stored in the database.";
-    if (text.includes("video")) return "Video buttons can link to artist video URLs stored in the database.";
-    return "Welcome to VoxWorldApp. Ask about profile, voice ID, gallery, audio, or video.";
-  }
-
-  if (chatToggle) chatToggle.addEventListener("click", openChat);
-  if (chatClose) chatClose.addEventListener("click", closeChat);
-
-  if (chatForm) {
-    chatForm.addEventListener("submit", e => {
-      e.preventDefault();
-      const q = (chatInput?.value || "").trim();
-      if (!q) return;
-      openChat();
-      addChatMessage("user", q);
-      addChatMessage("ai", answerChat(q));
-      if (chatInput) chatInput.value = "";
-    });
-  }
-
-  if (quickQuestions) {
-    const qs = [
-      "How do I create my profile?",
-      "How do I get a Voice ID?",
-      "How do audio buttons work?",
-      "How do artists appear in gallery?"
-    ];
-    quickQuestions.innerHTML = "";
-    qs.forEach(q => {
-      const b = document.createElement("button");
-      b.type = "button";
-      b.className = "btn btn-secondary";
-      b.style.margin = "6px 6px 0 0";
-      b.textContent = q;
-      b.addEventListener("click", () => {
-        openChat();
-        addChatMessage("user", q);
-        addChatMessage("ai", answerChat(q));
-      });
-      quickQuestions.appendChild(b);
-    });
-  }
-
-  // Follow buttons
-  function toggleFollow(artistName, btn) {
-    const artist = findArtistByName(artistName);
-    if (!artist) {
-      safeAlert("Artist not found in database.");
-      return;
-    }
-
-    const exists = db.follows.includes(artist.id);
-    if (exists) {
-      db.follows = db.follows.filter(id => id !== artist.id);
-      setButtonText(btn, "Follow");
-    } else {
-      db.follows.push(artist.id);
-      setButtonText(btn, "Following");
-    }
-    saveDB(db);
-  }
-
-  // Detect cards and attach actions
-  $$("button, a").forEach(el => {
-    const label = (el.textContent || "").trim().toLowerCase();
-
-    if (label === "follow" || label === "following") {
-      el.addEventListener("click", e => {
-        e.preventDefault();
-        const card = el.closest("article, .passport-card, .gallery-card, .artist-card, .voice-card") || document;
-        const nameEl = card.querySelector("h3, h4, strong");
-        const artistName = nameEl?.textContent?.trim() || "Ansy777_DDC";
-        toggleFollow(artistName, el);
-      });
-    }
-
-    if (label.includes("open profile") || label.includes("view profile")) {
-      el.addEventListener("click", e => {
-        e.preventDefault();
-        document.querySelector("#home")?.scrollIntoView({ behavior: "smooth" });
-        safeAlert("Profile action connected. Next step: link this button to profile.html?id=artist-1");
-      });
-    }
-
-    if (label.includes("share card")) {
-      el.addEventListener("click", e => {
-        e.preventDefault();
-        const shareText = "Check out this artist on VoxWorldApp.";
-        navigator.clipboard?.writeText(shareText);
-        safeAlert("Share text copied.");
-      });
-    }
-
-    if (label.includes("copy share text")) {
-      el.addEventListener("click", e => {
-        e.preventDefault();
-        navigator.clipboard?.writeText("Verified Voice Passport • Global Artist Identity • Ready for discovery and collaboration.");
-        safeAlert("Share text copied.");
-      });
-    }
-
-    if (label === "close") {
-      el.addEventListener("click", e => {
-        const modal = el.closest(".modal, .share-modal, .passport-modal");
-        if (modal) {
-          e.preventDefault();
-          modal.style.display = "none";
-        }
-      });
-    }
-
-    if (label.includes("audio") || label === "▶" || label.includes("play")) {
-      el.addEventListener("click", e => {
-        if (el.dataset.boundAudio === "true") return;
-        el.dataset.boundAudio = "true";
-        e.preventDefault();
-        safeAlert("Audio button works. Add a real MP3 URL in the database to play a track.");
-      });
-    }
-
-    if (label.includes("video") || label.includes("open video")) {
-      el.addEventListener("click", e => {
-        if (el.dataset.boundVideo === "true") return;
-        el.dataset.boundVideo = "true";
-        e.preventDefault();
-        safeAlert("Video button works. Add a real video URL in the database to open a clip.");
-      });
-    }
-  });
-
-  // Language buttons
-  const translations = {
-    en: {
-      nav_cta: "Join Now",
-      hero_btn_1: "Start Your Profile",
-      cta_btn: "Go to Sign Up",
-      chat_send: "Send"
-    },
-    fr: {
-      nav_cta: "Rejoindre",
-      hero_btn_1: "Créer votre profil",
-      cta_btn: "Aller à l'inscription",
-      chat_send: "Envoyer"
-    },
-    es: {
-      nav_cta: "Únete",
-      hero_btn_1: "Crear tu perfil",
-      cta_btn: "Ir al registro",
-      chat_send: "Enviar"
-    }
-  };
-
-  let currentLang = localStorage.getItem("voxworld_lang") || "en";
-
-  function applyLanguage(lang) {
-    currentLang = translations[lang] ? lang : "en";
-    localStorage.setItem("voxworld_lang", currentLang);
-
-    $$("[data-i18n]").forEach(node => {
-      const key = node.getAttribute("data-i18n");
-      if (translations[currentLang]?.[key]) {
-        node.textContent = translations[currentLang][key];
-      }
-    });
-
-    $$(".lang-btn").forEach(btn => {
-      btn.classList.toggle("active", btn.dataset.lang === currentLang);
-    });
-  }
-
-  $$(".lang-btn").forEach(btn => {
-    btn.addEventListener("click", () => applyLanguage(btn.dataset.lang));
-  });
-
-  applyLanguage(currentLang);
-
-  // First welcome
-  if (chatMessages && !chatMessages.children.length) {
-    addChatMessage("ai", "Welcome to VoxWorldApp. Your local site database is ready.");
-  }
-
-  console.log("VoxWorld local database ready:", db);
-});
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-
-  const $ = s => document.querySelector(s);
-  const $$ = s => [...document.querySelectorAll(s)];
-
-  const DB_KEY = "voxworld_db";
-
-  // --------------------------
-  // DATABASE (LOCAL STORAGE)
-  // --------------------------
-  let db = JSON.parse(localStorage.getItem(DB_KEY)) || {
-    follows: [],
-    artists: []
-  };
-
-  function saveDB() {
-    localStorage.setItem(DB_KEY, JSON.stringify(db));
-  }
-
-  // --------------------------
-  // LANGUAGE
-  // --------------------------
-  let currentLang = localStorage.getItem("lang") || "en";
-
-  function t(txt){
-    return txt;
-  }
-
-  // --------------------------
-  // MENU
-  // --------------------------
-  $("#menuBtn")?.addEventListener("click", () => {
-    $("#mobileMenu").classList.toggle("show");
-  });
-
-  // --------------------------
-  // FOLLOW SYSTEM (REAL)
-  // --------------------------
-  function toggleFollow(name, btn){
-    const index = db.follows.indexOf(name);
-
-    if(index === -1){
-      db.follows.push(name);
-      btn.textContent = "Following";
-    } else {
-      db.follows.splice(index,1);
-      btn.textContent = "Follow";
-    }
-
-    saveDB();
-  }
-
-  // MAIN PROFILE FOLLOW
-  const followBtn = $("#followBtn");
-  if(followBtn){
-    const name = "Ansy777_DDC";
-
-    if(db.follows.includes(name)){
-      followBtn.textContent = "Following";
-    }
-
-    followBtn.addEventListener("click", () => {
-      toggleFollow(name, followBtn);
-    });
-  }
-
-  // GALLERY FOLLOW
-  $$(".card-follow").forEach(btn=>{
-    const name = btn.closest(".artist-card").querySelector("h3").textContent;
-
-    if(db.follows.includes(name)){
-      btn.textContent = "Following";
-    }
-
-    btn.addEventListener("click", ()=>{
-      toggleFollow(name, btn);
-    });
-  });
-
-  // --------------------------
-  // VIEW PROFILE SCROLL
-  // --------------------------
-  $$(".card-view").forEach(btn=>{
-    btn.addEventListener("click", ()=>{
-      document.querySelector("#profile").scrollIntoView({behavior:"smooth"});
-    });
-  });
-
-  // --------------------------
-  // FILTER GALLERY
-  // --------------------------
-  $$(".filter-btn").forEach(btn=>{
-    btn.addEventListener("click", ()=>{
-      $$(".filter-btn").forEach(b=>b.classList.remove("active"));
-      btn.classList.add("active");
-
-      const filter = btn.dataset.filter;
-
-      $$(".artist-card").forEach(card=>{
-        const cat = card.dataset.category || "";
-        card.style.display =
-          filter === "all" || cat.includes(filter) ? "" : "none";
-      });
-    });
-  });
-
-  // --------------------------
-  // REAL AUDIO PLAYER 🎧
-  // --------------------------
-  let audio = null;
-
-  const tracks = {
-    "Closer Every Night": "media/closer.mp3",
-    "Secret Lanmou": "media/secret.mp3",
-    "Future Kompa Motion": "media/future.mp3",
-    "Global Voice Identity": "media/global.mp3"
-  };
-
-  $$(".audio-btn").forEach(btn=>{
-    btn.addEventListener("click", ()=>{
-      const name = btn.dataset.track;
-
-      if(audio){
-        audio.pause();
-        audio = null;
-        btn.textContent = "▶";
-        return;
-      }
-
-      if(!tracks[name]){
-        alert("Add file in /media folder");
-        return;
-      }
-
-      audio = new Audio(tracks[name]);
-      audio.play();
-      btn.textContent = "⏸";
-
-      audio.onended = ()=>{
-        btn.textContent = "▶";
-        audio = null;
-      };
-    });
-  });
-
-  // --------------------------
-  // VIDEO SYSTEM 🎬
-  // --------------------------
-  const videos = {
-    "Performance clip": "https://youtube.com",
-    "Music video preview": "https://youtube.com"
-  };
-
-  $$(".video-btn").forEach(btn=>{
-    btn.addEventListener("click", ()=>{
-      const name = btn.dataset.video;
-      window.open(videos[name], "_blank");
-    });
-  });
-
-  // --------------------------
-  // SIGNUP SYSTEM (REAL DEMO)
-  // --------------------------
-  $("[data-signup]")?.addEventListener("click", ()=>{
-    const name = prompt("Artist Name");
-    if(!name) return;
-
-    db.artists.push({
-      name,
-      id: Date.now()
-    });
-
-    saveDB();
-    alert("Profile created (demo)");
-  });
-
-  // --------------------------
-  // MESSAGE BUTTON (EMAIL)
-  // --------------------------
-  $("#messageBtn")?.addEventListener("click", ()=>{
-    window.location.href =
-      "mailto:iit-llco@outlook.com?subject=Artist Inquiry";
-  });
-
-  // --------------------------
-  // CHAT SYSTEM
-  // --------------------------
-  const chatbox = $("#chatbox");
-
-  $("#chatToggle")?.addEventListener("click", ()=>{
-    chatbox.classList.toggle("open");
-  });
-
-  $("#chatClose")?.addEventListener("click", ()=>{
-    chatbox.classList.remove("open");
-  });
-
-  function addMsg(type, text){
-    const box = $("#chatMessages");
-    const div = document.createElement("div");
-    div.className = "msg " + (type === "user" ? "msg-user":"msg-ai");
-    div.textContent = text;
-    box.appendChild(div);
-    box.scrollTop = box.scrollHeight;
-  }
-
-  function reply(text){
-    if(text.includes("profile")) return "Click Join to create profile.";
-    if(text.includes("audio")) return "Audio buttons play songs.";
-    if(text.includes("video")) return "Video opens links.";
-    return "Welcome to VoxWorldApp.";
-  }
-
-  $("#chatForm")?.addEventListener("submit",(e)=>{
-    e.preventDefault();
-    const input = $("#chatInput");
-    const val = input.value.trim();
-    if(!val) return;
-
-    addMsg("user", val);
-    input.value = "";
-
-    setTimeout(()=>{
-      addMsg("ai", reply(val.toLowerCase()));
-    },300);
-  });
-
-});
-</script>
+  </script>
 </body>
 </html>
