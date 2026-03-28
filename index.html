@@ -177,6 +177,87 @@ document.getElementById("videoUpload").addEventListener("change", function(event
         container.appendChild(video);
     }
 });
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+const SUPABASE_URL = "https://gcomuxxidbjgqmdqsnfq.supabase.co";
+const SUPABASE_KEY = "sb_publishable_q2fKaWabHc1ldmmlipQuoA_qwyp3XR-";
+
+const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+// UPLOAD FUNCTION
+async function uploadFile(file, type) {
+    const fileName = Date.now() + "_" + file.name;
+
+    const { error } = await supabase.storage
+        .from('media')
+        .upload(fileName, file);
+
+    if (error) {
+        alert("Upload failed: " + error.message);
+        return;
+    }
+
+    const fileUrl = `${SUPABASE_URL}/storage/v1/object/public/media/${fileName}`;
+
+    await supabase.from('posts').insert([
+        { type: type, file_url: fileUrl }
+    ]);
+
+    loadPosts();
+}
+
+// LOAD POSTS
+async function loadPosts() {
+    const { data, error } = await supabase
+        .from('posts')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+    if (error) return;
+
+    document.getElementById("imageContainer").innerHTML = "";
+    document.getElementById("audioContainer").innerHTML = "";
+    document.getElementById("videoContainer").innerHTML = "";
+
+    data.forEach(post => {
+        if (post.type === "image") {
+            let img = document.createElement("img");
+            img.src = post.file_url;
+            document.getElementById("imageContainer").appendChild(img);
+        }
+
+        if (post.type === "audio") {
+            let audio = document.createElement("audio");
+            audio.controls = true;
+            audio.src = post.file_url;
+            document.getElementById("audioContainer").appendChild(audio);
+        }
+
+        if (post.type === "video") {
+            let video = document.createElement("video");
+            video.controls = true;
+            video.src = post.file_url;
+            document.getElementById("videoContainer").appendChild(video);
+        }
+    });
+}
+
+// EVENTS
+document.getElementById("imageUpload").addEventListener("change", e => {
+    uploadFile(e.target.files[0], "image");
+});
+
+document.getElementById("audioUpload").addEventListener("change", e => {
+    uploadFile(e.target.files[0], "audio");
+});
+
+document.getElementById("videoUpload").addEventListener("change", e => {
+    uploadFile(e.target.files[0], "video");
+});
+
+// LOAD ON START
+loadPosts();
 </script>
 
 </body>
