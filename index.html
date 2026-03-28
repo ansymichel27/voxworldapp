@@ -1,197 +1,181 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>VoxWorld App</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VoxWorld App</title>
 
-<style>
-* {
-    box-sizing: border-box;
-}
+  <style>
+    * { box-sizing: border-box; }
 
-body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background: #0d0d0d;
-    color: white;
-}
-
-header {
-    background: #111;
-    padding: 18px;
-    text-align: center;
-    font-size: 26px;
-    font-weight: bold;
-    color: gold;
-    letter-spacing: 1px;
-    border-bottom: 1px solid #2b2b2b;
-}
-
-nav {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 10px;
-    padding: 12px;
-    background: #1a1a1a;
-    border-bottom: 1px solid #2b2b2b;
-}
-
-button {
-    padding: 10px 16px;
-    border: none;
-    background: purple;
-    color: white;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 15px;
-    transition: 0.2s ease;
-}
-
-button:hover {
-    background: gold;
-    color: black;
-}
-
-input, textarea {
-    width: 100%;
-    padding: 12px;
-    border-radius: 8px;
-    border: 1px solid #333;
-    background: #101010;
-    color: white;
-    margin-bottom: 12px;
-    font-size: 14px;
-}
-
-textarea {
-    min-height: 100px;
-    resize: vertical;
-}
-
-.section {
-    display: none;
-    padding: 20px;
-    max-width: 1050px;
-    margin: 0 auto;
-}
-
-.active {
-    display: block;
-}
-
-.card {
-    background: #1c1c1c;
-    padding: 18px;
-    border-radius: 12px;
-    margin-bottom: 18px;
-    border: 1px solid #2a2a2a;
-}
-
-h2, h3 {
-    margin-top: 0;
-    color: gold;
-}
-
-p {
-    line-height: 1.5;
-}
-
-.row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 14px;
-}
-
-.media-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: 15px;
-    margin-top: 15px;
-}
-
-.profile-cover {
-    width: 100%;
-    max-height: 260px;
-    object-fit: cover;
-    border-radius: 12px;
-    margin-bottom: 14px;
-    background: #000;
-}
-
-.profile-avatar {
-    width: 140px;
-    height: 140px;
-    object-fit: cover;
-    border-radius: 50%;
-    border: 3px solid gold;
-    background: #000;
-    margin-bottom: 14px;
-}
-
-img, audio, video {
-    width: 100%;
-    border-radius: 10px;
-    background: #000;
-}
-
-.feed-card img {
-    max-height: 360px;
-    object-fit: cover;
-}
-
-.small-btn {
-    width: auto;
-    display: inline-block;
-    margin-right: 8px;
-}
-
-.status {
-    margin-top: 8px;
-    font-size: 14px;
-    color: #ccc;
-    word-break: break-word;
-}
-
-.empty-message {
-    color: #aaa;
-    font-style: italic;
-}
-
-.auth-box {
-    max-width: 520px;
-    margin: 20px auto;
-}
-
-.hidden {
-    display: none !important;
-}
-
-.user-line {
-    color: #ddd;
-    font-size: 14px;
-    margin-top: 8px;
-}
-
-.feed-meta {
-    color: #bbb;
-    font-size: 14px;
-    margin-bottom: 10px;
-}
-
-@media (max-width: 700px) {
-    .row {
-        grid-template-columns: 1fr;
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #0d0d0d;
+      color: white;
     }
-}
-</style>
+
+    header {
+      background: #111;
+      padding: 18px;
+      text-align: center;
+      font-size: 26px;
+      font-weight: bold;
+      color: gold;
+      border-bottom: 1px solid #2b2b2b;
+    }
+
+    nav {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      padding: 12px;
+      background: #1a1a1a;
+      border-bottom: 1px solid #2b2b2b;
+    }
+
+    button {
+      padding: 10px 16px;
+      border: none;
+      background: purple;
+      color: white;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 15px;
+    }
+
+    button:hover {
+      background: gold;
+      color: black;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid #333;
+      background: #101010;
+      color: white;
+      margin-bottom: 12px;
+      font-size: 14px;
+    }
+
+    textarea {
+      min-height: 100px;
+      resize: vertical;
+    }
+
+    .section {
+      display: none;
+      padding: 20px;
+      max-width: 1050px;
+      margin: 0 auto;
+    }
+
+    .active {
+      display: block;
+    }
+
+    .card {
+      background: #1c1c1c;
+      padding: 18px;
+      border-radius: 12px;
+      margin-bottom: 18px;
+      border: 1px solid #2a2a2a;
+    }
+
+    h2, h3 {
+      margin-top: 0;
+      color: gold;
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .media-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 15px;
+      margin-top: 15px;
+    }
+
+    .profile-cover {
+      width: 100%;
+      max-height: 260px;
+      object-fit: cover;
+      border-radius: 12px;
+      margin-bottom: 14px;
+      background: #000;
+    }
+
+    .profile-avatar {
+      width: 140px;
+      height: 140px;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 3px solid gold;
+      background: #000;
+      margin-bottom: 14px;
+    }
+
+    img, audio, video {
+      width: 100%;
+      border-radius: 10px;
+      background: #000;
+    }
+
+    .feed-card img {
+      max-height: 360px;
+      object-fit: cover;
+    }
+
+    .small-btn {
+      width: auto;
+      display: inline-block;
+      margin-right: 8px;
+      margin-bottom: 8px;
+    }
+
+    .status {
+      margin-top: 8px;
+      font-size: 14px;
+      color: #ccc;
+      word-break: break-word;
+    }
+
+    .empty-message {
+      color: #aaa;
+      font-style: italic;
+    }
+
+    .user-line {
+      color: #ddd;
+      font-size: 14px;
+      margin-top: 8px;
+    }
+
+    .feed-meta {
+      color: #bbb;
+      font-size: 14px;
+      margin-bottom: 10px;
+    }
+
+    @media (max-width: 700px) {
+      .row {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
 </head>
 <body>
 
-<header>VOXWORLD APP</header>
+  <header>VOXWORLD APP</header>
 
-<nav>
+  <nav>
     <button type="button" onclick="showSection('home')">Home</button>
     <button type="button" onclick="showSection('auth')">Login / Signup</button>
     <button type="button" onclick="showSection('profile')">Profile</button>
@@ -199,506 +183,460 @@ img, audio, video {
     <button type="button" onclick="showSection('music')">Music</button>
     <button type="button" onclick="showSection('video')">Video</button>
     <button type="button" onclick="showSection('feed')">Feed</button>
-</nav>
+  </nav>
 
-<div id="home" class="section active">
+  <div id="home" class="section active">
     <div class="card">
-        <h2>Welcome to VoxWorld</h2>
-        <p>Artist platform for profile, music, gallery and video publishing.</p>
-        <p id="homeStatus" class="status">Loading...</p>
-        <p id="userLine" class="user-line">Not logged in.</p>
+      <h2>Welcome to VoxWorld</h2>
+      <p>Artist platform for profile, music, gallery and video publishing.</p>
+      <p id="homeStatus" class="status">App loaded.</p>
+      <p id="userLine" class="user-line">Not logged in.</p>
     </div>
-</div>
+  </div>
 
-<div id="auth" class="section">
-    <div class="card auth-box">
-        <h2>Login / Signup</h2>
-
-        <input type="email" id="authEmail" placeholder="Email">
-        <input type="password" id="authPassword" placeholder="Password">
-
-        <button type="button" class="small-btn" onclick="signUp()">Sign Up</button>
-        <button type="button" class="small-btn" onclick="signIn()">Login</button>
-        <button type="button" class="small-btn" onclick="signOutUser()">Logout</button>
-
-        <div id="authStatus" class="status"></div>
-    </div>
-</div>
-
-<div id="profile" class="section">
+  <div id="auth" class="section">
     <div class="card">
-        <h2>Artist Profile</h2>
+      <h2>Login / Signup</h2>
+      <input type="email" id="authEmail" placeholder="Email">
+      <input type="password" id="authPassword" placeholder="Password">
+      <button type="button" class="small-btn" id="signupBtn">Sign Up</button>
+      <button type="button" class="small-btn" id="loginBtn">Login</button>
+      <button type="button" class="small-btn" id="logoutBtn">Logout</button>
+      <div id="authStatus" class="status"></div>
+    </div>
+  </div>
 
-        <div class="row">
-            <div>
-                <input type="text" id="profileName" placeholder="Artist name">
-                <input type="text" id="profileStyle" placeholder="Music style">
-                <input type="text" id="profileAvatar" placeholder="Avatar image URL">
-                <input type="text" id="profileCover" placeholder="Cover image URL">
-            </div>
-
-            <div>
-                <textarea id="profileBio" placeholder="Artist bio"></textarea>
-                <button type="button" onclick="saveProfile()">Save Profile</button>
-                <div id="profileStatus" class="status"></div>
-            </div>
+  <div id="profile" class="section">
+    <div class="card">
+      <h2>Artist Profile</h2>
+      <div class="row">
+        <div>
+          <input type="text" id="profileName" placeholder="Artist name">
+          <input type="text" id="profileStyle" placeholder="Music style">
+          <input type="text" id="profileAvatar" placeholder="Avatar image URL">
+          <input type="text" id="profileCover" placeholder="Cover image URL">
         </div>
+        <div>
+          <textarea id="profileBio" placeholder="Artist bio"></textarea>
+          <button type="button" id="saveProfileBtn">Save Profile</button>
+          <div id="profileStatus" class="status"></div>
+        </div>
+      </div>
     </div>
 
     <div class="card">
-        <h3>Public Profile Preview</h3>
-        <img id="previewCover" class="profile-cover" src="https://via.placeholder.com/1200x300?text=Cover+Image" alt="Cover">
-        <img id="previewAvatar" class="profile-avatar" src="https://via.placeholder.com/300?text=Avatar" alt="Avatar">
-        <p><strong>Name:</strong> <span id="previewName">No artist name yet</span></p>
-        <p><strong>Style:</strong> <span id="previewStyle">No style yet</span></p>
-        <p><strong>Bio:</strong> <span id="previewBio">No bio yet</span></p>
+      <h3>Public Profile Preview</h3>
+      <img id="previewCover" class="profile-cover" src="https://via.placeholder.com/1200x300?text=Cover+Image" alt="Cover">
+      <img id="previewAvatar" class="profile-avatar" src="https://via.placeholder.com/300?text=Avatar" alt="Avatar">
+      <p><strong>Name:</strong> <span id="previewName">No artist name yet</span></p>
+      <p><strong>Style:</strong> <span id="previewStyle">No style yet</span></p>
+      <p><strong>Bio:</strong> <span id="previewBio">No bio yet</span></p>
     </div>
-</div>
+  </div>
 
-<div id="gallery" class="section">
+  <div id="gallery" class="section">
     <div class="card">
-        <h2>Gallery Upload</h2>
-        <input type="file" id="imageUpload" accept="image/*">
-        <div id="imageStatus" class="status"></div>
-        <div id="imageContainer" class="media-grid"></div>
+      <h2>Gallery Upload</h2>
+      <input type="file" id="imageUpload" accept="image/*">
+      <div id="imageStatus" class="status"></div>
+      <div id="imageContainer" class="media-grid"></div>
     </div>
-</div>
+  </div>
 
-<div id="music" class="section">
+  <div id="music" class="section">
     <div class="card">
-        <h2>Music Upload</h2>
-        <input type="file" id="audioUpload" accept="audio/*">
-        <div id="audioStatus" class="status"></div>
-        <div id="audioContainer" class="media-grid"></div>
+      <h2>Music Upload</h2>
+      <input type="file" id="audioUpload" accept="audio/*">
+      <div id="audioStatus" class="status"></div>
+      <div id="audioContainer" class="media-grid"></div>
     </div>
-</div>
+  </div>
 
-<div id="video" class="section">
+  <div id="video" class="section">
     <div class="card">
-        <h2>Video Upload</h2>
-        <input type="file" id="videoUpload" accept="video/*">
-        <div id="videoStatus" class="status"></div>
-        <div id="videoContainer" class="media-grid"></div>
+      <h2>Video Upload</h2>
+      <input type="file" id="videoUpload" accept="video/*">
+      <div id="videoStatus" class="status"></div>
+      <div id="videoContainer" class="media-grid"></div>
     </div>
-</div>
+  </div>
 
-<div id="feed" class="section">
+  <div id="feed" class="section">
     <div class="card">
-        <h2>Artist Feed</h2>
-        <div id="feedContainer"></div>
+      <h2>Artist Feed</h2>
+      <div id="feedContainer"></div>
     </div>
-</div>
+  </div>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script>
-const SUPABASE_URL = "https://gcomuxxidbjgqmdqsnfq.supabase.co";
-const SUPABASE_KEY = "sb_publishable_q2fKaWabHc1ldmmlipQuoA_qwyp3XR-";
+  <script>
+    let sb = null;
+    let currentUser = null;
+    let currentProfile = null;
 
-const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    const SUPABASE_URL = "https://gcomuxxidbjgqmdqsnfq.supabase.co";
+    const SUPABASE_KEY = "sb_publishable_q2fKaWabHc1ldmmlipQuoA_qwyp3XR-";
 
-let currentUser = null;
-let currentProfile = null;
-
-function showSection(sectionId) {
-    document.querySelectorAll(".section").forEach(section => {
+    function showSection(sectionId) {
+      document.querySelectorAll(".section").forEach(section => {
         section.classList.remove("active");
-    });
+      });
+      const target = document.getElementById(sectionId);
+      if (target) target.classList.add("active");
+    }
 
-    const target = document.getElementById(sectionId);
-    if (target) target.classList.add("active");
-}
+    function setText(id, value) {
+      const el = document.getElementById(id);
+      if (el) el.textContent = value;
+    }
 
-function setText(id, value) {
-    const el = document.getElementById(id);
-    if (el) el.textContent = value;
-}
+    function setStatus(id, value) {
+      const el = document.getElementById(id);
+      if (el) el.textContent = value;
+    }
 
-function setStatus(id, value) {
-    const el = document.getElementById(id);
-    if (el) el.textContent = value;
-}
+    function formatDate(dateString) {
+      if (!dateString) return "";
+      return new Date(dateString).toLocaleString();
+    }
 
-function formatDate(dateString) {
-    if (!dateString) return "";
-    return new Date(dateString).toLocaleString();
-}
-
-function renderEmpty(containerId, message) {
-    const container = document.getElementById(containerId);
-    if (container && container.innerHTML.trim() === "") {
+    function renderEmpty(containerId, message) {
+      const container = document.getElementById(containerId);
+      if (container && container.innerHTML.trim() === "") {
         container.innerHTML = '<p class="empty-message">' + message + '</p>';
+      }
     }
-}
 
-function updateHomeUserLine() {
-    if (currentUser) {
+    function updateHomeUserLine() {
+      if (currentUser) {
         setText("userLine", "Logged in: " + currentUser.email);
-    } else {
+      } else {
         setText("userLine", "Not logged in.");
-    }
-}
-
-function updateProfilePreview(profile = null) {
-    const data = profile || currentProfile || {};
-
-    document.getElementById("previewName").textContent = data.artist_name || "No artist name yet";
-    document.getElementById("previewStyle").textContent = data.style || "No style yet";
-    document.getElementById("previewBio").textContent = data.bio || "No bio yet";
-    document.getElementById("previewAvatar").src = data.avatar_url || "https://via.placeholder.com/300?text=Avatar";
-    document.getElementById("previewCover").src = data.cover_url || "https://via.placeholder.com/1200x300?text=Cover+Image";
-}
-
-function fillProfileForm(profile = null) {
-    const data = profile || {};
-
-    document.getElementById("profileName").value = data.artist_name || "";
-    document.getElementById("profileStyle").value = data.style || "";
-    document.getElementById("profileBio").value = data.bio || "";
-    document.getElementById("profileAvatar").value = data.avatar_url || "";
-    document.getElementById("profileCover").value = data.cover_url || "";
-}
-
-async function signUp() {
-    const email = document.getElementById("authEmail").value.trim();
-    const password = document.getElementById("authPassword").value.trim();
-
-    if (!email || !password) {
-        setStatus("authStatus", "Enter email and password.");
-        return;
+      }
     }
 
-    setStatus("authStatus", "Creating account...");
-
-    const { error } = await sb.auth.signUp({
-        email: email,
-        password: password
-    });
-
-    if (error) {
-        setStatus("authStatus", "Signup failed: " + error.message);
-        return;
+    function updateProfilePreview(profile = null) {
+      const data = profile || currentProfile || {};
+      document.getElementById("previewName").textContent = data.artist_name || "No artist name yet";
+      document.getElementById("previewStyle").textContent = data.style || "No style yet";
+      document.getElementById("previewBio").textContent = data.bio || "No bio yet";
+      document.getElementById("previewAvatar").src = data.avatar_url || "https://via.placeholder.com/300?text=Avatar";
+      document.getElementById("previewCover").src = data.cover_url || "https://via.placeholder.com/1200x300?text=Cover+Image";
     }
 
-    setStatus("authStatus", "Signup successful. Check your email if confirmation is enabled.");
-    await getSessionUser();
-}
-
-async function signIn() {
-    const email = document.getElementById("authEmail").value.trim();
-    const password = document.getElementById("authPassword").value.trim();
-
-    if (!email || !password) {
-        setStatus("authStatus", "Enter email and password.");
-        return;
+    function fillProfileForm(profile = null) {
+      const data = profile || {};
+      document.getElementById("profileName").value = data.artist_name || "";
+      document.getElementById("profileStyle").value = data.style || "";
+      document.getElementById("profileBio").value = data.bio || "";
+      document.getElementById("profileAvatar").value = data.avatar_url || "";
+      document.getElementById("profileCover").value = data.cover_url || "";
     }
 
-    setStatus("authStatus", "Logging in...");
+    async function signUp() {
+      if (!sb) return setStatus("authStatus", "Supabase not loaded.");
+      const email = document.getElementById("authEmail").value.trim();
+      const password = document.getElementById("authPassword").value.trim();
+      if (!email || !password) return setStatus("authStatus", "Enter email and password.");
 
-    const { error } = await sb.auth.signInWithPassword({
-        email: email,
-        password: password
-    });
+      setStatus("authStatus", "Creating account...");
+      const { error } = await sb.auth.signUp({ email, password });
+      if (error) return setStatus("authStatus", "Signup failed: " + error.message);
 
-    if (error) {
-        setStatus("authStatus", "Login failed: " + error.message);
-        return;
+      setStatus("authStatus", "Signup successful.");
+      await getSessionUser();
     }
 
-    setStatus("authStatus", "Login successful.");
-    await getSessionUser();
-    await loadMyProfile();
-    await loadPosts();
-}
+    async function signIn() {
+      if (!sb) return setStatus("authStatus", "Supabase not loaded.");
+      const email = document.getElementById("authEmail").value.trim();
+      const password = document.getElementById("authPassword").value.trim();
+      if (!email || !password) return setStatus("authStatus", "Enter email and password.");
 
-async function signOutUser() {
-    const { error } = await sb.auth.signOut();
+      setStatus("authStatus", "Logging in...");
+      const { error } = await sb.auth.signInWithPassword({ email, password });
+      if (error) return setStatus("authStatus", "Login failed: " + error.message);
 
-    if (error) {
-        setStatus("authStatus", "Logout failed: " + error.message);
-        return;
+      setStatus("authStatus", "Login successful.");
+      await getSessionUser();
+      await loadMyProfile();
+      await loadPosts();
     }
 
-    currentUser = null;
-    currentProfile = null;
-    fillProfileForm(null);
-    updateProfilePreview(null);
-    updateHomeUserLine();
-    setStatus("authStatus", "Logged out.");
-    setText("homeStatus", "Logged out.");
-    await loadPosts();
-}
+    async function signOutUser() {
+      if (!sb) return setStatus("authStatus", "Supabase not loaded.");
+      const { error } = await sb.auth.signOut();
+      if (error) return setStatus("authStatus", "Logout failed: " + error.message);
 
-async function getSessionUser() {
-    const { data, error } = await sb.auth.getUser();
+      currentUser = null;
+      currentProfile = null;
+      fillProfileForm(null);
+      updateProfilePreview(null);
+      updateHomeUserLine();
+      setStatus("authStatus", "Logged out.");
+      setText("homeStatus", "Logged out.");
+      await loadPosts();
+    }
 
-    if (error || !data.user) {
+    async function getSessionUser() {
+      if (!sb) return null;
+      const { data, error } = await sb.auth.getUser();
+      if (error || !data.user) {
         currentUser = null;
         updateHomeUserLine();
         return null;
+      }
+      currentUser = data.user;
+      updateHomeUserLine();
+      return currentUser;
     }
 
-    currentUser = data.user;
-    updateHomeUserLine();
-    return currentUser;
-}
-
-async function loadMyProfile() {
-    if (!currentUser) {
+    async function loadMyProfile() {
+      if (!sb || !currentUser) {
         fillProfileForm(null);
         updateProfilePreview(null);
         return;
-    }
+      }
 
-    const { data, error } = await sb
+      const { data, error } = await sb
         .from("profiles")
         .select("*")
         .eq("id", currentUser.id)
         .maybeSingle();
 
-    if (error) {
-        setStatus("profileStatus", "Profile load error: " + error.message);
-        return;
+      if (error) return setStatus("profileStatus", "Profile load error: " + error.message);
+
+      currentProfile = data || null;
+      fillProfileForm(currentProfile);
+      updateProfilePreview(currentProfile);
     }
 
-    currentProfile = data || null;
-    fillProfileForm(currentProfile);
-    updateProfilePreview(currentProfile);
-}
+    async function saveProfile() {
+      if (!sb) return setStatus("profileStatus", "Supabase not loaded.");
+      if (!currentUser) return setStatus("profileStatus", "You must login first.");
 
-async function saveProfile() {
-    if (!currentUser) {
-        setStatus("profileStatus", "You must login first.");
-        return;
-    }
-
-    const artist_name = document.getElementById("profileName").value.trim();
-    const style = document.getElementById("profileStyle").value.trim();
-    const bio = document.getElementById("profileBio").value.trim();
-    const avatar_url = document.getElementById("profileAvatar").value.trim();
-    const cover_url = document.getElementById("profileCover").value.trim();
-
-    setStatus("profileStatus", "Saving profile...");
-
-    const payload = {
+      const payload = {
         id: currentUser.id,
         email: currentUser.email,
-        artist_name,
-        style,
-        bio,
-        avatar_url,
-        cover_url,
+        artist_name: document.getElementById("profileName").value.trim(),
+        style: document.getElementById("profileStyle").value.trim(),
+        bio: document.getElementById("profileBio").value.trim(),
+        avatar_url: document.getElementById("profileAvatar").value.trim(),
+        cover_url: document.getElementById("profileCover").value.trim(),
         updated_at: new Date().toISOString()
-    };
+      };
 
-    const { error } = await sb.from("profiles").upsert(payload);
+      setStatus("profileStatus", "Saving profile...");
+      const { error } = await sb.from("profiles").upsert(payload);
+      if (error) return setStatus("profileStatus", "Save failed: " + error.message);
 
-    if (error) {
-        setStatus("profileStatus", "Save failed: " + error.message);
-        return;
+      currentProfile = payload;
+      updateProfilePreview(currentProfile);
+      setStatus("profileStatus", "Profile saved.");
     }
 
-    currentProfile = payload;
-    updateProfilePreview(currentProfile);
-    setStatus("profileStatus", "Profile saved.");
-}
-
-async function uploadFile(file, type) {
-    if (!currentUser) {
+    async function uploadFile(file, type) {
+      if (!sb) return;
+      if (!currentUser) {
         if (type === "image") setStatus("imageStatus", "You must login first.");
         if (type === "audio") setStatus("audioStatus", "You must login first.");
         if (type === "video") setStatus("videoStatus", "You must login first.");
         return;
+      }
+      if (!file) return;
+
+      let statusId = "";
+      if (type === "image") statusId = "imageStatus";
+      if (type === "audio") statusId = "audioStatus";
+      if (type === "video") statusId = "videoStatus";
+
+      setStatus(statusId, "Uploading...");
+
+      const cleanName = file.name.replace(/\s+/g, "-").replace(/[^\w.\-]/g, "");
+      const fileName = currentUser.id + "/" + Date.now() + "-" + cleanName;
+
+      const { error: uploadError } = await sb.storage.from("media").upload(fileName, file, { upsert: false });
+      if (uploadError) return setStatus(statusId, "Upload failed: " + uploadError.message);
+
+      const { data: publicData } = sb.storage.from("media").getPublicUrl(fileName);
+      const fileUrl = publicData.publicUrl;
+
+      const { error: insertError } = await sb.from("posts").insert([{
+        user_id: currentUser.id,
+        type,
+        file_url: fileUrl,
+        created_at: new Date().toISOString()
+      }]);
+
+      if (insertError) return setStatus(statusId, "Database insert failed: " + insertError.message);
+
+      setStatus(statusId, "Upload successful.");
+      await loadPosts();
     }
 
-    if (!file) return;
+    async function loadPosts() {
+      const imageContainer = document.getElementById("imageContainer");
+      const audioContainer = document.getElementById("audioContainer");
+      const videoContainer = document.getElementById("videoContainer");
+      const feedContainer = document.getElementById("feedContainer");
 
-    let statusId = "";
-    if (type === "image") statusId = "imageStatus";
-    if (type === "audio") statusId = "audioStatus";
-    if (type === "video") statusId = "videoStatus";
+      imageContainer.innerHTML = "";
+      audioContainer.innerHTML = "";
+      videoContainer.innerHTML = "";
+      feedContainer.innerHTML = "";
 
-    setStatus(statusId, "Uploading...");
-
-    const cleanName = file.name.replace(/\s+/g, "-").replace(/[^\w.\-]/g, "");
-    const fileName = currentUser.id + "/" + Date.now() + "-" + cleanName;
-
-    const { error: uploadError } = await sb.storage
-        .from("media")
-        .upload(fileName, file, { upsert: false });
-
-    if (uploadError) {
-        setStatus(statusId, "Upload failed: " + uploadError.message);
+      if (!sb) {
+        setText("homeStatus", "Supabase not loaded.");
+        renderEmpty("imageContainer", "No images yet.");
+        renderEmpty("audioContainer", "No audio yet.");
+        renderEmpty("videoContainer", "No videos yet.");
+        renderEmpty("feedContainer", "No posts yet.");
         return;
-    }
+      }
 
-    const { data: publicData } = sb.storage
-        .from("media")
-        .getPublicUrl(fileName);
-
-    const fileUrl = publicData.publicUrl;
-
-    const { error: insertError } = await sb
+      const { data, error } = await sb
         .from("posts")
-        .insert([{
-            user_id: currentUser.id,
-            type: type,
-            file_url: fileUrl,
-            created_at: new Date().toISOString()
-        }]);
-
-    if (insertError) {
-        setStatus(statusId, "Database insert failed: " + insertError.message);
-        return;
-    }
-
-    setStatus(statusId, "Upload successful.");
-    await loadPosts();
-}
-
-async function loadPosts() {
-    const imageContainer = document.getElementById("imageContainer");
-    const audioContainer = document.getElementById("audioContainer");
-    const videoContainer = document.getElementById("videoContainer");
-    const feedContainer = document.getElementById("feedContainer");
-
-    imageContainer.innerHTML = "";
-    audioContainer.innerHTML = "";
-    videoContainer.innerHTML = "";
-    feedContainer.innerHTML = "";
-
-    const { data, error } = await sb
-        .from("posts")
-        .select(`
-            id,
-            user_id,
-            type,
-            file_url,
-            created_at
-        `)
+        .select("id,user_id,type,file_url,created_at")
         .order("created_at", { ascending: false });
 
-    if (error) {
+      if (error) {
         setText("homeStatus", "Posts error: " + error.message);
         renderEmpty("imageContainer", "No images yet.");
         renderEmpty("audioContainer", "No audio yet.");
         renderEmpty("videoContainer", "No videos yet.");
         renderEmpty("feedContainer", "No posts yet.");
         return;
-    }
+      }
 
-    setText("homeStatus", currentUser ? "Connected and logged in." : "Connected.");
+      setText("homeStatus", currentUser ? "Connected and logged in." : "Connected.");
 
-    for (const post of data) {
+      for (const post of data) {
         let artistName = "Unknown Artist";
 
         const { data: profile } = await sb
-            .from("profiles")
-            .select("artist_name")
-            .eq("id", post.user_id)
-            .maybeSingle();
+          .from("profiles")
+          .select("artist_name")
+          .eq("id", post.user_id)
+          .maybeSingle();
 
-        if (profile && profile.artist_name) {
-            artistName = profile.artist_name;
-        }
+        if (profile && profile.artist_name) artistName = profile.artist_name;
 
         if (post.type === "image") {
-            const img = document.createElement("img");
-            img.src = post.file_url;
-            img.alt = "Uploaded image";
-            imageContainer.appendChild(img);
+          const img = document.createElement("img");
+          img.src = post.file_url;
+          img.alt = "Uploaded image";
+          imageContainer.appendChild(img);
         }
 
         if (post.type === "audio") {
-            const audio = document.createElement("audio");
-            audio.controls = true;
-            audio.src = post.file_url;
-            audio.preload = "metadata";
-            audioContainer.appendChild(audio);
+          const audio = document.createElement("audio");
+          audio.controls = true;
+          audio.src = post.file_url;
+          audioContainer.appendChild(audio);
         }
 
         if (post.type === "video") {
-            const video = document.createElement("video");
-            video.controls = true;
-            video.src = post.file_url;
-            video.preload = "metadata";
-            videoContainer.appendChild(video);
+          const video = document.createElement("video");
+          video.controls = true;
+          video.src = post.file_url;
+          videoContainer.appendChild(video);
         }
 
-        const postCard = document.createElement("div");
-        postCard.className = "card feed-card";
+        const card = document.createElement("div");
+        card.className = "card feed-card";
 
         const meta = document.createElement("div");
         meta.className = "feed-meta";
         meta.textContent = artistName + " • " + post.type.toUpperCase() + " • " + formatDate(post.created_at);
-        postCard.appendChild(meta);
+        card.appendChild(meta);
 
         if (post.type === "image") {
-            const img = document.createElement("img");
-            img.src = post.file_url;
-            img.alt = "Feed image";
-            postCard.appendChild(img);
+          const img = document.createElement("img");
+          img.src = post.file_url;
+          card.appendChild(img);
         }
 
         if (post.type === "audio") {
-            const audio = document.createElement("audio");
-            audio.controls = true;
-            audio.src = post.file_url;
-            postCard.appendChild(audio);
+          const audio = document.createElement("audio");
+          audio.controls = true;
+          audio.src = post.file_url;
+          card.appendChild(audio);
         }
 
         if (post.type === "video") {
-            const video = document.createElement("video");
-            video.controls = true;
-            video.src = post.file_url;
-            postCard.appendChild(video);
+          const video = document.createElement("video");
+          video.controls = true;
+          video.src = post.file_url;
+          card.appendChild(video);
         }
 
-        feedContainer.appendChild(postCard);
+        feedContainer.appendChild(card);
+      }
+
+      renderEmpty("imageContainer", "No images yet.");
+      renderEmpty("audioContainer", "No audio yet.");
+      renderEmpty("videoContainer", "No videos yet.");
+      renderEmpty("feedContainer", "No posts yet.");
     }
 
-    renderEmpty("imageContainer", "No images yet.");
-    renderEmpty("audioContainer", "No audio yet.");
-    renderEmpty("videoContainer", "No videos yet.");
-    renderEmpty("feedContainer", "No posts yet.");
-}
+    function initButtonEvents() {
+      document.getElementById("signupBtn").addEventListener("click", signUp);
+      document.getElementById("loginBtn").addEventListener("click", signIn);
+      document.getElementById("logoutBtn").addEventListener("click", signOutUser);
+      document.getElementById("saveProfileBtn").addEventListener("click", saveProfile);
 
-document.getElementById("imageUpload").addEventListener("change", function(e) {
-    uploadFile(e.target.files[0], "image");
-});
-
-document.getElementById("audioUpload").addEventListener("change", function(e) {
-    uploadFile(e.target.files[0], "audio");
-});
-
-document.getElementById("videoUpload").addEventListener("change", function(e) {
-    uploadFile(e.target.files[0], "video");
-});
-
-sb.auth.onAuthStateChange(async function(event, session) {
-    currentUser = session?.user || null;
-    updateHomeUserLine();
-
-    if (currentUser) {
-        await loadMyProfile();
-    } else {
-        currentProfile = null;
-        fillProfileForm(null);
-        updateProfilePreview(null);
+      document.getElementById("imageUpload").addEventListener("change", e => uploadFile(e.target.files[0], "image"));
+      document.getElementById("audioUpload").addEventListener("change", e => uploadFile(e.target.files[0], "audio"));
+      document.getElementById("videoUpload").addEventListener("change", e => uploadFile(e.target.files[0], "video"));
     }
 
-    await loadPosts();
-});
-
-async function startApp() {
-    await getSessionUser();
-    if (currentUser) {
-        await loadMyProfile();
+    async function loadSupabaseScript() {
+      return new Promise((resolve, reject) => {
+        const script = document.createElement("script");
+        script.src = "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2";
+        script.onload = resolve;
+        script.onerror = reject;
+        document.body.appendChild(script);
+      });
     }
-    await loadPosts();
-}
 
-startApp();
-</script>
+    async function startApp() {
+      initButtonEvents();
 
+      try {
+        await loadSupabaseScript();
+
+        if (!window.supabase || !window.supabase.createClient) {
+          setText("homeStatus", "Supabase library failed to load.");
+          return;
+        }
+
+        sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        sb.auth.onAuthStateChange(async function(event, session) {
+          currentUser = session?.user || null;
+          updateHomeUserLine();
+
+          if (currentUser) {
+            await loadMyProfile();
+          } else {
+            currentProfile = null;
+            fillProfileForm(null);
+            updateProfilePreview(null);
+          }
+
+          await loadPosts();
+        });
+
+        await getSessionUser();
+        if (currentUser) await loadMyProfile();
+        await loadPosts();
+      } catch (e) {
+        setText("homeStatus", "Script load error. Buttons now work, but backend failed.");
+        console.error(e);
+      }
+    }
+
+    startApp();
+  </script>
 </body>
 </html>
