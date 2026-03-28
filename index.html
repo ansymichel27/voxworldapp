@@ -2971,6 +2971,235 @@ document.addEventListener("DOMContentLoaded", () => {
 
   console.log("VoxWorld local database ready:", db);
 });
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+
+  const $ = s => document.querySelector(s);
+  const $$ = s => [...document.querySelectorAll(s)];
+
+  const DB_KEY = "voxworld_db";
+
+  // --------------------------
+  // DATABASE (LOCAL STORAGE)
+  // --------------------------
+  let db = JSON.parse(localStorage.getItem(DB_KEY)) || {
+    follows: [],
+    artists: []
+  };
+
+  function saveDB() {
+    localStorage.setItem(DB_KEY, JSON.stringify(db));
+  }
+
+  // --------------------------
+  // LANGUAGE
+  // --------------------------
+  let currentLang = localStorage.getItem("lang") || "en";
+
+  function t(txt){
+    return txt;
+  }
+
+  // --------------------------
+  // MENU
+  // --------------------------
+  $("#menuBtn")?.addEventListener("click", () => {
+    $("#mobileMenu").classList.toggle("show");
+  });
+
+  // --------------------------
+  // FOLLOW SYSTEM (REAL)
+  // --------------------------
+  function toggleFollow(name, btn){
+    const index = db.follows.indexOf(name);
+
+    if(index === -1){
+      db.follows.push(name);
+      btn.textContent = "Following";
+    } else {
+      db.follows.splice(index,1);
+      btn.textContent = "Follow";
+    }
+
+    saveDB();
+  }
+
+  // MAIN PROFILE FOLLOW
+  const followBtn = $("#followBtn");
+  if(followBtn){
+    const name = "Ansy777_DDC";
+
+    if(db.follows.includes(name)){
+      followBtn.textContent = "Following";
+    }
+
+    followBtn.addEventListener("click", () => {
+      toggleFollow(name, followBtn);
+    });
+  }
+
+  // GALLERY FOLLOW
+  $$(".card-follow").forEach(btn=>{
+    const name = btn.closest(".artist-card").querySelector("h3").textContent;
+
+    if(db.follows.includes(name)){
+      btn.textContent = "Following";
+    }
+
+    btn.addEventListener("click", ()=>{
+      toggleFollow(name, btn);
+    });
+  });
+
+  // --------------------------
+  // VIEW PROFILE SCROLL
+  // --------------------------
+  $$(".card-view").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      document.querySelector("#profile").scrollIntoView({behavior:"smooth"});
+    });
+  });
+
+  // --------------------------
+  // FILTER GALLERY
+  // --------------------------
+  $$(".filter-btn").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      $$(".filter-btn").forEach(b=>b.classList.remove("active"));
+      btn.classList.add("active");
+
+      const filter = btn.dataset.filter;
+
+      $$(".artist-card").forEach(card=>{
+        const cat = card.dataset.category || "";
+        card.style.display =
+          filter === "all" || cat.includes(filter) ? "" : "none";
+      });
+    });
+  });
+
+  // --------------------------
+  // REAL AUDIO PLAYER 🎧
+  // --------------------------
+  let audio = null;
+
+  const tracks = {
+    "Closer Every Night": "media/closer.mp3",
+    "Secret Lanmou": "media/secret.mp3",
+    "Future Kompa Motion": "media/future.mp3",
+    "Global Voice Identity": "media/global.mp3"
+  };
+
+  $$(".audio-btn").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      const name = btn.dataset.track;
+
+      if(audio){
+        audio.pause();
+        audio = null;
+        btn.textContent = "▶";
+        return;
+      }
+
+      if(!tracks[name]){
+        alert("Add file in /media folder");
+        return;
+      }
+
+      audio = new Audio(tracks[name]);
+      audio.play();
+      btn.textContent = "⏸";
+
+      audio.onended = ()=>{
+        btn.textContent = "▶";
+        audio = null;
+      };
+    });
+  });
+
+  // --------------------------
+  // VIDEO SYSTEM 🎬
+  // --------------------------
+  const videos = {
+    "Performance clip": "https://youtube.com",
+    "Music video preview": "https://youtube.com"
+  };
+
+  $$(".video-btn").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      const name = btn.dataset.video;
+      window.open(videos[name], "_blank");
+    });
+  });
+
+  // --------------------------
+  // SIGNUP SYSTEM (REAL DEMO)
+  // --------------------------
+  $("[data-signup]")?.addEventListener("click", ()=>{
+    const name = prompt("Artist Name");
+    if(!name) return;
+
+    db.artists.push({
+      name,
+      id: Date.now()
+    });
+
+    saveDB();
+    alert("Profile created (demo)");
+  });
+
+  // --------------------------
+  // MESSAGE BUTTON (EMAIL)
+  // --------------------------
+  $("#messageBtn")?.addEventListener("click", ()=>{
+    window.location.href =
+      "mailto:iit-llco@outlook.com?subject=Artist Inquiry";
+  });
+
+  // --------------------------
+  // CHAT SYSTEM
+  // --------------------------
+  const chatbox = $("#chatbox");
+
+  $("#chatToggle")?.addEventListener("click", ()=>{
+    chatbox.classList.toggle("open");
+  });
+
+  $("#chatClose")?.addEventListener("click", ()=>{
+    chatbox.classList.remove("open");
+  });
+
+  function addMsg(type, text){
+    const box = $("#chatMessages");
+    const div = document.createElement("div");
+    div.className = "msg " + (type === "user" ? "msg-user":"msg-ai");
+    div.textContent = text;
+    box.appendChild(div);
+    box.scrollTop = box.scrollHeight;
+  }
+
+  function reply(text){
+    if(text.includes("profile")) return "Click Join to create profile.";
+    if(text.includes("audio")) return "Audio buttons play songs.";
+    if(text.includes("video")) return "Video opens links.";
+    return "Welcome to VoxWorldApp.";
+  }
+
+  $("#chatForm")?.addEventListener("submit",(e)=>{
+    e.preventDefault();
+    const input = $("#chatInput");
+    const val = input.value.trim();
+    if(!val) return;
+
+    addMsg("user", val);
+    input.value = "";
+
+    setTimeout(()=>{
+      addMsg("ai", reply(val.toLowerCase()));
+    },300);
+  });
+
+});
 </script>
 </body>
 </html>
