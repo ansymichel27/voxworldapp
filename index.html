@@ -700,15 +700,68 @@
 
     startApp();
   </script>
-</body>
-  <section id="ai-search" class="card">
-  <h2>AI Search</h2>
-  <div class="search-wrap">
-    <input id="aiSearchInput" type="text" placeholder="Search artists, music, videos, gallery..." />
-    <button id="aiSearchBtn">Search</button>
-  </div>
+  #ai-search {
+  padding: 20px;
+  margin: 20px 0;
+  border-radius: 16px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+}
 
-  <div id="aiSearchStatus" style="margin-top:10px;"></div>
-  <div id="aiSearchResults" class="results-grid" style="margin-top:16px;"></div>
+.search-wrap {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+#aiSearchInput {
+  flex: 1;
+  min-width: 240px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid #444;
+  background: #111;
+  color: #fff;
+  outline: none;
+}
+
+#aiSearchBtn {
+  padding: 12px 18px;
+  border: 0;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.results-grid {
+  display: grid;
+  gap: 12px;
+}
+
+.result-card {
+  padding: 14px;
+  border-radius: 14px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.08);
+}
+
+.result-type {
+  font-size: 12px;
+  opacity: 0.7;
+  margin-bottom: 6px;
+}
+
+.result-title {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.result-text {
+  font-size: 14px;
+  line-height: 1.5;
+  opacity: 0.9;
+}
+</body>
 </section>
 </html>
