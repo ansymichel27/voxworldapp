@@ -1,65 +1,684 @@
-create table if not exists profiles (
-  id uuid primary key references auth.users(id) on delete cascade,
-  name text,
-  handle text,
-  bio text,
-  avatar_url text,
-  updated_at timestamptz default now()
-);
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VOXWORLD ROYAL PRO</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    :root{
+      --bg:#14081f;
+      --bg2:#1f1030;
+      --card:#241338;
+      --card2:#2e1847;
+      --gold:#f4c542;
+      --gold2:#ffe08a;
+      --purple:#6f2dbd;
+      --purple2:#9b5cff;
+      --text:#fff8e8;
+      --muted:#d9caef;
+      --line:rgba(244,197,66,.2);
+      --shadow:0 14px 40px rgba(0,0,0,.35);
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      font-family:Arial,sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(155,92,255,.22), transparent 28%),
+        radial-gradient(circle at top right, rgba(244,197,66,.18), transparent 25%),
+        linear-gradient(180deg, var(--bg), var(--bg2));
+      min-height:100vh;
+    }
+    header{
+      position:sticky; top:0; z-index:100;
+      background:rgba(20,8,31,.88);
+      backdrop-filter:blur(10px);
+      border-bottom:1px solid var(--line);
+      box-shadow:var(--shadow);
+    }
+    .topbar{
+      max-width:1250px; margin:auto; padding:16px 20px;
+      display:flex; justify-content:space-between; align-items:center; gap:16px; flex-wrap:wrap;
+    }
+    .brand{
+      font-size:28px; font-weight:900; letter-spacing:1px; color:var(--gold);
+      text-shadow:0 0 20px rgba(244,197,66,.2);
+    }
+    .nav{display:flex; gap:10px; flex-wrap:wrap}
+    .nav button{
+      width:auto; padding:10px 14px; border:none; border-radius:999px; cursor:pointer;
+      background:linear-gradient(135deg,var(--purple),var(--purple2));
+      color:#fff; font-weight:800; box-shadow:0 10px 24px rgba(111,45,189,.35);
+    }
+    .hero, .container{max-width:1250px; margin:auto; padding:20px}
+    .hero-box{
+      border:1px solid var(--line);
+      border-radius:28px;
+      padding:28px;
+      background:linear-gradient(135deg, rgba(111,45,189,.18), rgba(244,197,66,.11));
+      box-shadow:var(--shadow);
+    }
+    .hero h1{margin:0 0 8px; font-size:42px; color:var(--gold2)}
+    .hero p{margin:0; color:var(--muted); line-height:1.6}
+    .grid{display:grid; grid-template-columns:1fr; gap:18px}
+    @media(min-width:950px){
+      .grid{grid-template-columns:1fr 1fr}
+      .full{grid-column:1/-1}
+    }
+    .card{
+      background:linear-gradient(180deg, rgba(36,19,56,.96), rgba(46,24,71,.94));
+      border:1px solid var(--line);
+      border-radius:24px;
+      padding:18px;
+      box-shadow:var(--shadow);
+    }
+    .card h2{margin:0 0 10px; color:var(--gold2)}
+    .muted{color:var(--muted); font-size:13px}
+    .row{display:flex; gap:12px; flex-wrap:wrap}
+    .row > *{flex:1; min-width:180px}
+    input, textarea, select{
+      width:100%; margin-top:10px; padding:13px 14px; border-radius:14px;
+      border:1px solid rgba(255,255,255,.08); outline:none;
+      background:rgba(10,7,19,.72); color:var(--text); font-size:14px;
+    }
+    textarea{min-height:110px; resize:vertical}
+    input::placeholder, textarea::placeholder{color:#d0bee7}
+    button{
+      width:100%; margin-top:12px; padding:13px 16px; border:none; border-radius:14px;
+      cursor:pointer; font-weight:800; font-size:14px; color:#2b1800;
+      background:linear-gradient(135deg,var(--gold),var(--gold2));
+      box-shadow:0 10px 24px rgba(244,197,66,.22);
+    }
+    .secondary{
+      color:#fff;
+      background:linear-gradient(135deg,var(--purple),var(--purple2));
+      box-shadow:0 10px 24px rgba(111,45,189,.35);
+    }
+    .status{margin-top:10px; min-height:18px; color:#ffe6a7; font-size:13px}
+    .tag{
+      display:inline-block; margin-top:8px; padding:6px 10px; border-radius:999px;
+      background:rgba(244,197,66,.12); border:1px solid rgba(244,197,66,.25);
+      color:var(--gold2); font-size:12px; font-weight:700;
+    }
+    .profile-preview{
+      display:flex; gap:16px; align-items:center; flex-wrap:wrap;
+      margin-top:12px; padding:14px; border-radius:18px;
+      background:rgba(255,255,255,.03); border:1px solid rgba(255,255,255,.06);
+    }
+    .avatar{
+      width:90px; height:90px; object-fit:cover; border-radius:50%;
+      border:3px solid var(--gold); background:#32174d;
+    }
+    .public-cover{
+      border-radius:22px; padding:18px; margin-top:12px;
+      background:linear-gradient(135deg, rgba(111,45,189,.28), rgba(244,197,66,.12));
+      border:1px solid var(--line);
+    }
+    .gallery-grid{
+      display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:14px;
+    }
+    .gallery-card,.post{
+      background:rgba(11,7,19,.62); border:1px solid rgba(255,255,255,.06);
+      border-radius:22px; padding:14px;
+    }
+    .gallery-card img,.post img,video,audio{width:100%; border-radius:16px; margin-top:10px; background:#12071c}
+    .gallery-card h3,.post h3{margin:0 0 6px; color:var(--gold2)}
+    .meta{font-size:12px; color:#ccb8e3; margin-bottom:8px}
+    .actions{
+      display:flex; gap:10px; flex-wrap:wrap; margin-top:12px;
+    }
+    .mini-btn{
+      width:auto; padding:10px 14px; border-radius:999px; margin-top:0;
+    }
+    .comment-box{
+      margin-top:12px; padding-top:12px; border-top:1px solid rgba(255,255,255,.08);
+    }
+    .comment{
+      margin-top:8px; padding:10px 12px; border-radius:14px;
+      background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.05);
+    }
+    .answer-box{
+      white-space:pre-wrap; line-height:1.7; min-height:90px;
+      background:rgba(10,7,19,.6); border:1px solid rgba(255,255,255,.06);
+      border-radius:18px; padding:14px; margin-top:12px;
+    }
+    a.artist-link{color:var(--gold2); text-decoration:none; font-weight:800}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="topbar">
+      <div class="brand">VOXWORLD ROYAL PRO</div>
+      <div class="nav">
+        <button onclick="scrollToSection('loginSection')">Login</button>
+        <button onclick="scrollToSection('profileSection')">Profile</button>
+        <button onclick="scrollToSection('publicSection')">Public Page</button>
+        <button onclick="scrollToSection('publishSection')">Publish</button>
+        <button onclick="scrollToSection('gallerySection')">Gallery</button>
+        <button onclick="scrollToSection('aiSection')">Ask AI</button>
+        <button onclick="scrollToSection('feedSection')">Feed</button>
+      </div>
+    </div>
+  </header>
 
-create table if not exists posts (
-  id bigint generated always as identity primary key,
-  user_id uuid not null references auth.users(id) on delete cascade,
-  type text not null default 'text',
-  title text,
-  content text,
-  file_url text,
-  created_at timestamptz not null default now()
-);
+  <section class="hero">
+    <div class="hero-box">
+      <h1>Luxury Artist Platform</h1>
+      <p>Modern royal purple and gold creator site with artist ID, public page, gallery, music, video, likes, comments, AI asking, and feed.</p>
+    </div>
+  </section>
 
-alter table profiles enable row level security;
-alter table posts enable row level security;
+  <div class="container">
+    <div class="grid">
+      <section class="card" id="loginSection">
+        <h2>Login / Artist Access</h2>
+        <p class="muted">Login with magic link. Your Artist ID appears after login.</p>
+        <input id="email" type="email" placeholder="Your email">
+        <button onclick="login()">Send Magic Link</button>
+        <button class="secondary" onclick="logout()">Logout</button>
+        <div id="authState" class="tag">Not logged in</div>
+        <div id="authStatus" class="status"></div>
+      </section>
 
-drop policy if exists "profiles_select_all" on profiles;
-create policy "profiles_select_all"
-on profiles
-for select
-to public
-using (true);
+      <section class="card" id="profileSection">
+        <h2>Artist Profile</h2>
+        <input id="artistName" placeholder="Artist Name">
+        <input id="artistHandle" placeholder="Artist Username / Handle">
+        <textarea id="artistBio" placeholder="Write your artist bio"></textarea>
+        <input id="profilePhoto" type="file" accept="image/*">
+        <button onclick="saveProfile()">Save Profile</button>
+        <div id="profileStatus" class="status"></div>
 
-drop policy if exists "profiles_upsert_own" on profiles;
-create policy "profiles_upsert_own"
-on profiles
-for all
-to authenticated
-using (auth.uid() = id)
-with check (auth.uid() = id);
+        <div class="profile-preview">
+          <img id="profilePreviewImage" class="avatar" src="https://placehold.co/200x200/png?text=Artist" alt="artist">
+          <div>
+            <div id="previewName" style="font-size:20px;font-weight:900;">Artist Name</div>
+            <div id="previewHandle" class="muted">@artist</div>
+            <div id="previewBio" class="muted" style="margin-top:6px;">Your bio will appear here.</div>
+            <div id="artistIdBadge" class="tag">Artist ID: not available</div>
+          </div>
+        </div>
+      </section>
 
-drop policy if exists "posts_select_all" on posts;
-create policy "posts_select_all"
-on posts
-for select
-to public
-using (true);
+      <section class="card full" id="publicSection">
+        <h2>Artist Public Page</h2>
+        <p class="muted">Share your artist link. Example: <span id="publicLinkText">?artist=your-handle</span></p>
+        <div class="public-cover">
+          <div class="profile-preview" style="margin-top:0;border:none;background:transparent;padding:0;">
+            <img id="publicAvatar" class="avatar" src="https://placehold.co/200x200/png?text=Artist" alt="artist">
+            <div>
+              <div id="publicName" style="font-size:24px;font-weight:900;">Artist Name</div>
+              <div id="publicHandle" class="muted">@artist</div>
+              <div id="publicBio" class="muted" style="margin-top:6px;">Public artist bio appears here.</div>
+              <div id="publicStats" class="tag">0 posts</div>
+            </div>
+          </div>
+        </div>
+      </section>
 
-drop policy if exists "posts_insert_own" on posts;
-create policy "posts_insert_own"
-on posts
-for insert
-to authenticated
-with check (auth.uid() = user_id);
+      <section class="card full" id="publishSection">
+        <h2>Publish Content</h2>
+        <div class="row">
+          <select id="postType">
+            <option value="text">Text Post</option>
+            <option value="image">Gallery Photo</option>
+            <option value="audio">Music</option>
+            <option value="video">Video</option>
+          </select>
+          <input id="postTitle" placeholder="Title">
+        </div>
+        <textarea id="postContent" placeholder="Description / caption"></textarea>
+        <input id="postFile" type="file" accept="image/*,audio/*,video/*">
+        <button onclick="createPost()">Publish Now</button>
+        <div id="postStatus" class="status"></div>
+      </section>
 
-drop policy if exists "posts_update_own" on posts;
-create policy "posts_update_own"
-on posts
-for update
-to authenticated
-using (auth.uid() = user_id)
-with check (auth.uid() = user_id);
+      <section class="card full" id="gallerySection">
+        <h2>Gallery Photos</h2>
+        <div id="galleryGrid" class="gallery-grid"></div>
+      </section>
 
-drop policy if exists "posts_delete_own" on posts;
-create policy "posts_delete_own"
-on posts
-for delete
-to authenticated
-using (auth.uid() = user_id);
+      <section class="card full" id="aiSection">
+        <h2>Ask AI</h2>
+        <textarea id="aiQuestion" placeholder="Ask AI something about your artist page, posts, music, photos, or site..."></textarea>
+        <button onclick="askAI()">Ask AI</button>
+        <div id="aiStatus" class="status"></div>
+        <div id="aiAnswer" class="answer-box">AI answer will appear here.</div>
+      </section>
+
+      <section class="card full" id="feedSection">
+        <h2>Latest Feed</h2>
+        <div id="feed"></div>
+      </section>
+    </div>
+  </div>
+
+  <script>
+    const SUPABASE_URL = "YOUR_SUPABASE_URL";
+    const SUPABASE_ANON_KEY = "YOUR_SUPABASE_ANON_KEY";
+    const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    const authState = document.getElementById("authState");
+    const authStatus = document.getElementById("authStatus");
+    const profileStatus = document.getElementById("profileStatus");
+    const postStatus = document.getElementById("postStatus");
+    const aiStatus = document.getElementById("aiStatus");
+    const aiAnswer = document.getElementById("aiAnswer");
+    const feed = document.getElementById("feed");
+    const galleryGrid = document.getElementById("galleryGrid");
+
+    function scrollToSection(id){
+      const el = document.getElementById(id);
+      if(el) el.scrollIntoView({behavior:"smooth", block:"start"});
+    }
+
+    function escapeHtml(str){
+      return String(str ?? "")
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;")
+        .replaceAll("'","&#039;");
+    }
+
+    async function getCurrentUser(){
+      const { data, error } = await sb.auth.getUser();
+      if(error || !data.user) return null;
+      return data.user;
+    }
+
+    async function refreshAuthUI(){
+      const user = await getCurrentUser();
+      if(!user){
+        authState.textContent = "Not logged in";
+        document.getElementById("artistIdBadge").textContent = "Artist ID: not available";
+        return null;
+      }
+      authState.textContent = "Logged in: " + user.email;
+      document.getElementById("artistIdBadge").textContent = "Artist ID: " + user.id;
+      return user;
+    }
+
+    async function login(){
+      authStatus.textContent = "";
+      const email = document.getElementById("email").value.trim();
+      if(!email){
+        authStatus.textContent = "Enter your email first.";
+        return;
+      }
+      const { error } = await sb.auth.signInWithOtp({
+        email,
+        options:{ emailRedirectTo: window.location.href.split("?")[0] }
+      });
+      authStatus.textContent = error ? error.message : "Magic link sent. Check your email.";
+    }
+
+    async function logout(){
+      await sb.auth.signOut();
+      authStatus.textContent = "Logged out.";
+      await refreshAuthUI();
+    }
+
+    async function saveProfile(){
+      profileStatus.textContent = "";
+      const user = await getCurrentUser();
+      if(!user){
+        profileStatus.textContent = "Login first.";
+        return;
+      }
+
+      const name = document.getElementById("artistName").value.trim();
+      const handle = document.getElementById("artistHandle").value.trim().replace(/^@/,"").toLowerCase();
+      const bio = document.getElementById("artistBio").value.trim();
+      const photoFile = document.getElementById("profilePhoto").files[0];
+
+      let avatar_url = null;
+      if(photoFile){
+        const safeName = `profiles/${user.id}-${Date.now()}-${photoFile.name.replace(/[^a-zA-Z0-9._-]/g,"_")}`;
+        const { error: uploadError } = await sb.storage.from("media").upload(safeName, photoFile, { upsert:true });
+        if(uploadError){
+          profileStatus.textContent = uploadError.message;
+          return;
+        }
+        const { data } = sb.storage.from("media").getPublicUrl(safeName);
+        avatar_url = data.publicUrl;
+      }
+
+      const payload = {
+        id:user.id,
+        name,
+        handle,
+        bio,
+        updated_at:new Date().toISOString()
+      };
+      if(avatar_url) payload.avatar_url = avatar_url;
+
+      const { error } = await sb.from("profiles").upsert(payload);
+      if(error){
+        profileStatus.textContent = error.message;
+        return;
+      }
+      profileStatus.textContent = "Profile saved successfully.";
+      await loadMyProfile();
+      await loadPublicPage();
+    }
+
+    async function loadMyProfile(){
+      const user = await getCurrentUser();
+      if(!user) return;
+      const { data } = await sb.from("profiles").select("*").eq("id", user.id).maybeSingle();
+      if(!data) return;
+
+      document.getElementById("artistName").value = data.name || "";
+      document.getElementById("artistHandle").value = data.handle || "";
+      document.getElementById("artistBio").value = data.bio || "";
+
+      document.getElementById("previewName").textContent = data.name || "Artist Name";
+      document.getElementById("previewHandle").textContent = data.handle ? "@" + data.handle : "@artist";
+      document.getElementById("previewBio").textContent = data.bio || "Your bio will appear here.";
+      document.getElementById("profilePreviewImage").src = data.avatar_url || "https://placehold.co/200x200/png?text=Artist";
+      document.getElementById("publicLinkText").textContent = `${window.location.origin}${window.location.pathname}?artist=${data.handle || "your-handle"}`;
+    }
+
+    async function createPost(){
+      postStatus.textContent = "";
+      const user = await getCurrentUser();
+      if(!user){
+        postStatus.textContent = "Login first.";
+        return;
+      }
+
+      const type = document.getElementById("postType").value;
+      const title = document.getElementById("postTitle").value.trim();
+      const content = document.getElementById("postContent").value.trim();
+      const file = document.getElementById("postFile").files[0];
+      let file_url = null;
+
+      if(file){
+        const safeName = `posts/${user.id}-${Date.now()}-${file.name.replace(/[^a-zA-Z0-9._-]/g,"_")}`;
+        const { error: uploadError } = await sb.storage.from("media").upload(safeName, file, { upsert:false });
+        if(uploadError){
+          postStatus.textContent = uploadError.message;
+          return;
+        }
+        const { data } = sb.storage.from("media").getPublicUrl(safeName);
+        file_url = data.publicUrl;
+      }
+
+      const { error } = await sb.from("posts").insert({
+        user_id:user.id,
+        type, title, content, file_url
+      });
+      if(error){
+        postStatus.textContent = error.message;
+        return;
+      }
+
+      document.getElementById("postTitle").value = "";
+      document.getElementById("postContent").value = "";
+      document.getElementById("postFile").value = "";
+      postStatus.textContent = "Content published successfully.";
+
+      await loadFeed();
+      await loadGallery();
+      await loadPublicPage();
+    }
+
+    async function toggleLike(postId){
+      const user = await getCurrentUser();
+      if(!user){
+        alert("Login first");
+        return;
+      }
+
+      const { data: existing } = await sb
+        .from("likes")
+        .select("id")
+        .eq("post_id", postId)
+        .eq("user_id", user.id)
+        .maybeSingle();
+
+      if(existing){
+        await sb.from("likes").delete().eq("id", existing.id);
+      } else {
+        await sb.from("likes").insert({ post_id: postId, user_id: user.id });
+      }
+
+      await loadFeed();
+      await loadGallery();
+    }
+
+    async function addComment(postId){
+      const user = await getCurrentUser();
+      if(!user){
+        alert("Login first");
+        return;
+      }
+
+      const input = document.getElementById(`comment-input-${postId}`);
+      const content = input.value.trim();
+      if(!content) return;
+
+      const { error } = await sb.from("comments").insert({
+        post_id:postId,
+        user_id:user.id,
+        content
+      });
+
+      if(error){
+        alert(error.message);
+        return;
+      }
+
+      input.value = "";
+      await loadFeed();
+    }
+
+    async function loadFeed(){
+      const { data: posts, error } = await sb
+        .from("posts")
+        .select(`
+          *,
+          profiles:user_id (name,handle,avatar_url)
+        `)
+        .order("created_at", { ascending:false })
+        .limit(30);
+
+      if(error){
+        feed.innerHTML = `<div class="post">${escapeHtml(error.message)}</div>`;
+        return;
+      }
+      if(!posts || !posts.length){
+        feed.innerHTML = `<div class="post">No posts yet.</div>`;
+        return;
+      }
+
+      const postIds = posts.map(p => p.id);
+
+      const { data: likes } = await sb.from("likes").select("*").in("post_id", postIds);
+      const { data: comments } = await sb.from("comments").select(`
+        *,
+        profiles:user_id (name,handle)
+      `).in("post_id", postIds).order("created_at", { ascending:true });
+
+      const likeMap = {};
+      const commentMap = {};
+      (likes || []).forEach(l => {
+        likeMap[l.post_id] = (likeMap[l.post_id] || 0) + 1;
+      });
+      (comments || []).forEach(c => {
+        if(!commentMap[c.post_id]) commentMap[c.post_id] = [];
+        commentMap[c.post_id].push(c);
+      });
+
+      feed.innerHTML = posts.map(p => {
+        let media = "";
+        if(p.type === "image" && p.file_url) media = `<img src="${p.file_url}" alt="${escapeHtml(p.title || "image")}">`;
+        if(p.type === "video" && p.file_url) media = `<video controls src="${p.file_url}"></video>`;
+        if(p.type === "audio" && p.file_url) media = `<audio controls src="${p.file_url}"></audio>`;
+
+        const artistName = p.profiles?.name || "Artist";
+        const artistHandle = p.profiles?.handle ? "@" + p.profiles.handle : "";
+        const postComments = commentMap[p.id] || [];
+
+        return `
+          <div class="post">
+            <div class="meta">
+              <a class="artist-link" href="?artist=${encodeURIComponent(p.profiles?.handle || "")}">
+                ${escapeHtml(artistName)}
+              </a>
+              ${artistHandle ? " • " + escapeHtml(artistHandle) : ""}
+              • ${new Date(p.created_at).toLocaleString()}
+            </div>
+            <h3>${escapeHtml(p.title || "Untitled")}</h3>
+            <p>${escapeHtml(p.content || "")}</p>
+            ${media}
+            <div class="actions">
+              <button class="mini-btn" onclick="toggleLike(${p.id})">❤️ Like (${likeMap[p.id] || 0})</button>
+            </div>
+            <div class="comment-box">
+              <div class="muted">Comments (${postComments.length})</div>
+              <div class="row">
+                <input id="comment-input-${p.id}" placeholder="Write a comment">
+                <button class="mini-btn secondary" onclick="addComment(${p.id})">Add Comment</button>
+              </div>
+              ${postComments.map(c => `
+                <div class="comment">
+                  <div class="meta">${escapeHtml(c.profiles?.name || "User")} ${c.profiles?.handle ? "(@" + escapeHtml(c.profiles.handle) + ")" : ""}</div>
+                  <div>${escapeHtml(c.content)}</div>
+                </div>
+              `).join("")}
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    async function loadGallery(){
+      const { data: images, error } = await sb
+        .from("posts")
+        .select(`
+          *,
+          profiles:user_id (name,handle)
+        `)
+        .eq("type","image")
+        .order("created_at", { ascending:false })
+        .limit(24);
+
+      if(error){
+        galleryGrid.innerHTML = `<div class="gallery-card">${escapeHtml(error.message)}</div>`;
+        return;
+      }
+      if(!images || !images.length){
+        galleryGrid.innerHTML = `<div class="gallery-card">No gallery photos yet.</div>`;
+        return;
+      }
+
+      const ids = images.map(i => i.id);
+      const { data: likes } = await sb.from("likes").select("*").in("post_id", ids);
+
+      const likeMap = {};
+      (likes || []).forEach(l => {
+        likeMap[l.post_id] = (likeMap[l.post_id] || 0) + 1;
+      });
+
+      galleryGrid.innerHTML = images.map(p => `
+        <div class="gallery-card">
+          <div class="meta">
+            <a class="artist-link" href="?artist=${encodeURIComponent(p.profiles?.handle || "")}">
+              ${escapeHtml(p.profiles?.name || "Artist")}
+            </a>
+            ${p.profiles?.handle ? " • @" + escapeHtml(p.profiles.handle) : ""}
+          </div>
+          <h3>${escapeHtml(p.title || "Photo")}</h3>
+          ${p.file_url ? `<img src="${p.file_url}" alt="${escapeHtml(p.title || "photo")}">` : ""}
+          <p>${escapeHtml(p.content || "")}</p>
+          <div class="actions">
+            <button class="mini-btn" onclick="toggleLike(${p.id})">❤️ Like (${likeMap[p.id] || 0})</button>
+          </div>
+        </div>
+      `).join("");
+    }
+
+    async function loadPublicPage(){
+      const params = new URLSearchParams(window.location.search);
+      const artistFromUrl = params.get("artist");
+
+      let profile = null;
+      if(artistFromUrl){
+        const { data } = await sb.from("profiles").select("*").eq("handle", artistFromUrl).maybeSingle();
+        profile = data;
+      } else {
+        const user = await getCurrentUser();
+        if(user){
+          const { data } = await sb.from("profiles").select("*").eq("id", user.id).maybeSingle();
+          profile = data;
+        }
+      }
+
+      if(!profile){
+        document.getElementById("publicName").textContent = "Artist Name";
+        document.getElementById("publicHandle").textContent = "@artist";
+        document.getElementById("publicBio").textContent = "Public artist bio appears here.";
+        document.getElementById("publicAvatar").src = "https://placehold.co/200x200/png?text=Artist";
+        document.getElementById("publicStats").textContent = "0 posts";
+        return;
+      }
+
+      document.getElementById("publicName").textContent = profile.name || "Artist Name";
+      document.getElementById("publicHandle").textContent = profile.handle ? "@" + profile.handle : "@artist";
+      document.getElementById("publicBio").textContent = profile.bio || "No bio yet.";
+      document.getElementById("publicAvatar").src = profile.avatar_url || "https://placehold.co/200x200/png?text=Artist";
+
+      const { count } = await sb
+        .from("posts")
+        .select("*", { count:"exact", head:true })
+        .eq("user_id", profile.id);
+
+      document.getElementById("publicStats").textContent = `${count || 0} posts`;
+    }
+
+    async function askAI(){
+      aiStatus.textContent = "";
+      aiAnswer.textContent = "Thinking...";
+
+      const question = document.getElementById("aiQuestion").value.trim();
+      if(!question){
+        aiStatus.textContent = "Write a question first.";
+        aiAnswer.textContent = "AI answer will appear here.";
+        return;
+      }
+
+      const { data, error } = await sb.functions.invoke("ask-ai", {
+        body:{ question }
+      });
+
+      if(error){
+        aiStatus.textContent = error.message || "Function error.";
+        aiAnswer.textContent = "AI failed.";
+        return;
+      }
+
+      aiStatus.textContent = "Done.";
+      aiAnswer.textContent = data?.answer || "No answer returned.";
+    }
+
+    sb.auth.onAuthStateChange(async () => {
+      await refreshAuthUI();
+      await loadMyProfile();
+      await loadPublicPage();
+    });
+
+    (async function init(){
+      await refreshAuthUI();
+      await loadMyProfile();
+      await loadPublicPage();
+      await loadFeed();
+      await loadGallery();
+    })();
+  </script>
+</body>
+</html>
