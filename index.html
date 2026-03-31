@@ -145,8 +145,11 @@ button.mainbtn {
 </div>
 
 <script>
-const SUPABASE_URL="https://gcomuxxidbjgqmdqsnfq.supabase.co";
-const SUPABASE_ANON_KEY="PUT_YOUR_KEY";
+const SUPABASE_URL = "https://gcomuxxidbjgqmdqsnfq.supabase.co";
+
+const SUPABASE_ANON_KEY = "sb_publishable_q2fKaWabHc1ldmmlipQuoA_qwyp3XR";
+
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 const sb=supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
 
@@ -183,7 +186,9 @@ async function login(){
   let pass=document.getElementById("pass").value
   await sb.auth.signInWithPassword({email,password:pass})
   alert("Logged in")
-}
+} 
+  
+
 
 loadGallery()
 </script>
