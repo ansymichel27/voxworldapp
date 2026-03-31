@@ -4,6 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>VoxWorld | Global Artist Galaxy</title>
+  <meta name="description" content="VoxWorld - Discover artists, play previews, follow talent, and connect for collaborations worldwide." />
+
   <style>
     * {
       margin: 0;
@@ -25,6 +27,10 @@
       --purple: #8b5cf6;
     }
 
+    html {
+      scroll-behavior: smooth;
+    }
+
     body {
       font-family: Arial, sans-serif;
       background:
@@ -38,6 +44,53 @@
     a {
       text-decoration: none;
       color: inherit;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: rgba(2, 6, 23, 0.86);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .topbar-inner {
+      max-width: 1350px;
+      margin: auto;
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      flex-wrap: wrap;
+    }
+
+    .brand {
+      font-size: 24px;
+      font-weight: bold;
+      letter-spacing: -0.5px;
+    }
+
+    .brand span {
+      color: var(--blue);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .nav-links a,
+    .nav-links button {
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.05);
+      color: white;
+      padding: 10px 14px;
+      border-radius: 12px;
+      cursor: pointer;
+      font-size: 14px;
     }
 
     .hero {
@@ -231,7 +284,7 @@
       border-radius: 22px;
       padding: 18px;
       display: grid;
-      grid-template-columns: 1.3fr 1fr 1fr 1fr;
+      grid-template-columns: 1.3fr 1fr 1fr 1fr auto;
       gap: 14px;
       margin-bottom: 28px;
       backdrop-filter: blur(10px);
@@ -247,6 +300,10 @@
       color: white;
       font-size: 15px;
       outline: none;
+    }
+
+    .filters option {
+      color: #111827;
     }
 
     .filters input::placeholder {
@@ -494,6 +551,78 @@
       font-size: 14px;
     }
 
+    .empty-state {
+      display: none;
+      text-align: center;
+      padding: 28px;
+      border-radius: 22px;
+      border: 1px dashed rgba(255,255,255,0.14);
+      background: rgba(255,255,255,0.03);
+      color: var(--muted);
+      margin-top: 18px;
+    }
+
+    .modal-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(2, 6, 23, 0.72);
+      z-index: 2000;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .modal {
+      width: min(680px, 100%);
+      background: #0f172a;
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 22px;
+      overflow: hidden;
+      box-shadow: 0 24px 60px rgba(0,0,0,0.45);
+    }
+
+    .modal img {
+      width: 100%;
+      height: 280px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .modal-content {
+      padding: 22px;
+    }
+
+    .modal-content h3 {
+      font-size: 28px;
+      margin-bottom: 8px;
+    }
+
+    .modal-content p {
+      color: var(--muted);
+      line-height: 1.7;
+      margin-bottom: 16px;
+    }
+
+    .modal-close {
+      margin-top: 6px;
+    }
+
+    .toast {
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      z-index: 3000;
+      background: rgba(15, 23, 42, 0.95);
+      color: white;
+      border: 1px solid rgba(255,255,255,0.08);
+      padding: 14px 16px;
+      border-radius: 14px;
+      box-shadow: 0 16px 36px rgba(0,0,0,0.35);
+      display: none;
+      max-width: 320px;
+    }
+
     @media (max-width: 1050px) {
       .hero-inner {
         grid-template-columns: 1fr;
@@ -529,7 +658,19 @@
 </head>
 <body>
 
-  <section class="hero">
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">Vox<span>World</span></div>
+      <nav class="nav-links">
+        <a href="#discover">Discover</a>
+        <a href="#featured">Featured</a>
+        <a href="#join">Join</a>
+        <button type="button" onclick="scrollToArtists()">Explore Artists</button>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero" id="featured">
     <div class="hero-inner">
       <div class="hero-copy">
         <h1>The <span>Global Artist Galaxy</span><br>for the World’s Voices</h1>
@@ -541,8 +682,8 @@
         </p>
 
         <div class="hero-actions">
-          <button class="btn btn-primary">Enter the Galaxy</button>
-          <button class="btn btn-secondary">Create Artist Profile</button>
+          <button class="btn btn-primary" type="button" onclick="scrollToArtists()">Enter the Galaxy</button>
+          <button class="btn btn-secondary" type="button" onclick="showToast('Artist profile builder coming soon.')">Create Artist Profile</button>
         </div>
 
         <div class="hero-stats">
@@ -576,8 +717,8 @@
               Future Kompa, global creative identity, Haitian excellence, and digital voice innovation.
             </p>
             <div class="spotlight-actions">
-              <button class="btn btn-primary">Play Voice</button>
-              <button class="btn btn-secondary">Follow Artist</button>
+              <button class="btn btn-primary" type="button" onclick="showArtistProfile('Ansy Michel')">Play Voice</button>
+              <button class="btn btn-secondary follow-toggle" type="button" onclick="toggleFollow(this, 'Ansy Michel')">Follow Artist</button>
             </div>
           </div>
         </div>
@@ -610,7 +751,7 @@
     </div>
   </div>
 
-  <section class="section-wrap">
+  <section class="section-wrap" id="discover">
     <div class="filters">
       <input type="text" id="searchInput" placeholder="Search artist, country, style..." onkeyup="filterArtists()" />
       <select id="styleFilter" onchange="filterArtists()">
@@ -635,6 +776,7 @@
         <option value="followers">Sort by Followers</option>
         <option value="name">Sort by Name</option>
       </select>
+      <button class="btn btn-secondary" type="button" onclick="resetFilters()">Reset</button>
     </div>
 
     <div class="section-head">
@@ -650,11 +792,11 @@
 
     <div class="artist-grid" id="artistGrid">
 
-      <div class="artist-card" data-name="Ansy Michel" data-style="Kompa" data-country="Haiti" data-likes="240" data-followers="5400">
+      <div class="artist-card" data-name="Ansy Michel" data-style="Kompa" data-country="Haiti" data-likes="240" data-followers="5400" data-image="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=1200&auto=format&fit=crop">
         <div class="card-media">
           <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=1200&auto=format&fit=crop" alt="Ansy Michel">
           <span class="floating-tag">Future Kompa</span>
-          <button class="play-chip">▶ Play Preview</button>
+          <button class="play-chip" type="button" onclick="playPreview(this)">▶ Play Preview</button>
         </div>
         <div class="artist-content">
           <div class="artist-topline">
@@ -682,23 +824,23 @@
               <span>Collabs</span>
             </div>
           </div>
-          <audio controls>
+          <audio controls preload="none">
             <source src="sample1.mp3" type="audio/mpeg">
           </audio>
           <div class="artist-actions">
-            <button class="like-btn" onclick="likeArtist(this)">Like</button>
-            <button class="follow-btn">Follow</button>
-            <button class="collab-btn">Collab</button>
-            <button class="view-btn">Profile</button>
+            <button class="like-btn" type="button" onclick="likeArtist(this)">Like</button>
+            <button class="follow-btn follow-toggle" type="button" onclick="toggleFollow(this, 'Ansy Michel')">Follow</button>
+            <button class="collab-btn" type="button" onclick="requestCollab('Ansy Michel')">Collab</button>
+            <button class="view-btn" type="button" onclick="showArtistProfile('Ansy Michel')">Profile</button>
           </div>
         </div>
       </div>
 
-      <div class="artist-card" data-name="Lina Soul" data-style="Soul" data-country="France" data-likes="198" data-followers="3100">
+      <div class="artist-card" data-name="Lina Soul" data-style="Soul" data-country="France" data-likes="198" data-followers="3100" data-image="https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=1200&auto=format&fit=crop">
         <div class="card-media">
           <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=1200&auto=format&fit=crop" alt="Lina Soul">
           <span class="floating-tag">Soul Pop</span>
-          <button class="play-chip">▶ Play Preview</button>
+          <button class="play-chip" type="button" onclick="playPreview(this)">▶ Play Preview</button>
         </div>
         <div class="artist-content">
           <div class="artist-topline">
@@ -726,23 +868,23 @@
               <span>Collabs</span>
             </div>
           </div>
-          <audio controls>
+          <audio controls preload="none">
             <source src="sample2.mp3" type="audio/mpeg">
           </audio>
           <div class="artist-actions">
-            <button class="like-btn" onclick="likeArtist(this)">Like</button>
-            <button class="follow-btn">Follow</button>
-            <button class="collab-btn">Collab</button>
-            <button class="view-btn">Profile</button>
+            <button class="like-btn" type="button" onclick="likeArtist(this)">Like</button>
+            <button class="follow-btn follow-toggle" type="button" onclick="toggleFollow(this, 'Lina Soul')">Follow</button>
+            <button class="collab-btn" type="button" onclick="requestCollab('Lina Soul')">Collab</button>
+            <button class="view-btn" type="button" onclick="showArtistProfile('Lina Soul')">Profile</button>
           </div>
         </div>
       </div>
 
-      <div class="artist-card" data-name="Jay Rhythm" data-style="Rap" data-country="USA" data-likes="321" data-followers="6800">
+      <div class="artist-card" data-name="Jay Rhythm" data-style="Rap" data-country="USA" data-likes="321" data-followers="6800" data-image="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=1200&auto=format&fit=crop">
         <div class="card-media">
           <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=1200&auto=format&fit=crop" alt="Jay Rhythm">
           <span class="floating-tag">Rap Energy</span>
-          <button class="play-chip">▶ Play Preview</button>
+          <button class="play-chip" type="button" onclick="playPreview(this)">▶ Play Preview</button>
         </div>
         <div class="artist-content">
           <div class="artist-topline">
@@ -770,23 +912,23 @@
               <span>Collabs</span>
             </div>
           </div>
-          <audio controls>
+          <audio controls preload="none">
             <source src="sample3.mp3" type="audio/mpeg">
           </audio>
           <div class="artist-actions">
-            <button class="like-btn" onclick="likeArtist(this)">Like</button>
-            <button class="follow-btn">Follow</button>
-            <button class="collab-btn">Collab</button>
-            <button class="view-btn">Profile</button>
+            <button class="like-btn" type="button" onclick="likeArtist(this)">Like</button>
+            <button class="follow-btn follow-toggle" type="button" onclick="toggleFollow(this, 'Jay Rhythm')">Follow</button>
+            <button class="collab-btn" type="button" onclick="requestCollab('Jay Rhythm')">Collab</button>
+            <button class="view-btn" type="button" onclick="showArtistProfile('Jay Rhythm')">Profile</button>
           </div>
         </div>
       </div>
 
-      <div class="artist-card" data-name="Maya Beat" data-style="Afrobeat" data-country="Nigeria" data-likes="412" data-followers="9100">
+      <div class="artist-card" data-name="Maya Beat" data-style="Afrobeat" data-country="Nigeria" data-likes="412" data-followers="9100" data-image="https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?q=80&w=1200&auto=format&fit=crop">
         <div class="card-media">
           <img src="https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?q=80&w=1200&auto=format&fit=crop" alt="Maya Beat">
           <span class="floating-tag">Afrobeat Star</span>
-          <button class="play-chip">▶ Play Preview</button>
+          <button class="play-chip" type="button" onclick="playPreview(this)">▶ Play Preview</button>
         </div>
         <div class="artist-content">
           <div class="artist-topline">
@@ -814,23 +956,23 @@
               <span>Collabs</span>
             </div>
           </div>
-          <audio controls>
+          <audio controls preload="none">
             <source src="sample4.mp3" type="audio/mpeg">
           </audio>
           <div class="artist-actions">
-            <button class="like-btn" onclick="likeArtist(this)">Like</button>
-            <button class="follow-btn">Follow</button>
-            <button class="collab-btn">Collab</button>
-            <button class="view-btn">Profile</button>
+            <button class="like-btn" type="button" onclick="likeArtist(this)">Like</button>
+            <button class="follow-btn follow-toggle" type="button" onclick="toggleFollow(this, 'Maya Beat')">Follow</button>
+            <button class="collab-btn" type="button" onclick="requestCollab('Maya Beat')">Collab</button>
+            <button class="view-btn" type="button" onclick="showArtistProfile('Maya Beat')">Profile</button>
           </div>
         </div>
       </div>
 
-      <div class="artist-card" data-name="Naomi Voice" data-style="Pop" data-country="Canada" data-likes="167" data-followers="2700">
+      <div class="artist-card" data-name="Naomi Voice" data-style="Pop" data-country="Canada" data-likes="167" data-followers="2700" data-image="https://images.unsplash.com/photo-1517841905240-472988babdf9?q=80&w=1200&auto=format&fit=crop">
         <div class="card-media">
           <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?q=80&w=1200&auto=format&fit=crop" alt="Naomi Voice">
           <span class="floating-tag">Pop Glow</span>
-          <button class="play-chip">▶ Play Preview</button>
+          <button class="play-chip" type="button" onclick="playPreview(this)">▶ Play Preview</button>
         </div>
         <div class="artist-content">
           <div class="artist-topline">
@@ -858,23 +1000,23 @@
               <span>Collabs</span>
             </div>
           </div>
-          <audio controls>
+          <audio controls preload="none">
             <source src="sample5.mp3" type="audio/mpeg">
           </audio>
           <div class="artist-actions">
-            <button class="like-btn" onclick="likeArtist(this)">Like</button>
-            <button class="follow-btn">Follow</button>
-            <button class="collab-btn">Collab</button>
-            <button class="view-btn">Profile</button>
+            <button class="like-btn" type="button" onclick="likeArtist(this)">Like</button>
+            <button class="follow-btn follow-toggle" type="button" onclick="toggleFollow(this, 'Naomi Voice')">Follow</button>
+            <button class="collab-btn" type="button" onclick="requestCollab('Naomi Voice')">Collab</button>
+            <button class="view-btn" type="button" onclick="showArtistProfile('Naomi Voice')">Profile</button>
           </div>
         </div>
       </div>
 
-      <div class="artist-card" data-name="Kreyol Flame" data-style="Kompa" data-country="Haiti" data-likes="289" data-followers="6200">
+      <div class="artist-card" data-name="Kreyol Flame" data-style="Kompa" data-country="Haiti" data-likes="289" data-followers="6200" data-image="https://images.unsplash.com/photo-1504593811423-6dd665756598?q=80&w=1200&auto=format&fit=crop">
         <div class="card-media">
           <img src="https://images.unsplash.com/photo-1504593811423-6dd665756598?q=80&w=1200&auto=format&fit=crop" alt="Kreyol Flame">
           <span class="floating-tag">Kreyol Fire</span>
-          <button class="play-chip">▶ Play Preview</button>
+          <button class="play-chip" type="button" onclick="playPreview(this)">▶ Play Preview</button>
         </div>
         <div class="artist-content">
           <div class="artist-topline">
@@ -902,27 +1044,31 @@
               <span>Collabs</span>
             </div>
           </div>
-          <audio controls>
+          <audio controls preload="none">
             <source src="sample6.mp3" type="audio/mpeg">
           </audio>
           <div class="artist-actions">
-            <button class="like-btn" onclick="likeArtist(this)">Like</button>
-            <button class="follow-btn">Follow</button>
-            <button class="collab-btn">Collab</button>
-            <button class="view-btn">Profile</button>
+            <button class="like-btn" type="button" onclick="likeArtist(this)">Like</button>
+            <button class="follow-btn follow-toggle" type="button" onclick="toggleFollow(this, 'Kreyol Flame')">Follow</button>
+            <button class="collab-btn" type="button" onclick="requestCollab('Kreyol Flame')">Collab</button>
+            <button class="view-btn" type="button" onclick="showArtistProfile('Kreyol Flame')">Profile</button>
           </div>
         </div>
       </div>
 
     </div>
 
-    <div class="cta-zone">
+    <div class="empty-state" id="emptyState">
+      No artist matches your current filters.
+    </div>
+
+    <div class="cta-zone" id="join">
       <h3>Build Your Voice Identity. Be Seen Worldwide.</h3>
       <p>
         VoxWorld can become the first truly global voice gallery where artists are not buried inside random feeds.
         They are showcased, searchable, playable, followable, and ready for collaboration in one premium visual universe.
       </p>
-      <button class="btn btn-primary">Join VoxWorld Now</button>
+      <button class="btn btn-primary" type="button" onclick="showToast('Welcome to VoxWorld. Registration flow coming soon.')">Join VoxWorld Now</button>
     </div>
   </section>
 
@@ -930,12 +1076,52 @@
     VoxWorld • The Global Voice Bank for Artists
   </div>
 
+  <div class="modal-backdrop" id="profileModal">
+    <div class="modal">
+      <img id="modalImage" src="" alt="Artist image" />
+      <div class="modal-content">
+        <h3 id="modalName">Artist Name</h3>
+        <p id="modalMeta">Country · Style</p>
+        <p id="modalBio">Bio</p>
+        <button class="btn btn-secondary modal-close" type="button" onclick="closeProfileModal()">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
   <script>
+    const artistDetails = {
+      "Ansy Michel": {
+        bio: "Ansy Michel represents future-forward Kompa identity with Haitian energy, visual branding, and digital innovation for a worldwide audience.",
+      },
+      "Lina Soul": {
+        bio: "Lina Soul blends elegance, emotional performance, and premium vocal quality for cinematic collaborations and soulful releases.",
+      },
+      "Jay Rhythm": {
+        bio: "Jay Rhythm delivers strong lyrical presence and urban performance built for attention, movement, and viral momentum.",
+      },
+      "Maya Beat": {
+        bio: "Maya Beat offers bright Afrobeat crossover power with infectious hooks and broad global appeal.",
+      },
+      "Naomi Voice": {
+        bio: "Naomi Voice is polished, melodic, and adaptable for premium pop, branded sound, and featured vocal work.",
+      },
+      "Kreyol Flame": {
+        bio: "Kreyol Flame channels Caribbean warmth, live energy, and Kreyol expression into memorable rhythmic identity.",
+      }
+    };
+
+    function scrollToArtists() {
+      document.getElementById("discover").scrollIntoView({ behavior: "smooth" });
+    }
+
     function filterArtists() {
-      const searchValue = document.getElementById("searchInput").value.toLowerCase();
+      const searchValue = document.getElementById("searchInput").value.toLowerCase().trim();
       const styleValue = document.getElementById("styleFilter").value;
       const countryValue = document.getElementById("countryFilter").value;
       const cards = document.querySelectorAll(".artist-card");
+      let visibleCount = 0;
 
       cards.forEach(card => {
         const name = card.dataset.name.toLowerCase();
@@ -949,10 +1135,13 @@
 
         if (matchesSearch && matchesStyle && matchesCountry) {
           card.style.display = "block";
+          visibleCount += 1;
         } else {
           card.style.display = "none";
         }
       });
+
+      document.getElementById("emptyState").style.display = visibleCount === 0 ? "block" : "none";
     }
 
     function sortArtists() {
@@ -962,10 +1151,10 @@
 
       cards.sort((a, b) => {
         if (sortValue === "likes" || sortValue === "popular") {
-          return parseInt(b.dataset.likes) - parseInt(a.dataset.likes);
+          return parseInt(b.dataset.likes, 10) - parseInt(a.dataset.likes, 10);
         }
         if (sortValue === "followers") {
-          return parseInt(b.dataset.followers) - parseInt(a.dataset.followers);
+          return parseInt(b.dataset.followers, 10) - parseInt(a.dataset.followers, 10);
         }
         if (sortValue === "name") {
           return a.dataset.name.localeCompare(b.dataset.name);
@@ -974,6 +1163,16 @@
       });
 
       cards.forEach(card => grid.appendChild(card));
+      filterArtists();
+    }
+
+    function resetFilters() {
+      document.getElementById("searchInput").value = "";
+      document.getElementById("styleFilter").value = "all";
+      document.getElementById("countryFilter").value = "all";
+      document.getElementById("sortFilter").value = "popular";
+      sortArtists();
+      showToast("Filters reset.");
     }
 
     function likeArtist(button) {
@@ -984,11 +1183,94 @@
       if (!button.classList.contains("liked")) {
         likes += 1;
         likeElement.textContent = likes;
+        card.dataset.likes = String(likes);
         button.textContent = "Liked";
         button.classList.add("liked");
         button.style.opacity = "0.8";
+        showToast("Artist liked.");
       }
     }
+
+    function toggleFollow(button, artistName) {
+      const followed = button.classList.toggle("is-following");
+      button.textContent = followed ? "Following" : "Follow";
+      button.style.opacity = followed ? "0.82" : "1";
+      showToast(followed ? `You are now following ${artistName}.` : `You unfollowed ${artistName}.`);
+    }
+
+    function requestCollab(artistName) {
+      showToast(`Collaboration request draft opened for ${artistName}.`);
+    }
+
+    function playPreview(button) {
+      const card = button.closest(".artist-card");
+      const audio = card.querySelector("audio");
+
+      document.querySelectorAll(".artist-card audio").forEach(other => {
+        if (other !== audio) other.pause();
+      });
+
+      document.querySelectorAll(".play-chip").forEach(chip => {
+        if (chip !== button) chip.textContent = "▶ Play Preview";
+      });
+
+      if (audio.paused) {
+        audio.play().catch(() => {
+          showToast("Preview file not found yet. Add your MP3 source.");
+        });
+        button.textContent = "❚❚ Pause";
+      } else {
+        audio.pause();
+        button.textContent = "▶ Play Preview";
+      }
+
+      audio.onended = () => {
+        button.textContent = "▶ Play Preview";
+      };
+    }
+
+    function showArtistProfile(artistName) {
+      const card = Array.from(document.querySelectorAll(".artist-card")).find(c => c.dataset.name === artistName);
+      if (!card) return;
+
+      const img = card.dataset.image || card.querySelector("img")?.src || "";
+      const meta = card.querySelector(".artist-meta")?.textContent || "";
+      const bio = artistDetails[artistName]?.bio || card.querySelector(".artist-bio")?.textContent || "";
+
+      document.getElementById("modalImage").src = img;
+      document.getElementById("modalName").textContent = artistName;
+      document.getElementById("modalMeta").textContent = meta;
+      document.getElementById("modalBio").textContent = bio;
+      document.getElementById("profileModal").style.display = "flex";
+    }
+
+    function closeProfileModal() {
+      document.getElementById("profileModal").style.display = "none";
+    }
+
+    function showToast(message) {
+      const toast = document.getElementById("toast");
+      toast.textContent = message;
+      toast.style.display = "block";
+      clearTimeout(window.__toastTimer);
+      window.__toastTimer = setTimeout(() => {
+        toast.style.display = "none";
+      }, 2600);
+    }
+
+    document.getElementById("profileModal").addEventListener("click", (e) => {
+      if (e.target.id === "profileModal") {
+        closeProfileModal();
+      }
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") {
+        closeProfileModal();
+      }
+    });
+
+    sortArtists();
   </script>
 
 </body>
