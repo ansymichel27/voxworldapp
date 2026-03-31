@@ -1,281 +1,448 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>VOX WORLD AI</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VOX WORLD AI</title>
 
-<!-- STYLE -->
-<style>
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: linear-gradient(135deg, #2c003e, #000);
-  color: white;
-}
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-header {
-  background: #3d0066;
-  padding: 15px;
-  text-align: center;
-  font-size: 22px;
-  color: gold;
-  font-weight: bold;
-}
+  <style>
+    * {
+      box-sizing: border-box;
+    }
 
-nav {
-  display: flex;
-  justify-content: center;
-  gap: 15px;
-  padding: 10px;
-}
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background:
+        radial-gradient(circle at top, rgba(255, 215, 0, 0.12), transparent 30%),
+        linear-gradient(135deg, #2b0038, #120018 45%, #000000 100%);
+      color: white;
+      min-height: 100vh;
+    }
 
-button {
-  background: gold;
-  border: none;
-  padding: 10px 15px;
-  cursor: pointer;
-  border-radius: 8px;
-  font-weight: bold;
-}
+    header {
+      background: linear-gradient(90deg, #4b006e, #2b0038);
+      padding: 18px;
+      text-align: center;
+      font-size: 28px;
+      color: gold;
+      font-weight: bold;
+      letter-spacing: 1px;
+      border-bottom: 2px solid rgba(255, 215, 0, 0.35);
+      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.35);
+    }
 
-section {
-  display: none;
-  padding: 20px;
-}
+    nav {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      padding: 16px;
+    }
 
-.active {
-  display: block;
-}
+    button {
+      background: linear-gradient(135deg, gold, #d4af37);
+      color: #2b0038;
+      border: none;
+      padding: 11px 16px;
+      cursor: pointer;
+      border-radius: 10px;
+      font-weight: bold;
+      transition: transform 0.15s ease, opacity 0.15s ease;
+    }
 
-input, textarea {
-  width: 100%;
-  padding: 10px;
-  margin-top: 10px;
-  border-radius: 8px;
-  border: none;
-}
+    button:hover {
+      transform: translateY(-1px);
+      opacity: 0.95;
+    }
 
-.card {
-  background: rgba(255,255,255,0.05);
-  padding: 15px;
-  margin-top: 10px;
-  border-radius: 10px;
-}
-</style>
+    section {
+      display: none;
+      padding: 20px;
+      max-width: 900px;
+      margin: 0 auto 30px auto;
+    }
 
-<!-- SUPABASE -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+    .active {
+      display: block;
+    }
 
+    .panel {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 215, 0, 0.2);
+      border-radius: 16px;
+      padding: 20px;
+      backdrop-filter: blur(8px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    h2 {
+      color: gold;
+      margin-top: 0;
+    }
+
+    input,
+    textarea {
+      width: 100%;
+      padding: 12px;
+      margin-top: 10px;
+      border-radius: 10px;
+      border: 1px solid rgba(255, 215, 0, 0.2);
+      background: rgba(255, 255, 255, 0.08);
+      color: white;
+      outline: none;
+    }
+
+    input::placeholder,
+    textarea::placeholder {
+      color: #ddd;
+    }
+
+    textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.06);
+      padding: 15px;
+      margin-top: 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 215, 0, 0.16);
+      word-wrap: break-word;
+    }
+
+    .chat-user {
+      border-left: 4px solid gold;
+    }
+
+    .chat-system {
+      border-left: 4px solid #b57cff;
+      color: #f1e8ff;
+    }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 14px;
+      margin-top: 16px;
+    }
+
+    .gallery-item img {
+      width: 100%;
+      display: block;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 215, 0, 0.2);
+    }
+
+    .row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 12px;
+    }
+
+    .row button {
+      flex: 1 1 160px;
+    }
+
+    .status {
+      margin-top: 14px;
+      padding: 12px;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 215, 0, 0.14);
+    }
+
+    .small {
+      font-size: 14px;
+      opacity: 0.9;
+    }
+  </style>
 </head>
-
 <body>
+  <header>VOX WORLD AI ✨</header>
 
-<header>VOX WORLD AI ✨</header>
+  <nav>
+    <button type="button" onclick="showPage('home')">Home</button>
+    <button type="button" onclick="showPage('ai')">AI Ask</button>
+    <button type="button" onclick="showPage('gallery')">Gallery</button>
+    <button type="button" onclick="showPage('login')">Artist ID</button>
+  </nav>
 
-<nav>
-  <button onclick="showPage('home')">Home</button>
-  <button onclick="showPage('ai')">AI Ask</button>
-  <button onclick="showPage('gallery')">Gallery</button>
-  <button onclick="showPage('login')">Artist ID</button>
-</nav>
+  <!-- HOME -->
+  <section id="home" class="active">
+    <div class="panel">
+      <h2>Welcome</h2>
+      <p>Your AI + Creative Platform.</p>
+      <p class="small">
+        Modern royal purple and gold interface with AI chat, gallery, and Artist ID login.
+      </p>
+    </div>
+  </section>
 
-<!-- HOME -->
-<section id="home" class="active">
-  <h2>Welcome</h2>
-  <p>Your AI + Creative Platform</p>
-</section>
-
-<!-- AI -->
-<section id="ai">
-  <h2>Ask AI</h2>
-  <textarea id="userInput" placeholder="Ask something..."></textarea>
-  <button onclick="sendMessage()">Send</button>
-
-  <div id="chatBox"></div>
-</section>
-
-<!-- GALLERY -->
-<section id="gallery">
-  <h2>Gallery</h2>
-
-  <input type="text" id="imageUrl" placeholder="Paste image URL">
-  <button onclick="uploadImage()">Upload</button>
-
-  <div id="galleryList"></div>
-</section>
-
-<!-- LOGIN -->
-<section id="login">
-  <h2>Artist ID Login</h2>
-
-  <input type="email" id="email" placeholder="Email">
-  <input type="password" id="password" placeholder="Password">
-
-  <button onclick="signUp()">Sign Up</button>
-  <button onclick="signIn()">Login</button>
-
-  <p id="userStatus"></p>
-</section>
-
-<script>
-// =============================
-// 🔥 SUPABASE CONFIG (PUT YOUR REAL KEYS)
-// =============================
-const SUPABASE_URL = "https://YOUR_PROJECT_ID.supabase.co";
-const SUPABASE_ANON_KEY = "YOUR_PUBLIC_ANON_KEY";
-
-const supabase = window.supabase.createClient(
-  SUPABASE_URL,
-  SUPABASE_ANON_KEY
-);
-
-// =============================
-// NAVIGATION
-// =============================
-function showPage(page) {
-  document.querySelectorAll("section").forEach(sec => {
-    sec.classList.remove("active");
-  });
-  document.getElementById(page).classList.add("active");
-}
-
-// =============================
-// AI CHAT (SIMPLE SAVE)
-// =============================
-async function sendMessage() {
-  const input = document.getElementById("userInput").value;
-
-  if (!input) return;
-
-  // DISPLAY
-  const chatBox = document.getElementById("chatBox");
-  chatBox.innerHTML += `<div class="card">You: ${input}</div>`;
-
-  // SAVE TO SUPABASE
-  const { error } = await supabase
-    .from("messages")
-    .insert([{ text: input }]);
-
-  if (error) {
-    console.error(error);
-  }
-
-  document.getElementById("userInput").value = "";
-}
-
-// =============================
-// GALLERY
-// =============================
-async function uploadImage() {
-  const url = document.getElementById("imageUrl").value;
-
-  if (!url) return;
-
-  await supabase.from("gallery").insert([{ url }]);
-
-  loadGallery();
-}
-
-async function loadGallery() {
-  const { data } = await supabase.from("gallery").select("*");
-
-  const container = document.getElementById("galleryList");
-  container.innerHTML = "";
-
-  data.forEach(img => {
-    container.innerHTML += `
-      <div class="card">
-        <img src="${img.url}" width="100%">
+  <!-- AI -->
+  <section id="ai">
+    <div class="panel">
+      <h2>Ask AI</h2>
+      <textarea id="userInput" placeholder="Ask something..."></textarea>
+      <div class="row">
+        <button type="button" onclick="sendMessage()">Send</button>
+        <button type="button" onclick="clearChat()">Clear Chat</button>
       </div>
-    `;
-  });
-}
+      <div id="chatBox"></div>
+    </div>
+  </section>
 
-loadGallery();
+  <!-- GALLERY -->
+  <section id="gallery">
+    <div class="panel">
+      <h2>Gallery</h2>
+      <input type="text" id="imageUrl" placeholder="Paste image URL" />
+      <div class="row">
+        <button type="button" onclick="uploadImage()">Upload</button>
+        <button type="button" onclick="loadGallery()">Refresh Gallery</button>
+      </div>
+      <div id="galleryList" class="gallery-grid"></div>
+    </div>
+  </section>
 
-// =============================
-// AUTH (Artist ID)
-// =============================
-async function signUp() {
-  const email = document.getElementById("email").value;
-  const password = document.getElementById("password").value;
+  <!-- LOGIN -->
+  <section id="login">
+    <div class="panel">
+      <h2>Artist ID Login</h2>
 
-  const { error } = await supabase.auth.signUp({
-    email,
-    password
-  });
+      <input type="email" id="email" placeholder="Email" />
+      <input type="password" id="password" placeholder="Password" />
 
-  if (error) {
-    alert(error.message);
-  } else {
-    alert("Account created!");
-  }
-}
+      <div class="row">
+        <button type="button" onclick="signUp()">Sign Up</button>
+        <button type="button" onclick="signIn()">Login</button>
+        <button type="button" onclick="signOut()">Logout</button>
+      </div>
 
-async function signIn() {
-  const email = document.getElementById("email").value;
-  const password = document.getElementById("password").value;
+      <div id="userStatus" class="status">Not logged in</div>
+    </div>
+  </section>
 
-  const { data, error } = await supabase.auth.signInWithPassword({
-    email,
-    password
-  });
+  <script>
+    // =============================
+    // SUPABASE CONFIG
+    // =============================
+    const SUPABASE_URL = "YOUR_SUPABASE_URL";
+    const SUPABASE_ANON_KEY = "YOUR_SUPABASE_ANON_KEY";
 
-  if (error) {
-    alert(error.message);
-  } else {
-    document.getElementById("userStatus").innerText =
-      "Logged in as: " + data.user.email;
-  }
-}
+    const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-</script>
+    // =============================
+    // HELPERS
+    // =============================
+    function escapeHTML(str) {
+      return String(str)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    function setStatus(message) {
+      document.getElementById("userStatus").innerText = message;
+    }
 
-<script>
-const SUPABASE_URL = "PASTE_YOUR_URL_HERE";
-const SUPABASE_KEY = "PASTE_YOUR_ANON_KEY_HERE";
+    // =============================
+    // NAVIGATION
+    // =============================
+    function showPage(page) {
+      document.querySelectorAll("section").forEach((sec) => {
+        sec.classList.remove("active");
+      });
 
-const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+      const target = document.getElementById(page);
+      if (target) target.classList.add("active");
+    }
 
-// SIGN UP
-async function signUp() {
-  const email = document.getElementById("email").value;
-  const password = document.getElementById("password").value;
+    // =============================
+    // AI CHAT
+    // =============================
+    async function sendMessage() {
+      const inputEl = document.getElementById("userInput");
+      const chatBox = document.getElementById("chatBox");
+      const input = inputEl.value.trim();
 
-  const { data, error } = await supabaseClient.auth.signUp({
-    email,
-    password,
-  });
+      if (!input) {
+        alert("Please type a message first.");
+        return;
+      }
 
-  if (error) alert(error.message);
-  else alert("Account created!");
-}
+      chatBox.innerHTML += `
+        <div class="card chat-user"><strong>You:</strong> ${escapeHTML(input)}</div>
+      `;
 
-// LOGIN
-async function login() {
-  const email = document.getElementById("email").value;
-  const password = document.getElementById("password").value;
+      const { error } = await supabaseClient
+        .from("messages")
+        .insert([{ text: input }]);
 
-  const { data, error } = await supabaseClient.auth.signInWithPassword({
-    email,
-    password,
-  });
+      if (error) {
+        chatBox.innerHTML += `
+          <div class="card chat-system"><strong>System:</strong> Message shown on screen, but failed to save to database: ${escapeHTML(error.message)}</div>
+        `;
+      } else {
+        chatBox.innerHTML += `
+          <div class="card chat-system"><strong>System:</strong> Message saved successfully.</div>
+        `;
+      }
 
-  if (error) alert(error.message);
-  else alert("Logged in!");
-}
+      inputEl.value = "";
+    }
 
-// SAVE DATA
-async function saveUser(email) {
-  const { data, error } = await supabaseClient
-    .from("users")
-    .insert([{ email: email }]);
+    function clearChat() {
+      document.getElementById("chatBox").innerHTML = "";
+    }
 
-  if (error) console.log(error);
-  else console.log("Saved!");
-}
-</script></body>
+    // =============================
+    // GALLERY
+    // =============================
+    async function uploadImage() {
+      const imageInput = document.getElementById("imageUrl");
+      const url = imageInput.value.trim();
+
+      if (!url) {
+        alert("Please paste an image URL.");
+        return;
+      }
+
+      const { error } = await supabaseClient
+        .from("gallery")
+        .insert([{ url: url }]);
+
+      if (error) {
+        alert("Upload failed: " + error.message);
+        return;
+      }
+
+      imageInput.value = "";
+      await loadGallery();
+    }
+
+    async function loadGallery() {
+      const container = document.getElementById("galleryList");
+      container.innerHTML = `<div class="card">Loading gallery...</div>`;
+
+      const { data, error } = await supabaseClient
+        .from("gallery")
+        .select("*")
+        .order("id", { ascending: false });
+
+      if (error) {
+        container.innerHTML = `
+          <div class="card">Failed to load gallery: ${escapeHTML(error.message)}</div>
+        `;
+        return;
+      }
+
+      if (!data || data.length === 0) {
+        container.innerHTML = `<div class="card">No images yet.</div>`;
+        return;
+      }
+
+      container.innerHTML = data
+        .map(
+          (img) => `
+          <div class="card gallery-item">
+            <img src="${escapeHTML(img.url)}" alt="Gallery image" />
+          </div>
+        `
+        )
+        .join("");
+    }
+
+    // =============================
+    // AUTH (Artist ID)
+    // =============================
+    async function signUp() {
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value.trim();
+
+      if (!email || !password) {
+        alert("Enter email and password.");
+        return;
+      }
+
+      const { data, error } = await supabaseClient.auth.signUp({
+        email,
+        password
+      });
+
+      if (error) {
+        alert(error.message);
+        return;
+      }
+
+      if (data?.user?.email) {
+        setStatus("Account created: " + data.user.email);
+      } else {
+        setStatus("Account created. Check your email if confirmation is enabled.");
+      }
+    }
+
+    async function signIn() {
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value.trim();
+
+      if (!email || !password) {
+        alert("Enter email and password.");
+        return;
+      }
+
+      const { data, error } = await supabaseClient.auth.signInWithPassword({
+        email,
+        password
+      });
+
+      if (error) {
+        alert(error.message);
+        return;
+      }
+
+      setStatus("Logged in as: " + data.user.email);
+    }
+
+    async function signOut() {
+      const { error } = await supabaseClient.auth.signOut();
+
+      if (error) {
+        alert(error.message);
+        return;
+      }
+
+      setStatus("Logged out");
+    }
+
+    async function checkCurrentUser() {
+      const { data, error } = await supabaseClient.auth.getUser();
+
+      if (error) {
+        setStatus("User check error");
+        return;
+      }
+
+      if (data?.user?.email) {
+        setStatus("Logged in as: " + data.user.email);
+      } else {
+        setStatus("Not logged in");
+      }
+    }
+
+    // =============================
+    // STARTUP
+    // =============================
+    document.addEventListener("DOMContentLoaded", async () => {
+      await checkCurrentUser();
+      await loadGallery();
+    });
+  </script>
+</body>
 </html>
