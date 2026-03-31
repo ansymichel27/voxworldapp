@@ -4,7 +4,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>VOX WORLD AI</title>
-  <meta name="description" content="VOX WORLD AI - Ultimate Spotify-style AI platform" />
+  <meta
+    name="description"
+    content="VOX WORLD AI - Modern creative AI platform for artists, voices, images, and global collaboration."
+  />
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
@@ -22,13 +25,13 @@
       --panel-4: #282828;
       --text: #ffffff;
       --muted: #b3b3b3;
-      --line: rgba(255,255,255,0.08);
+      --line: rgba(255, 255, 255, 0.08);
       --green: #1db954;
       --green-dark: #169c46;
       --danger: #ff4d4f;
       --gold: #ffd700;
       --radius: 18px;
-      --shadow: 0 14px 36px rgba(0,0,0,0.35);
+      --shadow: 0 14px 36px rgba(0, 0, 0, 0.35);
     }
 
     html, body {
@@ -174,7 +177,7 @@
       gap: 12px;
       padding: 16px 18px;
       border-bottom: 1px solid var(--line);
-      background: rgba(18,18,18,0.75);
+      background: rgba(18, 18, 18, 0.82);
       backdrop-filter: blur(8px);
     }
 
@@ -453,6 +456,7 @@
       align-items: center;
       gap: 8px;
       margin-bottom: 10px;
+      flex-wrap: wrap;
     }
 
     .badge {
@@ -553,7 +557,7 @@
       </div>
 
       <div class="side-box">
-        <h3>Creative AI Space</h3>
+        <h3>VOX WORLD AI</h3>
         <p id="sideText">
           Ask, search, save messages, manage your gallery, and connect with Artist ID in one clean interface.
         </p>
@@ -588,7 +592,7 @@
         <div class="hero">
           <h1>VOX WORLD AI</h1>
           <p id="heroText">
-            A modern Spotify-style platform with AI tools, artist login, multilingual control, favorites, and gallery management.
+            A modern creative AI platform with artist tools, multilingual control, favorites, and gallery management.
           </p>
           <div class="hero-actions">
             <button class="btn btn-primary" type="button" onclick="showPage('ai')">Open AI</button>
@@ -600,13 +604,13 @@
           <div class="panel">
             <h2 id="homeTitle">Welcome</h2>
             <p class="section-text" id="homeText">
-              This platform lets you save prompts, search messages, manage image links, add likes, and sign in with Artist ID.
+              VOX WORLD AI lets you create, save, search, and manage your content, connect with your Artist ID, and build your creative identity worldwide.
             </p>
 
             <div class="grid-3">
               <div class="mini-card">
-                <h3>Spotify Style</h3>
-                <p>Dark premium layout with sidebar navigation and clean cards.</p>
+                <h3>Modern Design</h3>
+                <p>Premium dark interface with smooth navigation, clean layout, and professional user experience.</p>
               </div>
               <div class="mini-card">
                 <h3>AI Tools</h3>
@@ -742,15 +746,14 @@
   <script>
     const SUPABASE_URL = "YOUR_SUPABASE_URL";
     const SUPABASE_ANON_KEY = "YOUR_SUPABASE_ANON_KEY";
-
     let supabaseClient = null;
 
     const translations = {
       en: {
         sideText: "Ask, search, save messages, manage your gallery, and connect with Artist ID in one clean interface.",
-        heroText: "A modern Spotify-style platform with AI tools, artist login, multilingual control, favorites, and gallery management.",
+        heroText: "A modern creative AI platform with artist tools, multilingual control, favorites, and gallery management.",
         homeTitle: "Welcome",
-        homeText: "This platform lets you save prompts, search messages, manage image links, add likes, and sign in with Artist ID.",
+        homeText: "VOX WORLD AI lets you create, save, search, and manage your content, connect with your Artist ID, and build your creative identity worldwide.",
         aiTitle: "AI Ask",
         aiText: "Write a message, change language inside AI, search saved content, and save to Supabase.",
         searchLabel: "Search Messages",
@@ -800,13 +803,15 @@
         likeText: "Likes",
         favoriteText: "Favorite",
         unfavoriteText: "Unfavorite",
-        deleteText: "Delete"
+        deleteText: "Delete",
+        normalText: "Normal",
+        noFavMessages: "No favorite messages yet."
       },
       fr: {
         sideText: "Posez, recherchez, sauvegardez des messages, gérez votre galerie et connectez-vous avec Artist ID dans une interface propre.",
-        heroText: "Une plateforme style Spotify moderne avec outils AI, connexion artiste, contrôle multilingue, favoris et gestion de galerie.",
+        heroText: "Une plateforme créative moderne avec outils AI, gestion multilingue, favoris et galerie.",
         homeTitle: "Bienvenue",
-        homeText: "Cette plateforme vous permet d’enregistrer des prompts, rechercher des messages, gérer des liens d’images, ajouter des likes et vous connecter avec Artist ID.",
+        homeText: "VOX WORLD AI vous permet de créer, sauvegarder, rechercher et gérer votre contenu, de vous connecter avec votre Artist ID et de construire votre identité créative à l’échelle mondiale.",
         aiTitle: "Questionner AI",
         aiText: "Écrivez un message, changez la langue dans AI, recherchez du contenu sauvegardé et enregistrez dans Supabase.",
         searchLabel: "Rechercher les messages",
@@ -856,13 +861,15 @@
         likeText: "Likes",
         favoriteText: "Favori",
         unfavoriteText: "Retirer favori",
-        deleteText: "Supprimer"
+        deleteText: "Supprimer",
+        normalText: "Normal",
+        noFavMessages: "Aucun message favori pour le moment."
       },
       ht: {
         sideText: "Poze kestyon, chèche, sove mesaj, jere galri ou, epi konekte ak Artist ID nan yon koòdone pwòp.",
-        heroText: "Yon platfòm modèn ki sanble ak Spotify ak zouti AI, koneksyon atis, plizyè lang, favori, ak jesyon galri.",
+        heroText: "Yon platfòm AI kreyatif modèn ak zouti pou atis, lang miltip, favori ak galri.",
         homeTitle: "Byenveni",
-        homeText: "Platfòm sa a pèmèt ou sove prompt, chèche mesaj, jere lyen imaj, mete like, epi konekte ak Artist ID.",
+        homeText: "VOX WORLD AI pèmèt ou kreye, sove, chèche, epi jere kontni ou, konekte ak Artist ID ou, epi bati idantite kreyatif ou atravè lemond.",
         aiTitle: "Poze AI kestyon",
         aiText: "Ekri yon mesaj, chanje lang lan andedan AI, chèche kontni ki sove, epi sove nan Supabase.",
         searchLabel: "Chèche mesaj yo",
@@ -912,13 +919,15 @@
         likeText: "Likes",
         favoriteText: "Favori",
         unfavoriteText: "Retire favori",
-        deleteText: "Efase"
+        deleteText: "Efase",
+        normalText: "Nòmal",
+        noFavMessages: "Pa gen mesaj favori pou kounye a."
       },
       es: {
         sideText: "Pregunta, busca, guarda mensajes, administra tu galería y conéctate con Artist ID en una interfaz limpia.",
-        heroText: "Una plataforma moderna estilo Spotify con herramientas AI, acceso de artista, multilenguaje, favoritos y gestión de galería.",
+        heroText: "Una plataforma creativa moderna con herramientas AI, control multilenguaje, favoritos y galería.",
         homeTitle: "Bienvenido",
-        homeText: "Esta plataforma te permite guardar prompts, buscar mensajes, administrar enlaces de imágenes, añadir likes e iniciar sesión con Artist ID.",
+        homeText: "VOX WORLD AI te permite crear, guardar, buscar y gestionar tu contenido, conectarte con tu Artist ID y construir tu identidad creativa en todo el mundo.",
         aiTitle: "Preguntar a AI",
         aiText: "Escribe un mensaje, cambia el idioma dentro de AI, busca contenido guardado y guarda en Supabase.",
         searchLabel: "Buscar mensajes",
@@ -968,7 +977,9 @@
         likeText: "Likes",
         favoriteText: "Favorito",
         unfavoriteText: "Quitar favorito",
-        deleteText: "Eliminar"
+        deleteText: "Eliminar",
+        normalText: "Normal",
+        noFavMessages: "Todavía no hay mensajes favoritos."
       }
     };
 
@@ -995,13 +1006,26 @@
     }
 
     function showPage(pageId, btn = null) {
-      document.querySelectorAll(".page").forEach((page) => page.classList.remove("active"));
+      document.querySelectorAll(".page").forEach(page => page.classList.remove("active"));
       const target = document.getElementById(pageId);
       if (target) target.classList.add("active");
 
-      document.querySelectorAll(".side-btn").forEach((b) => b.classList.remove("active"));
+      document.querySelectorAll(".side-btn").forEach(b => b.classList.remove("active"));
       if (btn) {
         btn.classList.add("active");
+      } else {
+        const buttons = document.querySelectorAll(".side-btn");
+        buttons.forEach(b => {
+          const txt = b.textContent.trim().toLowerCase();
+          if (
+            (pageId === "home" && txt.includes("home")) ||
+            (pageId === "ai" && txt.includes("ai")) ||
+            (pageId === "gallery" && txt.includes("gallery")) ||
+            (pageId === "login" && txt.includes("artist"))
+          ) {
+            b.classList.add("active");
+          }
+        });
       }
 
       if (window.innerWidth <= 860) {
@@ -1082,13 +1106,41 @@
       let line2 = t("aiReply2");
 
       if (lower.includes("music") || lower.includes("musique") || lower.includes("mizik")) {
-        line2 = "Try turning this into a catchy creative concept with mood, tempo, and style.";
+        line2 =
+          currentLang() === "fr"
+            ? "Essaie de transformer cela en concept créatif avec ambiance, tempo et style."
+            : currentLang() === "ht"
+            ? "Eseye vire sa an yon konsèp kreyatif ak anbyans, tempo, ak stil."
+            : currentLang() === "es"
+            ? "Intenta convertir esto en un concepto creativo con ambiente, tempo y estilo."
+            : "Try turning this into a creative concept with mood, tempo, and style.";
       } else if (lower.includes("image") || lower.includes("photo") || lower.includes("gallery")) {
-        line2 = "You can turn this into a visual post, favorite it, or save it to the gallery.";
+        line2 =
+          currentLang() === "fr"
+            ? "Vous pouvez transformer cela en publication visuelle, le mettre en favori, ou l’ajouter à la galerie."
+            : currentLang() === "ht"
+            ? "Ou ka fè sa tounen yon pòs vizyèl, mete l an favori, oswa ajoute l nan galri a."
+            : currentLang() === "es"
+            ? "Puedes convertir esto en una publicación visual, marcarlo como favorito o guardarlo en la galería."
+            : "You can turn this into a visual post, favorite it, or save it to the gallery.";
       } else if (lower.includes("login") || lower.includes("artist")) {
-        line2 = "You can manage access through Artist ID and personalize your profile photo.";
+        line2 =
+          currentLang() === "fr"
+            ? "Vous pouvez gérer l’accès avec Artist ID et personnaliser votre photo de profil."
+            : currentLang() === "ht"
+            ? "Ou ka jere aksè a ak Artist ID epi pèsonalize foto pwofil ou."
+            : currentLang() === "es"
+            ? "Puedes gestionar el acceso con Artist ID y personalizar tu foto de perfil."
+            : "You can manage access with Artist ID and personalize your profile photo.";
       } else if (lower.includes("search") || lower.includes("find")) {
-        line2 = "Use the built-in search tools to filter messages and gallery content faster.";
+        line2 =
+          currentLang() === "fr"
+            ? "Utilisez les outils de recherche intégrés pour filtrer plus vite messages et galerie."
+            : currentLang() === "ht"
+            ? "Sèvi ak zouti rechèch entegre yo pou filtre mesaj ak galri pi vit."
+            : currentLang() === "es"
+            ? "Usa las herramientas de búsqueda integradas para filtrar mensajes y galería más rápido."
+            : "Use the built-in search tools to filter messages and gallery faster.";
       }
 
       return `${t("aiReply1")} ${line2} ${t("aiReply3")}`;
@@ -1097,7 +1149,6 @@
     async function sendMessage() {
       const input = document.getElementById("userInput");
       const text = input.value.trim();
-
       if (!text) return;
 
       appendChatMessage("user", text);
@@ -1109,15 +1160,12 @@
         return;
       }
 
-      const payload = { text, favorite: false };
+      const { error } = await supabaseClient
+        .from("messages")
+        .insert([{ text, favorite: false }]);
 
-      const { error } = await supabaseClient.from("messages").insert([payload]);
-
-      if (error) {
-        appendChatMessage("ai", error.message);
-      } else {
-        appendChatMessage("ai", t("msgSaved"));
-      }
+      if (error) appendChatMessage("ai", error.message);
+      else appendChatMessage("ai", t("msgSaved"));
 
       appendChatMessage("ai", getSmartReply(text));
     }
@@ -1146,9 +1194,7 @@
         return;
       }
 
-      data.reverse().forEach((item) => {
-        appendChatMessage("user", item.text || "");
-      });
+      data.reverse().forEach(item => appendChatMessage("user", item.text || ""));
     }
 
     async function searchMessages() {
@@ -1183,7 +1229,7 @@
         return;
       }
 
-      data.reverse().forEach((item) => appendChatMessage("user", item.text || ""));
+      data.reverse().forEach(item => appendChatMessage("user", item.text || ""));
     }
 
     async function loadFavorites() {
@@ -1207,12 +1253,12 @@
       }
 
       if (!data || data.length === 0) {
-        appendChatMessage("ai", "No favorite messages yet.");
+        appendChatMessage("ai", t("noFavMessages"));
         return;
       }
 
       appendChatMessage("ai", t("favoritesTitle"));
-      data.reverse().forEach((item) => appendChatMessage("user", item.text || ""));
+      data.reverse().forEach(item => appendChatMessage("user", item.text || ""));
     }
 
     async function runGlobalSearch() {
@@ -1241,7 +1287,7 @@
         .limit(10);
 
       if (!msgResult.error && msgResult.data?.length) {
-        msgResult.data.reverse().forEach((item) => appendChatMessage("user", item.text || ""));
+        msgResult.data.reverse().forEach(item => appendChatMessage("user", item.text || ""));
       } else {
         appendChatMessage("ai", t("noResult") + query);
       }
@@ -1255,7 +1301,7 @@
 
       if (!galResult.error && galResult.data?.length) {
         appendChatMessage("ai", t("globalSearchGallery"));
-        galResult.data.forEach((item) => appendChatMessage("ai", item.url || ""));
+        galResult.data.forEach(item => appendChatMessage("ai", item.url || ""));
       }
     }
 
@@ -1278,13 +1324,9 @@
         return;
       }
 
-      const record = {
-        url,
-        likes: 0,
-        favorite: false
-      };
-
-      const { error } = await supabaseClient.from("gallery").insert([record]);
+      const { error } = await supabaseClient
+        .from("gallery")
+        .insert([{ url, likes: 0, favorite: false }]);
 
       if (error) {
         alert(error.message);
@@ -1379,7 +1421,7 @@
         return;
       }
 
-      container.innerHTML = data.map((img) => {
+      container.innerHTML = data.map(img => {
         const safeUrl = escapeHTML(img.url || "");
         const created = img.created_at ? new Date(img.created_at).toLocaleString() : "Saved item";
         const likes = Number(img.likes || 0);
@@ -1392,7 +1434,7 @@
             <div class="gallery-content">
               <div class="like-row">
                 <span class="badge">${escapeHTML(t("likeText"))}: ${likes}</span>
-                <span class="badge">${favorite ? "★" : "☆"} ${favorite ? escapeHTML(t("favoriteText")) : "Normal"}</span>
+                <span class="badge">${favorite ? "★" : "☆"} ${favorite ? escapeHTML(t("favoriteText")) : escapeHTML(t("normalText"))}</span>
               </div>
               <div class="gallery-meta">${escapeHTML(created)}</div>
               <div class="row">
@@ -1493,7 +1535,8 @@
       if (!email) {
         nameEl.textContent = "Artist Profile";
         subEl.textContent = "No account connected";
-        document.getElementById("profileAvatar").src = "https://via.placeholder.com/300x300.png?text=Artist";
+        document.getElementById("profileAvatar").src =
+          "https://via.placeholder.com/300x300.png?text=Artist";
         return;
       }
 
@@ -1560,8 +1603,7 @@
       changeLanguage();
       await checkCurrentUser();
       await loadGallery();
-    }); 
-    sb_publishable_q2fKaWabHc1ldmmlipQuoA_qwyp3XR- https://gcomuxxidbjgqmdqsnfq.supabase.co
-  </script> 
+    });
+  </script>
 </body>
 </html>
